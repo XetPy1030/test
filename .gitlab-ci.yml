@@ -1,0 +1,69 @@
+image: docker:20.10.16
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+  TAG_LATEST: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
+  TAG_COMMIT: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
+
+stages:
+  - publish
+  - deploy_dev
+  # - deploy release
+  # - deploy production
+
+publish:
+  image: docker:latest
+  stage: publish
+  tags:
+    - dev
+  services:
+    - docker:20.10.16-dind
+  only:
+    - dev
+  script:
+    - docker build -t $TAG_COMMIT -t $TAG_LATEST .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker push $TAG_COMMIT
+    - docker push $TAG_LATEST
+
+deploy dev:
+  stage: deploy_dev
+  only:
+    - dev
+  environment:
+    name: production
+    url: http://137.74.4.173
+  tags:
+    - deployer
+  script:
+    - apt install -y openssh-client ca-certificates bash
+    - eval $(ssh-agent -s)
+    - echo "${ID_RSA}" | base64 -d | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - sh ./deploy.sh
+
+
+    
+  
+# test:
+#   stage: test
+#   tags:
+#    - dev
+#   script:
+#    - echo "test"
+
+
+# deploy_on_release:
+#   stage: deploy release
+#   tags:
+#     - release
+#   script:
+#     - echo "deploy_on_release"
+
+# deploy_on_production:
+#   stage: deploy production
+#   tags:
+#     - prod
+#   script:
+#     - echo "deploy_on_production"
