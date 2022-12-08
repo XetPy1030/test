@@ -20,6 +20,7 @@ publish:
     - docker:20.10.16-dind
   only:
     - dev
+    - /(dell_cicd)/
   script:
     - docker build -t $TAG_COMMIT -t $TAG_LATEST .
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
@@ -30,6 +31,7 @@ deploy dev:
   stage: deploy_dev
   only:
     - dev
+    - /(dell_cicd)/
   environment:
     name: production
     url: http://137.74.4.173
