@@ -38,7 +38,6 @@ deploy dev:
   tags:
     - deployer
   script:
-    - apt install -y openssh-client ca-certificates bash
     - eval $(ssh-agent -s)
     - echo "${ID_RSA}" | base64 -d | ssh-add -
     - mkdir -p ~/.ssh
