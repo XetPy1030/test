@@ -4,6 +4,9 @@ from django.db import models
 # Create your models here.
 
 class EmployeeInformation(models.Model):
+    user_id = models.BigIntegerField()
+    save_as_draft = models.BooleanField()
+
     full_name__full_name = models.TextField(default=None)
     date_of_birthday__date = models.DateField(default=None)
     genders = (
