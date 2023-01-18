@@ -34,14 +34,19 @@ deploy dev:
     - /(dell_cicd)/
   environment:
     name: production
-    url: http://137.74.4.173
+    url: http://185.149.51.50
   tags:
     - deployer
   script:
     - eval $(ssh-agent -s)
-    - echo "${ID_RSA}" | base64 -d | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
+    - echo "$ID_RSA" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh/id_rsa
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H ${SERVER_IP} >> ~/.ssh/known_hosts
+    - ssh-keyscan $SERVER_IP | sort -u - ~/.ssh/known_hosts -o ~/.ssh/known_hosts
+    - '[[ -f /.dockerinit ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - sh ./deploy.sh
 
 
