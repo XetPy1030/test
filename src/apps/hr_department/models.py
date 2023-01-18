@@ -1,6 +1,5 @@
 from django.db import models
-import gitlab
-gl = gitlab.Gitlab()
+from src.config.settings import gl
 
 # Create your models here.
 
