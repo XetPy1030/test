@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import gitlab, os
-gl = gitlab.Gitlab(private_token="glpat-9yFtULRnEx5kKYcUUZC2")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,7 +79,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "hrdb",
         "USER": "master",
-        "PASSWORD": str(gl.variables.get("database_passwd")),
+        "PASSWORD": os.environ.get("database_passwd"),
         "HOST": "postgres",
         "PORT": 5432,
     }

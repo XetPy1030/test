@@ -1,6 +1,6 @@
-from django.db import models
-from src.config.settings import gl
+import os
 
+from django.db import models
 # Create your models here.
 
 class EmployeeInformation(models.Model):
@@ -12,9 +12,9 @@ class EmployeeInformation(models.Model):
     )
     gender__gender = models.TextField(choices=genders, default=None)
     inn__number = models.IntegerField(max_length=12, default=None)
-    inn__photo = models.ImageField(upload_to=gl.variables.get("data_folder"))
+    inn__photo = models.ImageField(upload_to=os.environ.get("data_folder"))
     snils__number = models.IntegerField(max_length=11, default=None)
-    snils__photo = models.ImageField(upload_to=gl.variables.get("data_folder"))
+    snils__photo = models.ImageField(upload_to=os.environ.get("data_folder"))
 
     passport__series_and_number = models.IntegerField(default=None)
     passport__issued_by = models.TextField(default=None)
