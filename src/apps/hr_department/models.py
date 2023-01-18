@@ -13,6 +13,8 @@ genders = (
 class EmployeeInformation(models.Model):
     user_id = models.BigIntegerField()
     save_as_draft = models.BooleanField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     full_name = models.TextField(default=None)
     date_of_birthday = models.DateField(default=None)
