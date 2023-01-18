@@ -16,9 +16,9 @@ class EmployeeInformation(models.Model):
         ("FEMALE", "Жен")
     )
     gender__gender = models.TextField(choices=genders, default=None)
-    inn__number = models.IntegerField(max_length=12, default=None)
+    inn__number = models.IntegerField(default=None)
     inn__photo = models.ImageField(upload_to=pictures_folder)
-    snils__number = models.IntegerField(max_length=11, default=None)
+    snils__number = models.IntegerField(default=None)
     snils__photo = models.ImageField(upload_to=pictures_folder)
 
     passport__series_and_number = models.IntegerField(default=None)
