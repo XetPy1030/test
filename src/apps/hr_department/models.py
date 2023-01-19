@@ -30,7 +30,8 @@ class EmployeeInformation(models.Model):
     passport_date_of_issue = models.DateField(default=None)
     passport_division_code = models.IntegerField(default=None)
     passport_registered_address = models.TextField(default=None)
-    passport_photos = models.ImageField(default=None)
+    passport_photo1 = models.ImageField(default=None)
+    passport_photo2 = models.ImageField(default=None)
 
     place_of_birthday = models.TextField(default=None)
     citizenship = models.TextField(default=None)
