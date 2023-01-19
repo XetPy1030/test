@@ -11,8 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import gitlab
-gl = gitlab.Gitlab()
+from .env_variables import DATABASE_PASSWORD, MODE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.hr_department.apps.HrDepartmentConfig'
 ]
 
 MIDDLEWARE = [
@@ -75,16 +75,25 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "hrdb",
-        "USER": "master",
-        "PASSWORD": str(gl.variables.get("database_passwd")),
-        "HOST": "postgres",
-        "PORT": 5432,
+if MODE == "dev":
+    DATABASES = {
+        'default': {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "hrdb",
+            "USER": "master",
+            "PASSWORD": DATABASE_PASSWORD,
+            "HOST": "postgres",
+            "PORT": 5432,
+        }
     }
-}
+elif MODE == "local":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'localdb.sqlite3',
+        }
+    }
+
 
 
 # Password validation
