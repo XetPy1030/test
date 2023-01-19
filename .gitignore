@@ -254,6 +254,7 @@ cython_debug/
 .idea/
 .idea/*
 .idea
+src/.idea
 
 ### Python Patch ###
 # Poetry local configuration file - https://python-poetry.org/docs/configuration/#local-configuration
