@@ -10,8 +10,6 @@ genders = (
     ("FEMALE", "Жен")
 )
 
-# 6d88094b-4b8c-46fc-928e-4fe7803d480f - example of uuid
-
 
 class FormField(models.Model):
     inn_photo = models.ImageField(upload_to=PICTURES_FOLDER)
@@ -73,3 +71,5 @@ class ServerEmployeeInformation(FormField):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user_id = models.TextField()
+
+

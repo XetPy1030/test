@@ -12,6 +12,7 @@ gunicorn = "^20.1.0"
 python-gitlab = "^3.12.0"
 psycopg2-binary = "^2.9.5"
 pillow = "^9.4.0"
+django-elasticsearch-dsl = "^7.2.2"
 
 
 [build-system]
