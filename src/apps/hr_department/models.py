@@ -1,59 +1,75 @@
 from django.db import models
-
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from config.env_variables import PICTURES_FOLDER
 
 # Create your models here.
 
 genders = (
-        ("MALE", "Муж"),
-        ("FEMALE", "Жен")
-    )
+    ("MALE", "Муж"),
+    ("FEMALE", "Жен")
+)
+
+# 6d88094b-4b8c-46fc-928e-4fe7803d480f - example of uuid
 
 
-class EmployeeInformation(models.Model):
-    user_id = models.BigIntegerField()
-    save_as_draft = models.BooleanField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    full_name = models.TextField(default=None)
-    date_of_birthday = models.DateField(default=None)
-
-    gender_gender = models.TextField(choices=genders, default=None)
-    inn_number = models.IntegerField(default=None)
+class FormField(models.Model):
     inn_photo = models.ImageField(upload_to=PICTURES_FOLDER)
-    snils_number = models.IntegerField(default=None)
     snils_photo = models.ImageField(upload_to=PICTURES_FOLDER)
 
-    passport_series_and_number = models.IntegerField(default=None)
-    passport_issued_by = models.TextField(default=None)
-    passport_date_of_issue = models.DateField(default=None)
-    passport_division_code = models.IntegerField(default=None)
-    passport_registered_address = models.TextField(default=None)
-    passport_photos = models.ImageField(default=None)
+    full_name = models.TextField(default=None, null=True)
+    date_of_birthday = models.DateField(default=None, null=True)
 
-    place_of_birthday = models.TextField(default=None)
-    citizenship = models.TextField(default=None)
-    address_of_residence = models.TextField(default=None)
-    is_civil_servant = models.BooleanField(default=None)
-    date_of_vaccination = models.DateField(default=None)
-    education = models.TextField(default=None)
+    gender_gender = models.TextField(choices=genders, default=None, null=True)
+    inn_number = models.IntegerField(default=None, null=True)
+    snils_number = models.IntegerField(default=None, null=True)
 
-    grade = models.IntegerField(default=None)
-    salary = models.IntegerField(default=None)
-    premium = models.IntegerField(default=None)
-    job_descriptions = models.TextField(default=None)
-    mvo = models.IntegerField(default=None)
-    quarterly_option = models.IntegerField(default=None)
-    annual_option = models.IntegerField(default=None)
-    three_year_option = models.IntegerField(default=None)
-    cash_year_content = models.IntegerField(default=None)
-    cash_month_content = models.IntegerField(default=None)
-    cashyear_without_option_content = models.IntegerField(default=None)
-    cash_month_without_option_content = models.IntegerField(default=None)
-    department = models.TextField(default=None)
-    module = models.TextField(default=None)
-    position = models.TextField(default=None)
-    housing = models.TextField(default=None)
+    passport_series_and_number = models.IntegerField(default=None, null=True)
+    passport_issued_by = models.TextField(default=None, null=True)
+    passport_date_of_issue = models.DateField(default=None, null=True)
+    passport_division_code = models.IntegerField(default=None, null=True)
+    passport_registered_address = models.TextField(default=None, null=True)
+    passport_photo1 = models.ImageField(default=None, null=True)
+    passport_photo2 = models.ImageField(default=None, null=True)
+
+    place_of_birthday = models.TextField(default=None, null=True)
+    citizenship = models.TextField(default=None, null=True)
+    address_of_residence = models.TextField(default=None, null=True)
+    is_civil_servant = models.BooleanField(default=None, null=True)
+    date_of_vaccination = models.DateField(default=None, null=True)
+    education = models.TextField(default=None, null=True)
+
+    grade = models.IntegerField(default=None, null=True)
+    salary = models.IntegerField(default=None, null=True)
+    premium = models.IntegerField(default=None, null=True)
+    job_descriptions = models.TextField(default=None, null=True)
+    mvo = models.IntegerField(default=None, null=True)
+    quarterly_option = models.IntegerField(default=None, null=True)
+    annual_option = models.IntegerField(default=None, null=True)
+    three_year_option = models.IntegerField(default=None, null=True)
+    cash_year_content = models.IntegerField(default=None, null=True)
+    cash_month_content = models.IntegerField(default=None, null=True)
+    cash_year_without_option_content = models.IntegerField(default=None, null=True)
+    cash_month_without_option_content = models.IntegerField(default=None, null=True)
+    department = models.TextField(default=None, null=True)
+    module = models.TextField(default=None, null=True)
+    position = models.TextField(default=None, null=True)
+    housing = models.TextField(default=None, null=True)
+
+    is_checked = models.BooleanField()
+
+    class Meta:
+        abstract = True
 
 
+class DraftEmployeeInformation(FormField):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user_id = models.TextField()
+    owner_id = models.TextField()
+
+
+class ServerEmployeeInformation(FormField):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user_id = models.TextField()

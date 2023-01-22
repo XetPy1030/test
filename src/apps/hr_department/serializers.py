@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.hr_department.models import EmployeeInformation
+from apps.hr_department.models import DraftEmployeeInformation
 
 fields_frontend = [
     'full_name__full_name',
@@ -128,9 +128,9 @@ def reformat_fields(data):
     reformat_passport_division_code(data)
 
 
-class EmployeeInformationSerializer(serializers.ModelSerializer):
+class DraftEmployeeInformationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EmployeeInformation
+        model = DraftEmployeeInformation
         fields = '__all__'
         validators = [
             ...
@@ -144,3 +144,15 @@ class EmployeeInformationSerializer(serializers.ModelSerializer):
         reformat_fields(data)
 
         return super().to_internal_value(data)
+
+    # функция для валидации полей
+    def validate(self, data):
+        return super(EmployeeInformationSerializer, self).validate(data)
+
+    # функция для записи данных в базу
+    def create(self, validated_data):
+        return super(EmployeeInformationSerializer, self).create(validated_data)
+
+    # функция для обновления данных в базе
+    def update(self, instance, validated_data):
+        return super(EmployeeInformationSerializer, self).update(instance, validated_data)
