@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.hr_department.apps.HrDepartmentConfig',
-    'apps.search.apps.SearchConfig',
 ]
 
 MIDDLEWARE = [
