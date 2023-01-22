@@ -19,7 +19,7 @@ class FormField(models.Model):
     date_of_birthday = models.DateField(default=None, null=True)
 
     gender_gender = models.TextField(choices=genders, default=None, null=True)
-    inn_number = models.IntegerField(default=None, null=True)
+    inn_number = models.TextField(default=None, null=True)
     snils_number = models.IntegerField(default=None, null=True)
 
     passport_series_and_number = models.IntegerField(default=None, null=True)
