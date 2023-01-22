@@ -1,0 +1,1 @@
+from apps.hr_department.validators.validators import JwtTokenValidator
