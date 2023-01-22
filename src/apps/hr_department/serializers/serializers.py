@@ -1,13 +1,12 @@
-from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 from rest_framework import serializers
 
 from apps.hr_department.models import DraftEmployeeInformation
-from apps.hr_department.serializers.fields import fields_frontend_to_backend
+from apps.hr_department.serializers.fields import fields_frontend, fields_backend, date_fields
 from apps.hr_department.serializers.reformaters import reformat_fields
-from apps.hr_department.validators import JwtTokenValidator
-from apps.hr_department.documents import DraftEmployeeInformationDocument
 
-
+fields_frontend_to_backend = {
+    key: value for key, value in zip(fields_frontend, fields_backend)
+}
 
 
 def get_field_name(field):
@@ -25,21 +24,10 @@ class BaseEmployeeInformationSerializer(serializers.ModelSerializer):
         return super().to_internal_value(data)
 
 
-
-class DraftEmployeeInformationDocumentSerializer(DocumentSerializer):
-    class Meta:
-        document = DraftEmployeeInformationDocument
-        fields = (
-            'id',
-            'full_name',
-            'inn_number',
-            'passport_series_and_number',
-            'snils_number',
-        )
 class DraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
     class Meta:
         model = DraftEmployeeInformation
         fields = '__all__'
         validators = [
-            # JwtTokenValidator(),
+            ...
         ]
