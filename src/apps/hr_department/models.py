@@ -54,7 +54,7 @@ class FormField(models.Model):
     position = models.TextField(default=None, null=True)
     housing = models.TextField(default=None, null=True)
 
-    is_checked = models.BooleanField()
+    is_checked = models.BooleanField(default=None, null=True)
 
     class Meta:
         abstract = True
