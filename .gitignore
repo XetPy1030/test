@@ -260,3 +260,4 @@ cython_debug/
 poetry.toml
 
 /src/.idea/
+/src/pictures/
