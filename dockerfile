@@ -29,4 +29,4 @@ RUN pip3 install poetry && \
 EXPOSE 8000
 
 
-ENTRYPOINT ["gunicorn", "-w", "2", "--threads", "2", "-b", "0.0.0.0:8000", "config.wsgi:application"]
+ENTRYPOINT ["gunicorn", "-w", "2", "-b", "0.0.0.0:8000", "config.wsgi:application"]
