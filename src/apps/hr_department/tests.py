@@ -20,9 +20,9 @@ def get_base64_from_image(image_path: str):
 data_for_serializer = {
     'full_name__full_name': 'Иванов Иван Иванович',
     'date_of_birthday__date': '1990-01-01T00:00:00',
-    'gender__gender': 'Муж',
+    'gender__gender': 'MALE',
     'inn__number': '123456789012',
-    'snils_number__number': '123-456-789 01',
+    'snils__number': '123-456-789 01',
     'passport__series_and_number': '1234 567890',
     'passport__issued_by': 'ОВД г. Москвы',
     'passport__date_of_issue': '2010-01-01T00:00:00',
@@ -60,10 +60,10 @@ data_for_serializer = {
 class DraftEmployeeInformationTestCase(TestCase):
     def setUp(self):
         self.serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
-        self.serializer.is_valid(raise_exception=True)
 
     def test_serializer_is_valid(self):
         self.assertTrue(self.serializer.is_valid())
+        self.serializer.save()
         # self.assertEqual('11', '12')
         # lion = Animal.objects.get(name="lion")
         # cat = Animal.objects.get(name="cat")

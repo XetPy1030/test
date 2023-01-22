@@ -24,6 +24,4 @@ class DraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
     class Meta:
         model = DraftEmployeeInformation
         fields = '__all__'
-        validators = [
-            ...
-        ]
+        validators = []
