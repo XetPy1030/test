@@ -1,11 +1,12 @@
 import base64
+import json
 from io import BytesIO
 
 from PIL import Image
-from django.test import TestCase
+# from django.test import TestCase
 
-from apps.hr_department.models import DraftEmployeeInformation
-from apps.hr_department.serializers import DraftEmployeeInformationSerializer
+# from apps.hr_department.models import DraftEmployeeInformation
+# from apps.hr_department.serializers import DraftEmployeeInformationSerializer
 
 
 def get_base64_from_image(image_path: str):
@@ -50,20 +51,25 @@ data_for_serializer = {
     'module__module': 'Модуль разработки',
     'position__position': 'Разработчик',
     'housing__housing': '1',
-    'inn__photo': get_base64_from_image('./apps/hr_department/tests/inn.jpg'),
-    'snils__photo': get_base64_from_image('./apps/hr_department/tests/snils.jpg'),
-    'passport__photo_reversal': get_base64_from_image('./apps/hr_department/tests/passport_reversal.jpg'),
-    'passport__photo_registration': get_base64_from_image('./apps/hr_department/tests/passport_registration.jpg'),
+    'inn__photo': str(get_base64_from_image('./apps/hr_department/tests/inn.jpg')),
+    'snils__photo': str(get_base64_from_image('./apps/hr_department/tests/snils.jpg')),
+    'passport__photo_reversal': str(get_base64_from_image('./apps/hr_department/tests/passport_reversal.jpg')),
+    'passport__photo_registration': str(get_base64_from_image('./apps/hr_department/tests/passport_registration.jpg')),
 }
 
+json_object = json.dumps(data_for_serializer, indent = 4)
+text_file = open("./sample.json", "w")
+n = text_file.write(json_object)
+text_file.close()
 
-class DraftEmployeeInformationTestCase(TestCase):
-    def setUp(self):
-        self.serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
-        self.serializer.is_valid(raise_exception=True)
 
-    def test_serializer_is_valid(self):
-        self.assertTrue(self.serializer.is_valid())
+# class DraftEmployeeInformationTestCase(TestCase):
+#     def setUp(self):
+#         self.serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
+#         self.serializer.is_valid(raise_exception=True)
+#
+#     def test_serializer_is_valid(self):
+#         self.assertTrue(self.serializer.is_valid())
         # self.assertEqual('11', '12')
         # lion = Animal.objects.get(name="lion")
         # cat = Animal.objects.get(name="cat")

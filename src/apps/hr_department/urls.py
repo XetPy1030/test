@@ -4,6 +4,6 @@ from apps.hr_department import views
 
 urlpatterns = [
     # path('', views.index)
-    # path('', views.FormHandler.as_view()),
+    path('api/', views.FormDraftHandler.as_view()),
 ]
 
