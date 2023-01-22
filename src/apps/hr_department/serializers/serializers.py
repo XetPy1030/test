@@ -1,12 +1,8 @@
 from rest_framework import serializers
 
 from apps.hr_department.models import DraftEmployeeInformation
-from apps.hr_department.serializers.fields import fields_frontend, fields_backend, date_fields
+from apps.hr_department.serializers.fields import fields_frontend_to_backend
 from apps.hr_department.serializers.reformaters import reformat_fields
-
-fields_frontend_to_backend = {
-    key: value for key, value in zip(fields_frontend, fields_backend)
-}
 
 
 def get_field_name(field):
