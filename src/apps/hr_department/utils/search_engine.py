@@ -1,8 +1,9 @@
 # django orm search by full_name in models DraftEmployeeInformation and ServerEmployeeInformation
-from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
+from django.db.models import QuerySet
+
+from apps.hr_department.models import ServerEmployeeInformation
 
 
-def search_by_full_name(full_name):
-    draft_employee_information = DraftEmployeeInformation.objects.filter(full_name=full_name)
+def search_by_full_name(full_name: str) -> QuerySet[ServerEmployeeInformation]:
     server_employee_information = ServerEmployeeInformation.objects.filter(full_name=full_name)
-    return draft_employee_information, server_employee_information
+    return server_employee_information
