@@ -261,3 +261,4 @@ poetry.toml
 
 /src/.idea/
 /src/pictures/
+/src/apps/hr_department/migrations/
