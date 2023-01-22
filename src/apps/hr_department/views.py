@@ -7,9 +7,9 @@ from apps.hr_department.tests import data_for_serializer
 from apps.hr_department.utils.search_engine import search_by_full_name
 
 
-serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
-serializer.is_valid()
-serializer.save()
+# serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
+# serializer.is_valid()
+# serializer.save()
 
 
 class FormDraftHandler(APIView):
