@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from config.env_variables import PICTURES_FOLDER
 
 # Create your models here.
@@ -7,6 +9,8 @@ genders = (
     ("MALE", "Муж"),
     ("FEMALE", "Жен")
 )
+
+# 6d88094b-4b8c-46fc-928e-4fe7803d480f - example of uuid
 
 
 class FormField(models.Model):
@@ -17,10 +21,10 @@ class FormField(models.Model):
     date_of_birthday = models.DateField(default=None, null=True)
 
     gender_gender = models.TextField(choices=genders, default=None, null=True)
-    inn_number = models.TextField(default=None, null=True)
-    snils_number = models.TextField(default=None, null=True)
+    inn_number = models.IntegerField(default=None, null=True)
+    snils_number = models.IntegerField(default=None, null=True)
 
-    passport_series_and_number = models.TextField(default=None, null=True)
+    passport_series_and_number = models.IntegerField(default=None, null=True)
     passport_issued_by = models.TextField(default=None, null=True)
     passport_date_of_issue = models.DateField(default=None, null=True)
     passport_division_code = models.IntegerField(default=None, null=True)
@@ -52,7 +56,7 @@ class FormField(models.Model):
     position = models.TextField(default=None, null=True)
     housing = models.TextField(default=None, null=True)
 
-    is_checked = models.BooleanField(default=None, null=True)
+    is_checked = models.BooleanField()
 
     class Meta:
         abstract = True
@@ -69,5 +73,3 @@ class ServerEmployeeInformation(FormField):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user_id = models.TextField()
-
-

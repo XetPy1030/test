@@ -1,14 +1,33 @@
 from django.http import HttpResponse
 from rest_framework.views import APIView
 
-from apps.hr_department.serializers import EmployeeInformationSerializer
+from apps.hr_department.models import DraftEmployeeInformation
+from apps.hr_department.serializers import DraftEmployeeInformationSerializer
 
 
-class FormHandler(APIView):
-    # post for serializer EmployeeInformationSerializer
-    def post(self, request):
-        serializer = EmployeeInformationSerializer(data=request.data)
+class FormDraftHandler(APIView):
+    """
+    Форма для заполнения информации о сотруднике.
+    Отправляется фронтендом.
+    Сериализуется в модель DraftEmployeeInformation.
+    И сохраняется в БД если валидация прошла успешно.
+    Нужно для того, чтобы сотрудник мог сохранить свою форму и вернуться к ней позже.
+    """
+
+    @staticmethod
+    def post(request):
+        serializer = DraftEmployeeInformationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return HttpResponse(status=201)
         return HttpResponse(status=400)
+
+    @staticmethod
+    def get(request):
+        """
+        Возвращает список всех полей модели DraftEmployeeInformation в виде json.
+        """
+        model = DraftEmployeeInformation.objects.all()[0]  # TODO: get the object by id from request
+        serializer = DraftEmployeeInformationSerializer(model)
+        return HttpResponse(serializer.data)
+
