@@ -1,10 +1,11 @@
 import base64
 from io import BytesIO
 
+import requests
 from PIL import Image
 from django.test import TestCase
 
-from apps.hr_department.serializers import DraftEmployeeInformationSerializer
+from apps.hr_department.serializers.serializers import UserDraftEmployeeInformationSerializer
 
 
 def get_base64_from_image(image_path: str):
@@ -57,8 +58,9 @@ data_for_serializer = {
 
 class DraftEmployeeInformationTestCase(TestCase):
     def setUp(self):
-        self.serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
+        self.serializer = UserDraftEmployeeInformationSerializer(data=data_for_serializer)
         # self.test_str = get_base64_from_image('./apps/hr_department/tests/inn.jpg')
+        self.serializer.is_valid(raise_exception=True)
 
     def test_serializer_is_valid(self):
         self.assertTrue(self.serializer.is_valid())
@@ -79,7 +81,20 @@ class DraftEmployeeInformationTestCase(TestCase):
 
 class RequestsTestCase(TestCase):
     def setUp(self):
-        ...
+        self.url = 'http://127.0.0.1:8000/api/v1'
 
-    def test_requests(self):
-        ...
+    def test_user_draft_post(self):
+        response = requests.post(f'{self.url}/user/draft/', data=data_for_serializer)
+        self.assertEqual(response.status_code, 201)
+
+    # def test_user_draft_get(self):
+    #     response = requests.get(f'{self.url}/user/draft/', params={'jwt_token': '123'})
+    #     self.assertEqual(response.status_code, 201)
+
+    # def test_user_save_post(self):
+    #     response = requests.post(f'{self.url}/user/save/', data=data_for_serializer)
+    #     self.assertEqual(response.status_code, 201)
+    #
+    # def test_user_save_get(self):
+    #     response = requests.get(f'{self.url}/user/save/', params={'jwt_token': '123'})
+    #     self.assertEqual(response.status_code, 201)

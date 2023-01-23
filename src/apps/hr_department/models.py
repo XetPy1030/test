@@ -19,12 +19,12 @@ class FormField(models.Model):
 
     gender_gender = models.TextField(choices=genders, default=None, null=True)
     inn_number = models.TextField(default=None, null=True)
-    snils_number = models.IntegerField(default=None, null=True)
+    snils_number = models.TextField(default=None, null=True)
 
     passport_series_and_number = models.IntegerField(default=None, null=True)
     passport_issued_by = models.TextField(default=None, null=True)
     passport_date_of_issue = models.DateField(default=None, null=True)
-    passport_division_code = models.IntegerField(default=None, null=True)
+    passport_division_code = models.TextField(default=None, null=True)
     passport_registered_address = models.TextField(default=None, null=True)
     passport_photo1 = models.ImageField(default=None, null=True)
     passport_photo2 = models.ImageField(default=None, null=True)

@@ -20,7 +20,7 @@ class UserDraftEmployeeHandler(APIView):
 
     @staticmethod
     def post(request):
-        serializer = UserDraftEmployeeInformationSerializer(data=request.data)
+        serializer = UserDraftEmployeeInformationSerializer(data={key: value for key, value in request.data.items()})
         if serializer.is_valid():
             serializer.save()
             return HttpResponse(status=201)
@@ -45,7 +45,7 @@ class UserSaveEmployeeDraftHandler(APIView):
 
     @staticmethod
     def post(request):
-        serializer = UserSaveEmployeeInformationSerializer(data=request.data)
+        serializer = UserSaveEmployeeInformationSerializer(data={key: value for key, value in request.data.items()})
         # TODO: delete the object from DB DraftEmployeeInformation
         # TODO: edit the object in DB EmployeeInformation
         if serializer.is_valid():
