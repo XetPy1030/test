@@ -6,7 +6,7 @@ from apps.hr_department.serializers.serializers import UserDraftEmployeeInformat
     UserSaveEmployeeInformationSerializer
 
 
-class UserEmployeeDraftHandler(APIView):
+class UserDraftEmployeeHandler(APIView):
     """
     Форма для заполнения черновика информации о сотруднике.
     Отправляется фронтендом.
