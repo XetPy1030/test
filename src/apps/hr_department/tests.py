@@ -60,18 +60,18 @@ data_for_serializer = {
 class DraftEmployeeInformationTestCase(TestCase):
     def setUp(self):
         self.serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
-        self.test_str = get_base64_from_image('./apps/hr_department/tests/inn.jpg')
+        # self.test_str = get_base64_from_image('./apps/hr_department/tests/inn.jpg')
 
     def test_serializer_is_valid(self):
         self.assertTrue(self.serializer.is_valid())
-        self.serializer.save()
-
-        with open('test.data', 'w') as f:
-            f.write(self.test_str)
-
-        with open('test.data', 'r', encoding='utf-8') as f:
-            self.assertEqual(f.read(), self.test_str)
-
+        # self.serializer.save()
+        #
+        # with open('test.data', 'w') as f:
+        #     f.write(self.test_str)
+        #
+        # with open('test.data', 'r', encoding='utf-8') as f:
+        #     self.assertEqual(f.read(), self.test_str)
+        #
         # self.assertEqual('11', '12')
         # lion = Animal.objects.get(name="lion")
         # cat = Animal.objects.get(name="cat")

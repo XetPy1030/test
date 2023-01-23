@@ -38,6 +38,8 @@ ELASTICSEARCH_DSL = {
 
 # Application definition
 
+MAX_LENGTH_FOR_SEARCH_USERS = 10
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
