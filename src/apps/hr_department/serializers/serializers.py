@@ -41,5 +41,5 @@ class DraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
         model = DraftEmployeeInformation
         fields = '__all__'
         validators = [
-            JwtTokenValidator(),
+            # JwtTokenValidator(),
         ]
