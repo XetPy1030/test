@@ -3,6 +3,7 @@ from rest_framework import serializers
 from apps.hr_department.models import DraftEmployeeInformation
 from apps.hr_department.serializers.fields import fields_frontend_to_backend
 from apps.hr_department.serializers.reformaters import reformat_fields
+from apps.hr_department.validators import JwtTokenValidator
 
 
 def get_field_name(field):
@@ -25,5 +26,5 @@ class DraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
         model = DraftEmployeeInformation
         fields = '__all__'
         validators = [
-            ...
+            JwtTokenValidator(),
         ]
