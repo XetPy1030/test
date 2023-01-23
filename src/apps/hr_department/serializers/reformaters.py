@@ -3,7 +3,7 @@ from io import BytesIO
 from uuid import uuid4
 
 from PIL import Image
-from django.core.files.base import ContentFile
+# from django.core.files.base import ContentFile
 
 from apps.hr_department.serializers.fields import date_fields
 from apps.hr_department.serializers.token_refactor import jwt_token_refactor

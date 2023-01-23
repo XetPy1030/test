@@ -2,15 +2,74 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 
 from apps.hr_department.models import DraftEmployeeInformation
-from apps.hr_department.serializers import DraftEmployeeInformationSerializer
 from apps.hr_department.tests import data_for_serializer
 from apps.hr_department.utils.search_engine import search_by_full_name
+from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+
+from apps.hr_department.documents import DraftEmployeeInformationDocument
+from apps.hr_department.serializers.serializers import DraftEmployeeInformationDocumentSerializer
+
+
+from django_elasticsearch_dsl_drf.constants import (
+    LOOKUP_FILTER_RANGE,
+    LOOKUP_QUERY_GT,
+    LOOKUP_QUERY_GTE,
+    LOOKUP_QUERY_IN,
+    LOOKUP_QUERY_LT,
+    LOOKUP_QUERY_LTE,
+    SUGGESTER_COMPLETION,
+)
+
+from django_elasticsearch_dsl_drf.filter_backends import (
+    DefaultOrderingFilterBackend,
+    FacetedSearchFilterBackend,
+    FilteringFilterBackend,
+    SearchFilterBackend,
+    SuggesterFilterBackend,
+)
 
 
 # serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
 # serializer.is_valid()
 # serializer.save()
 
+class DraftEmployeeInformationDocumentViewSet(DocumentViewSet):
+    document = DraftEmployeeInformationDocument
+    serializer_class = DraftEmployeeInformationDocumentSerializer
+    lookup_field = 'id'
+    filter_backends = [
+        FilteringFilterBackend,
+        SearchFilterBackend,
+        SuggesterFilterBackend,
+        DefaultOrderingFilterBackend,
+        FacetedSearchFilterBackend,
+    ]
+    # Define search fields
+    search_fields = (
+        'full_name',
+        'inn_number',
+        'passport_number',
+        'snils_number',
+    )
+    # Define filtering fields
+    filter_fields = {
+        'full_name': 'full_name.raw',
+        'inn_number': 'inn_number.raw',
+        'passport_number': 'passport_number.raw',
+        'snils_number': 'snils_number.raw',
+    }
+
+    suggester_fields = {
+        'full_name_suggest': {
+            'field': 'full_name.suggest',
+            'suggesters': [
+                SUGGESTER_COMPLETION,
+            ],
+            'options': {
+                'size': 10,
+            },
+        },
+    }
 
 class FormDraftHandler(APIView):
     """

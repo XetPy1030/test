@@ -1,5 +1,5 @@
 from .models import ServerEmployeeInformation, DraftEmployeeInformation
-from django_elasticsearch_dsl import Document
+from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
 
 # Document class for the DraftEmployeeInformation model
@@ -16,7 +16,11 @@ class DraftEmployeeInformationDocument(Document):
         model = DraftEmployeeInformation
         # The fields of the model you want to be indexed in Elasticsearch
         fields = [
+            'id',
             'full_name',
+            'inn_number',
+            'passport_series_and_number',
+            'snils_number',
         ]
 
 # Document class for the ServerEmployeeInformation model
@@ -33,5 +37,9 @@ class ServerEmployeeInformationDocument(Document):
         model = ServerEmployeeInformation
         # The fields of the model you want to be indexed in Elasticsearch
         fields = [
+            'id',
             'full_name',
+            'inn_number',
+            'passport_series_and_number',
+            'snils_number',
         ]
