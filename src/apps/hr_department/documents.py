@@ -2,6 +2,7 @@ from .models import ServerEmployeeInformation, DraftEmployeeInformation
 from django_elasticsearch_dsl import Document
 from django_elasticsearch_dsl.registries import registry
 
+
 # Document class for the DraftEmployeeInformation model
 @registry.register_document
 class DraftEmployeeInformationDocument(Document):
@@ -18,6 +19,7 @@ class DraftEmployeeInformationDocument(Document):
         fields = [
             'full_name',
         ]
+
 
 # Document class for the ServerEmployeeInformation model
 @registry.register_document

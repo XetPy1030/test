@@ -30,7 +30,7 @@ class UserDraftEmployeeHandler(APIView):
     def get(request):
         """
         Возвращает список всех полей модели DraftEmployeeInformation в виде json.
-         Получает сам создатель. Owner_id = user_id.
+        Получает сам создатель. Owner_id = user_id.
         """
 
         model = DraftEmployeeInformation.objects.all()[0]  # TODO: get the object by id from request

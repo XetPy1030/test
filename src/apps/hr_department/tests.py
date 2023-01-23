@@ -4,7 +4,6 @@ from io import BytesIO
 from PIL import Image
 from django.test import TestCase
 
-from apps.hr_department.models import DraftEmployeeInformation
 from apps.hr_department.serializers import DraftEmployeeInformationSerializer
 
 
@@ -16,10 +15,9 @@ def get_base64_from_image(image_path: str):
     return img_str.decode('utf-8')
 
 
-
 data_for_serializer = {
     'full_name__full_name': 'Иванов Иван Иванович',
-    'date_of_birthday__date': '1990-01-01T00:00:00',
+    'date_of_birthday__date': '1990-01-01T00:00:00',  # '1990-01-01'
     'gender__gender': 'MALE',
     'inn__number': '123456789012',
     'snils__number': '123-456-789 01',
@@ -77,3 +75,11 @@ class DraftEmployeeInformationTestCase(TestCase):
         # cat = Animal.objects.get(name="cat")
         # self.assertEqual(lion.speak(), 'The lion says "roar"')
         # self.assertEqual(cat.speak(), 'The cat says "meow"')
+
+
+class RequestsTestCase(TestCase):
+    def setUp(self):
+        ...
+
+    def test_requests(self):
+        ...

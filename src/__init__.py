@@ -3,9 +3,9 @@
 import jwt
 
 
-def check_jwt_token(token):
+def check_jwt_token(jwt_token):
     try:
-        jwt.decode(token)
+        jwt.decode(jwt_token)
         return True
     except jwt.ExpiredSignatureError:
         print('Signature expired. Please log in again.')

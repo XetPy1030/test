@@ -27,7 +27,7 @@ class UserDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
         data['owner_id'] = data['user_id']
 
 
-class UserSaveEmployeeInformationSerializer(serializers.Serializer):
+class UserSaveEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
     class Meta:
         model = ServerEmployeeInformation
         fields = '__all__'
