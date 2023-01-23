@@ -1,3 +1,2 @@
-from apps.hr_department.serializers.serializers import UserDraftEmployeeInformationSerializer
 from apps.hr_department.views.admin import SearchHandler
-from apps.hr_department.views.user import UserSaveEmployeeDraftHandler
+from apps.hr_department.views.user import UserSaveEmployeeDraftHandler, UserDraftEmployeeHandler
