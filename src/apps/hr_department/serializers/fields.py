@@ -115,6 +115,11 @@ fields_frontend_to_backend = {
   "housing__housing": "housing"
 }
 
+# using for and zip
+fields_backend_to_frontend = {
+    key: value for key, value in zip(fields_backend, fields_frontend)
+}
+
 date_fields = [
     'date_of_birthday',
     'date_of_issue',

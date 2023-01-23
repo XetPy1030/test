@@ -7,7 +7,7 @@ class BaseValidatorForFields(object):
         self.validator = validator
         self.message = message
 
-    def __call__(self, form, field):
-        for field_name in self.fields:
-            if not self.validator(form.data.get(field_name)):
+    def __call__(self, fields):
+        for key in self.fields:
+            if not self.validator(fields[key]):
                 raise ValidationError(self.message)

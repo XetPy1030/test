@@ -51,7 +51,7 @@ def reformat_passport_division_code(data):
         data['passport_division_code'] = ''.join(passport_division_code)
 
 
-def reformat_fields(data):
+def reformat_frontend_fields(data):
     reformat_date_fields(data)
     reformat_passport_number(data)
     reformat_snils_number(data)
