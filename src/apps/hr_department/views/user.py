@@ -20,9 +20,18 @@ class UserDraftEmployeeHandler(APIView):
 
     @staticmethod
     def post(request):
-        serializer = UserDraftEmployeeInformationSerializer(data=request.data)
+        serializer = UserDraftEmployeeInformationSerializer(data={key: value for key, value in request.data.items()})
         if serializer.is_valid():
+            user_id = serializer.validated_data['user_id']
+
+            # Удаляем старый черновик, если он есть.
+            models = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)
+            if models.exists():
+                models.delete()
+
+            # Сохраняем/создаем черновик.
             serializer.save()
+
             return HttpResponse(status=201)
         return HttpResponse(status=400)
 
@@ -30,7 +39,7 @@ class UserDraftEmployeeHandler(APIView):
     def get(request):
         """
         Возвращает список всех полей модели DraftEmployeeInformation в виде json.
-         Получает сам создатель. Owner_id = user_id.
+        Получает сам создатель. Owner_id = user_id.
         """
 
         model = DraftEmployeeInformation.objects.all()[0]  # TODO: get the object by id from request
@@ -41,15 +50,19 @@ class UserDraftEmployeeHandler(APIView):
 class UserSaveEmployeeDraftHandler(APIView):
     """
     Сохраняет форму сотрудника в БД.
+    И удаляет черновик из БД.
     """
 
     @staticmethod
     def post(request):
-        serializer = UserSaveEmployeeInformationSerializer(data=request.data)
-        # TODO: delete the object from DB DraftEmployeeInformation
+        serializer = UserSaveEmployeeInformationSerializer(data={key: value for key, value in request.data.items()})
         # TODO: edit the object in DB EmployeeInformation
         if serializer.is_valid():
             serializer.save()
+
+            user_id = serializer.validated_data['user_id']
+            DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id).delete()
+
             return HttpResponse(status=201)
         return HttpResponse(status=400)
 

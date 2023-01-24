@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-from .env_variables import DATABASE_PASSWORD, MODE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,18 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-# Elasticsearch
-# https://django-elasticsearch-dsl.readthedocs.io/en/latest/settings.html
-
-ELASTICSEARCH_HOST = 'es01'
-ELASTICSEARCH_PORT = 9200
-
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': 'es01:9200'
-    },
-}
-
 # Application definition
 
 MAX_LENGTH_FOR_SEARCH_USERS = 10
@@ -51,8 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'django_elasticsearch_dsl',
-    'django_elasticsearch_dsl_drf',
     'apps.hr_department.apps.HrDepartmentConfig',
 ]
 
@@ -89,24 +74,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if MODE == "dev":
-    DATABASES = {
-        'default': {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "hrdb",
-            "USER": "master",
-            "PASSWORD": DATABASE_PASSWORD,
-            "HOST": "postgres",
-            "PORT": 5432,
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'localdb.sqlite3',
     }
-elif MODE == "local":
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'localdb.sqlite3',
-        }
-    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
