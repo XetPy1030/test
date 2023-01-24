@@ -32,7 +32,7 @@ def reformat_date_fields(data):
             # check format of date fields and reformat if needed
             if 'T' in data[field]:
                 data[field] = data[field].split('T')[0]
-                data[field] = data[field].replace('.', '-')
+            data[field] = data[field].replace('.', '-')
 
 
 def reformat_documents(data, re_pattern, field_name):
@@ -41,7 +41,6 @@ def reformat_documents(data, re_pattern, field_name):
         if re.fullmatch(re_pattern, data[field_name]):
             data[field_name] = data[field_name].replace(' ', '')
             data[field_name] = data[field_name].replace('-', '')
-            print(2, data[field_name])
 
 
 def reformat_passport_number(data):

@@ -29,5 +29,5 @@ if MODE != 'local':
 
 urlpatterns = [
     path('user/', include(urlpatterns_user)),
-    path('admin/', include(urlpatterns_admin)),
+    # path('admin/', include(urlpatterns_admin)),
 ]

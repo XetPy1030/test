@@ -54,3 +54,21 @@ class UserSaveEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
         validators = [
             # NotMeValidator()
         ]
+
+
+class AdminDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
+    class Meta:
+        model = DraftEmployeeInformation
+        fields = '__all__'
+        validators = [
+            # NotMeValidator()
+        ]
+
+
+class AdminSaveEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
+    class Meta:
+        model = ServerEmployeeInformation
+        fields = '__all__'
+        validators = [
+            # NotMeValidator()
+        ]

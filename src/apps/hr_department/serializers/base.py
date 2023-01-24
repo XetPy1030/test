@@ -14,16 +14,16 @@ class BaseEmployeeInformationSerializer(serializers.ModelSerializer):
 
         return super().to_internal_value(data)
 
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-
-        data = {
-            self.get_field_frontend_name(key): value for key, value in data.items()
-        }
-
-        # TODO: reformat
-
-        return data
+    # def to_representation(self, instance):
+    #     data = super().to_representation(instance)
+    #
+    #     data = {
+    #         self.get_field_frontend_name(key): value for key, value in data.items()
+    #     }
+    #
+    #     # TODO: reformat
+    #
+    #     return data
 
     @staticmethod
     def get_field_frontend_name(field):

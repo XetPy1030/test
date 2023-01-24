@@ -8,7 +8,7 @@ genders = (
 
 class FormField(models.Model):
     im_foreigner = models.BooleanField(default=None, null=True)
-    full_name = models.TextField(default=None)
+    full_name = models.TextField(default=None, null=True)
     date_of_birthday = models.DateField(default=None, null=True)
     citizenship = models.TextField(default=None, null=True)
     place_of_birthday = models.TextField(default=None, null=True)
@@ -83,7 +83,7 @@ class FormField(models.Model):
     migration_card_photo = models.ImageField(default=None, null=True)
     notice_of_registration_in_russia_photo = models.ImageField(default=None, null=True)
 
-    is_checked = models.BooleanField()
+    is_checked = models.BooleanField(default=None, null=True)
 
 
 class Meta:
