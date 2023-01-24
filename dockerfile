@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DEFAULT_TIMEOUT=100 \
     \
     POETRY_VIRTUALENVS_IN_PROJECT=true \
-    POETRY_NO_INTERACTION=1 \
+    POETRY_NO_INTERACTION=1 
 
 ENV PYTHONPATH=${PYTHONPATH}:${PWD}
 
@@ -29,4 +29,4 @@ RUN pip3 install poetry && \
 EXPOSE 8000
 
 
-ENTRYPOINT ["gunicorn", "-w", "2", "--threads", "2", "-b", "0.0.0.0:8000", "config.wsgi:application"]
+ENTRYPOINT ["gunicorn", "-w", "20", "-b", "0.0.0.0:8000", "config.wsgi:application"]
