@@ -10,8 +10,8 @@ urlpatterns_user = [
 ]
 
 urlpatterns_admin = [
-    # path('draft/', views.FormDraftHandler.as_view()),  # TODO
-    # path('save/', views.SearchHandler.as_view()),  # TODO
+    path('draft/', views.FormDraftHandler.as_view()),  # TODO
+    path('save/', views.SearchHandler.as_view()),  # TODO
 ]
 
 if MODE != 'local':
