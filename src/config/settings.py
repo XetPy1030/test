@@ -30,6 +30,9 @@ ALLOWED_HOSTS = ["*"]
 # Elasticsearch
 # https://django-elasticsearch-dsl.readthedocs.io/en/latest/settings.html
 
+ELASTICSEARCH_HOST = 'es01'
+ELASTICSEARCH_PORT = 9200
+
 ELASTICSEARCH_DSL = {
     'default': {
         'hosts': 'es01:9200'
