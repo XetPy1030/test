@@ -38,6 +38,9 @@ def reformat_date_fields(data):
 def reformat_documents(data, re_pattern, field_name):
     if field_name in data:
         # check format of document fields and reformat if needed
+        # if not None
+        if not data[field_name]:
+            return
         if re.fullmatch(re_pattern, data[field_name]):
             data[field_name] = data[field_name].replace(' ', '')
             data[field_name] = data[field_name].replace('-', '')

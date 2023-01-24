@@ -1,8 +1,13 @@
 import base64
 import json
 from io import BytesIO
+from django.test import TestCase
 
 from PIL import Image
+
+from apps.hr_department.serializers.serializers import UserDraftEmployeeInformationSerializer
+
+
 # from django.test import TestCase
 #
 # from apps.hr_department.models import DraftEmployeeInformation
@@ -34,7 +39,7 @@ def get_base64_from_image(image_path: str):
 
 
 data_for_serializer = {
-    'full_name__full_name': 'Dwayne Douglas Johnson',
+    'full_name__full_name': 'Воронин Захар Тимофеевич',
     'date_of_birthday__date': '1990-01-01T00:00:00',
     'gender__gender': 'MALE',
     'inn__number': '822199435930',
@@ -78,14 +83,14 @@ n = text_file.write(json_object)
 text_file.close()
 
 
-# class DraftEmployeeInformationTestCase(TestCase):
-#     def setUp(self):
-#         self.serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
-#         # self.test_str = get_base64_from_image('./apps/hr_department/tests/inn.jpg')
-#         self.serializer.is_valid(raise_exception=True)
+class DraftEmployeeInformationTestCase(TestCase):
+    def setUp(self):
+        self.serializer = UserDraftEmployeeInformationSerializer(data=data_for_serializer)
+        # self.test_str = get_base64_from_image('./apps/hr_department/tests/inn.jpg')
+        self.serializer.is_valid(raise_exception=True)
 #
-    # def test_serializer_is_valid(self):
-    #     self.assertTrue(self.serializer.is_valid())
+    def test_serializer_is_valid(self):
+        self.assertTrue(self.serializer.is_valid())
         # self.serializer.save()
         #
         # with open('test.data', 'w') as f:

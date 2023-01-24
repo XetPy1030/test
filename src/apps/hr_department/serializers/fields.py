@@ -156,7 +156,9 @@ fields_backend_to_frontend = {
 }
 
 date_fields = [
-    'passport_registration_date',
+    'date_of_birthday',
+    'passport_date_of_issue',
 ]
 
 # pprint(fields_frontend_to_backend)
+
