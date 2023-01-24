@@ -1,60 +1,103 @@
 from django.db import models
 
-from config.env_variables import PICTURES_FOLDER
-
-# Create your models here.
-
 genders = (
-        ("MALE", "Муж"),
-        ("FEMALE", "Жен")
-    )
+    ("MALE", "Муж"),
+    ("FEMALE", "Жен")
+)
 
 
-class EmployeeInformation(models.Model):
-    user_id = models.BigIntegerField()
-    save_as_draft = models.BooleanField()
+class FormField(models.Model):
+    im_foreigner = models.BooleanField(default=None, null=True)
+    full_name = models.TextField(default=None)
+    date_of_birthday = models.DateField(default=None, null=True)
+    citizenship = models.TextField(default=None, null=True)
+    place_of_birthday = models.TextField(default=None, null=True)
+    email = models.TextField(default=None, null=True)
+    phone_number = models.TextField(default=None, null=True)
+    address_outside_russia = models.TextField(default=None, null=True)
+    address_for_information = models.TextField(default=None, null=True)
+    married_status_relation_degree = models.TextField(default=None, null=True)
+    married_status_full_name = models.TextField(default=None, null=True)
+    married_status_date_of_birthday = models.DateField(default=None, null=True)
+    status_of_the_insured_person_status = models.TextField(default=None, null=True)
+
+    gender = models.TextField(choices=genders, default=None, null=True)
+
+    passport_series_and_number = models.TextField(default=None, null=True)
+    passport_issued_by = models.TextField(default=None, null=True)
+    passport_date_of_issue = models.DateField(default=None, null=True)
+    passport_division_code = models.TextField(default=None, null=True)
+    passport_valid_until = models.DateField(default=None, null=True)
+    passport_registered_address = models.TextField(default=None, null=True)
+    passport_registration_date = models.DateField(default=None, null=True)
+    passport_reversal_photo = models.ImageField(default=None, null=True)
+    passport_registration_photo = models.ImageField(default=None, null=True)
+
+    education_document_education_type = models.TextField(default=None, null=True)
+    education_document_educational_institution_name = models.TextField(default=None, null=True)
+    education_document_speciality = models.TextField(default=None, null=True)
+    education_document_qualification = models.TextField(default=None, null=True)
+    education_document_series_and_number = models.TextField(default=None, null=True)
+    education_document_date_of_issue = models.DateField(default=None, null=True)
+    education_document_date_range_of_education = models.TextField(default=None, null=True)
+    education_document_language_proficiency = models.TextField(default=None, null=True)
+    education_document_photo = models.TextField(default=None, null=True)
+
+    military_document_relation_to_military_duty = models.TextField(default=None, null=True)
+    military_document_rank = models.TextField(default=None, null=True)
+    military_document_composition = models.TextField(default=None, null=True)
+    military_document_stock_category = models.TextField(default=None, null=True)
+    military_document_vus = models.TextField(default=None, null=True)
+    military_document_fitness = models.BooleanField(default=None, null=True)
+    military_document_commissariat = models.TextField(default=None, null=True)
+    military_document_relation_to_military_registration = models.TextField(default=None, null=True)
+    military_document_photo = models.ImageField(default=None, null=True)
+
+    childrens_birth_certificates_full_name = models.TextField(default=None, null=True)
+    childrens_birth_certificates_date_of_birthday = models.DateField(default=None, null=True)
+    childrens_birth_certificates_relation_degree = models.TextField(default=None, null=True)
+    snils_number = models.TextField(default=None, null=True)
+    snils_photo = models.ImageField(default=None, null=True)
+    inn_number = models.TextField(default=None, null=True)
+    inn_photo = models.ImageField(default=None, null=True)
+    work_permit_series_and_number = models.TextField(default=None, null=True)
+    work_permit_date_of_issue = models.DateField(default=None, null=True)
+    work_permit_valid_until = models.DateField(default=None, null=True)
+    work_permit_issued_by = models.TextField(default=None, null=True)
+    work_permit_photo = models.ImageField(default=None, null=True)
+    residence_series_and_number = models.TextField(default=None, null=True)
+    residence_date_of_issue = models.DateField(default=None, null=True)
+    residence_valid_until = models.DateField(default=None, null=True)
+    residence_issued_by = models.TextField(default=None, null=True)
+    residence_photo = models.ImageField(default=None, null=True)
+    patent_series_and_number = models.TextField(default=None, null=True)
+    patent_date_of_issue = models.DateField(default=None, null=True)
+    patent_valid_until = models.DateField(default=None, null=True)
+    patent_issued_by = models.TextField(default=None, null=True)
+    patent_photo = models.ImageField(default=None, null=True)
+    temporary_residence_permit_series_and_number = models.TextField(default=None, null=True)
+    temporary_residence_permit_date_of_issue = models.DateField(default=None, null=True)
+    temporary_residence_permit_valid_until = models.DateField(default=None, null=True)
+    temporary_residence_permit_issued_by = models.TextField(default=None, null=True)
+    temporary_residence_permit_photo = models.ImageField(default=None, null=True)
+    migration_card_photo = models.ImageField(default=None, null=True)
+    notice_of_registration_in_russia_photo = models.ImageField(default=None, null=True)
+
+    is_approved = models.BooleanField(default=None, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class DraftEmployeeInformation(FormField):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    user_id = models.TextField()
+    owner_id = models.TextField()
 
-    full_name = models.TextField(default=None)
-    date_of_birthday = models.DateField(default=None)
 
-    gender_gender = models.TextField(choices=genders, default=None)
-    inn_number = models.IntegerField(default=None)
-    inn_photo = models.ImageField(upload_to=PICTURES_FOLDER)
-    snils_number = models.IntegerField(default=None)
-    snils_photo = models.ImageField(upload_to=PICTURES_FOLDER)
-
-    passport_series_and_number = models.IntegerField(default=None)
-    passport_issued_by = models.TextField(default=None)
-    passport_date_of_issue = models.DateField(default=None)
-    passport_division_code = models.IntegerField(default=None)
-    passport_registered_address = models.TextField(default=None)
-    passport_photo1 = models.ImageField(default=None)
-    passport_photo2 = models.ImageField(default=None)
-
-    place_of_birthday = models.TextField(default=None)
-    citizenship = models.TextField(default=None)
-    address_of_residence = models.TextField(default=None)
-    is_civil_servant = models.BooleanField(default=None)
-    date_of_vaccination = models.DateField(default=None)
-    education = models.TextField(default=None)
-
-    grade = models.IntegerField(default=None)
-    salary = models.IntegerField(default=None)
-    premium = models.IntegerField(default=None)
-    job_descriptions = models.TextField(default=None)
-    mvo = models.IntegerField(default=None)
-    quarterly_option = models.IntegerField(default=None)
-    annual_option = models.IntegerField(default=None)
-    three_year_option = models.IntegerField(default=None)
-    cash_year_content = models.IntegerField(default=None)
-    cash_month_content = models.IntegerField(default=None)
-    cashyear_without_option_content = models.IntegerField(default=None)
-    cash_month_without_option_content = models.IntegerField(default=None)
-    department = models.TextField(default=None)
-    module = models.TextField(default=None)
-    position = models.TextField(default=None)
-    housing = models.TextField(default=None)
-
+class ServerEmployeeInformation(FormField):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user_id = models.TextField()
 
