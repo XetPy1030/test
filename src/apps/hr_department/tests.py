@@ -59,24 +59,10 @@ data_for_serializer = {
 class DraftEmployeeInformationTestCase(TestCase):
     def setUp(self):
         self.serializer = UserDraftEmployeeInformationSerializer(data=data_for_serializer)
-        # self.test_str = get_base64_from_image('./apps/hr_department/tests/inn.jpg')
         self.serializer.is_valid(raise_exception=True)
 
     def test_serializer_is_valid(self):
         self.assertTrue(self.serializer.is_valid())
-        # self.serializer.save()
-        #
-        # with open('test.data', 'w') as f:
-        #     f.write(self.test_str)
-        #
-        # with open('test.data', 'r', encoding='utf-8') as f:
-        #     self.assertEqual(f.read(), self.test_str)
-        #
-        # self.assertEqual('11', '12')
-        # lion = Animal.objects.get(name="lion")
-        # cat = Animal.objects.get(name="cat")
-        # self.assertEqual(lion.speak(), 'The lion says "roar"')
-        # self.assertEqual(cat.speak(), 'The cat says "meow"')
 
 
 class RequestsTestCase(TestCase):
@@ -87,14 +73,14 @@ class RequestsTestCase(TestCase):
         response = requests.post(f'{self.url}/user/draft/', data=data_for_serializer)
         self.assertEqual(response.status_code, 201)
 
-    # def test_user_draft_get(self):
-    #     response = requests.get(f'{self.url}/user/draft/', params={'jwt_token': '123'})
-    #     self.assertEqual(response.status_code, 201)
+    def test_user_draft_get(self):
+        response = requests.get(f'{self.url}/user/draft/', params={'jwt_token': '123'})
+        self.assertEqual(response.status_code, 200)
 
     # def test_user_save_post(self):
     #     response = requests.post(f'{self.url}/user/save/', data=data_for_serializer)
     #     self.assertEqual(response.status_code, 201)
-    #
+
     # def test_user_save_get(self):
     #     response = requests.get(f'{self.url}/user/save/', params={'jwt_token': '123'})
-    #     self.assertEqual(response.status_code, 201)
+    #     self.assertEqual(response.status_code, 200)

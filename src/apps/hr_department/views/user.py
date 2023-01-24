@@ -22,6 +22,8 @@ class UserDraftEmployeeHandler(APIView):
     def post(request):
         serializer = UserDraftEmployeeInformationSerializer(data={key: value for key, value in request.data.items()})
         if serializer.is_valid():
+            user_id = serializer.validated_data['user_id']
+            models = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)
             serializer.save()
             return HttpResponse(status=201)
         return HttpResponse(status=400)
@@ -41,15 +43,19 @@ class UserDraftEmployeeHandler(APIView):
 class UserSaveEmployeeDraftHandler(APIView):
     """
     Сохраняет форму сотрудника в БД.
+    И удаляет черновик из БД.
     """
 
     @staticmethod
     def post(request):
         serializer = UserSaveEmployeeInformationSerializer(data={key: value for key, value in request.data.items()})
-        # TODO: delete the object from DB DraftEmployeeInformation
         # TODO: edit the object in DB EmployeeInformation
         if serializer.is_valid():
             serializer.save()
+
+            user_id = serializer.validated_data['user_id']
+            DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id).delete()
+
             return HttpResponse(status=201)
         return HttpResponse(status=400)
 
