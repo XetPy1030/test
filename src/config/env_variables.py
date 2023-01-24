@@ -9,3 +9,4 @@ else:
     PICTURES_FOLDER = DATA_FOLDER + "pictures"
     DATABASE_PASSWORD = os.environ.get("database_passwd")
     MODE = os.environ.get("mode")
+    print("MODE: ", MODE)
