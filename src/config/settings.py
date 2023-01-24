@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ["*"]
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'localhost:9200'
+        'hosts': 'es01:9200'
     },
 }
 
