@@ -23,8 +23,15 @@ class UserDraftEmployeeHandler(APIView):
         serializer = UserDraftEmployeeInformationSerializer(data={key: value for key, value in request.data.items()})
         if serializer.is_valid():
             user_id = serializer.validated_data['user_id']
+
+            # Удаляем старый черновик, если он есть.
             models = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)
+            if models.exists():
+                models.delete()
+
+            # Сохраняем/создаем черновик.
             serializer.save()
+
             return HttpResponse(status=201)
         return HttpResponse(status=400)
 

@@ -1,10 +1,15 @@
-from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
-from rest_framework import serializers
+from config.env_variables import MODE
+
+if MODE != 'local':
+    from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+    from apps.hr_department.documents import ServerSearchEmployeeInformationDocument
+else:
+    # base class python
+    DocumentSerializer = object
+    ServerSearchEmployeeInformationDocument = None
 
 from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
 from apps.hr_department.serializers.base import BaseEmployeeInformationSerializer
-from apps.hr_department.documents import ServerSearchEmployeeInformationDocument
-from apps.hr_department.validators.other_validators import NotMeValidator
 
 
 class DraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
@@ -26,6 +31,7 @@ class ServerSearchEmployeeInformationDocumentSerializer(DocumentSerializer):
             'full_name',
             'date_of_birthday',
         )
+
 
 class UserDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
     class Meta:
