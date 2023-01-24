@@ -29,10 +29,11 @@ RUN pip3 install poetry && \
 RUN apk del .tmp-build-deps
 
 RUN python3 manage.py migrate && \
-    yes | python3 manage.py search_index --rebuild
+
 
 
 EXPOSE 8000
 
 
 ENTRYPOINT ["gunicorn", "-w", "2", "--threads", "2", "-b", "0.0.0.0:8000", "config.wsgi:application"]
+ENTRYPOINT [ "yes", "|", "python3", "manage.py", "search_index", "--rebuild" ]
