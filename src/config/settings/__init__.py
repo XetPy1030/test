@@ -5,6 +5,8 @@ if MODE != 'local':
     from .prod import *
     INSTALLED_APPS += PROD_APPS
 
+print(INSTALLED_APPS)
+print(MODE)
 # print all environment variables
 import os
 for key, value in os.environ.items():
