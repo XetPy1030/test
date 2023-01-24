@@ -19,9 +19,6 @@ if MODE != 'local':
     search = router.register(r'search_employers',
                             views.ServerSearchEmployeeInformationDocumentViewSet,
                             basename='searversearchdocument')
-    urlpatterns_admin += [
-        path('search_server/', include(urlpatterns_search))
-    ]
 
 urlpatterns = [
     path('user/', include(urlpatterns_user)),
