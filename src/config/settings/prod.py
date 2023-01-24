@@ -22,7 +22,7 @@ DATABASES = {
         "NAME": "hrdb",
         "USER": "master",
         "PASSWORD": DATABASE_PASSWORD,
-        "HOST": "postgres",
+        "HOST": "localhost",
         "PORT": 5432,
     }
 }
