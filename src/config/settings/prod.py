@@ -11,11 +11,6 @@ ELASTICSEARCH_DSL = {
     },
 }
 
-PROD_APPS = [
-    'django_elasticsearch_dsl',
-    'django_elasticsearch_dsl_drf',
-]
-
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
