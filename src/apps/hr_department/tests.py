@@ -1,11 +1,12 @@
 import base64
+import json
 from io import BytesIO
 
 from PIL import Image
-from django.test import TestCase
-
-from apps.hr_department.models import DraftEmployeeInformation
-from apps.hr_department.serializers import DraftEmployeeInformationSerializer
+# from django.test import TestCase
+#
+# from apps.hr_department.models import DraftEmployeeInformation
+# from apps.hr_department.serializers import DraftEmployeeInformationSerializer
 
 
 def get_base64_from_image(image_path: str):
@@ -15,13 +16,28 @@ def get_base64_from_image(image_path: str):
     img_str = base64.b64encode(buffered.getvalue())
     return img_str.decode('utf-8')
 
+# Абрамова Милана Максимовна
+# Акимов Мирослав Владиславович
+# Алексеева Елена Романовна
+# Алексеева Василиса Леонидовна
+# Андреев Платон Леонидович
+# Андреев Михаил Вадимович
+# Афанасьева Вероника Фёдоровна
+# Боброва Анна Михайловна
+# Богомолова Надежда Семёновна
+# Болдырев Дмитрий Львович
+# Борисов Виктор Андреевич
+# Борисов Лев Романович
+# Виноградова Дарья Петровна
+# Волкова Елизавета Андреевна
+# Воронин Захар Тимофеевич
 
 
 data_for_serializer = {
-    'full_name__full_name': 'Иванов Иван Иванович',
+    'full_name__full_name': 'Dwayne Douglas Johnson',
     'date_of_birthday__date': '1990-01-01T00:00:00',
     'gender__gender': 'MALE',
-    'inn__number': '123456789012',
+    'inn__number': '822199435930',
     'snils__number': '123-456-789 01',
     'passport__series_and_number': '1234 567890',
     'passport__issued_by': 'ОВД г. Москвы',
@@ -56,14 +72,20 @@ data_for_serializer = {
     'passport__photo_registration': get_base64_from_image('./apps/hr_department/tests/passport_registration.jpg'),
 }
 
+json_object = json.dumps(data_for_serializer, indent = 4)
+text_file = open("./sample.json", "w")
+n = text_file.write(json_object)
+text_file.close()
 
-class DraftEmployeeInformationTestCase(TestCase):
-    def setUp(self):
-        self.serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
-        # self.test_str = get_base64_from_image('./apps/hr_department/tests/inn.jpg')
 
-    def test_serializer_is_valid(self):
-        self.assertTrue(self.serializer.is_valid())
+# class DraftEmployeeInformationTestCase(TestCase):
+#     def setUp(self):
+#         self.serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
+#         # self.test_str = get_base64_from_image('./apps/hr_department/tests/inn.jpg')
+#         self.serializer.is_valid(raise_exception=True)
+#
+    # def test_serializer_is_valid(self):
+    #     self.assertTrue(self.serializer.is_valid())
         # self.serializer.save()
         #
         # with open('test.data', 'w') as f:

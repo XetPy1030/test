@@ -20,7 +20,7 @@ def convert_base64_to_pillow_image(data):
     for field in data:
         if 'photo' in field:
             if data[field]:
-                decoded_data = base64.b64decode(data[field])
+                decoded_data = base64.b64decode(data[field].encode('utf-8'))
                 file_name = str(uuid4())[:12]
                 full_file_name = get_file_extension(file_name, decoded_data)
                 data[field] = ContentFile(decoded_data, name=full_file_name)
@@ -41,6 +41,7 @@ def reformat_documents(data, re_pattern, field_name):
         if re.fullmatch(re_pattern, data[field_name]):
             data[field_name] = data[field_name].replace(' ', '')
             data[field_name] = data[field_name].replace('-', '')
+            print(2, data[field_name])
 
 
 def reformat_passport_number(data):

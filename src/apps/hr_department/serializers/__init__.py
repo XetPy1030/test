@@ -1,1 +1,1 @@
-from .serializers import DraftEmployeeInformationSerializer
+from .serializers import ServerSearchEmployeeInformationDocumentSerializer

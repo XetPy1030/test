@@ -1,37 +1,31 @@
-from .models import ServerEmployeeInformation, DraftEmployeeInformation
-from django_elasticsearch_dsl import Document
+from .models import ServerEmployeeInformation
+from django_elasticsearch_dsl import (
+    Document,
+    fields,
+    Index,
+)
 from django_elasticsearch_dsl.registries import registry
 
-# Document class for the DraftEmployeeInformation model
-@registry.register_document
-class DraftEmployeeInformationDocument(Document):
-    class Index:
-        # Name of the Elasticsearch index
-        name = 'draftemployeeinformation'
-        # See Elasticsearch Indices API reference for available settings
-        settings = {'number_of_shards': 1,
-                    'number_of_replicas': 0}
+serversearchemployeeinformation = Index('serversearchemployeeinformation')
+serversearchemployeeinformation.settings(
+    number_of_shards=1,
+    number_of_replicas=0
+)
 
-    class Django:
-        model = DraftEmployeeInformation
-        # The fields of the model you want to be indexed in Elasticsearch
-        fields = [
-            'full_name',
-        ]
 
-# Document class for the ServerEmployeeInformation model
-@registry.register_document
-class ServerEmployeeInformationDocument(Document):
-    class Index:
-        # Name of the Elasticsearch index
-        name = 'serveremployeeinformation'
-        # See Elasticsearch Indices API reference for available settings
-        settings = {'number_of_shards': 1,
-                    'number_of_replicas': 0}
-
+#
+@serversearchemployeeinformation.doc_type
+class ServerSearchEmployeeInformationDocument(Document):
+    full_name = fields.TextField(
+        attr='full_name',
+        fields={
+            'suggest': fields.CompletionField(),
+        }
+    )
     class Django:
         model = ServerEmployeeInformation
-        # The fields of the model you want to be indexed in Elasticsearch
         fields = [
-            'full_name',
+            'id',
+            'user_id',
+            'date_of_birthday',
         ]
