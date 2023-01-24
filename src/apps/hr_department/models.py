@@ -49,18 +49,18 @@ class FormField(models.Model):
     education_document_photo = models.TextField(default=None, null=True)
 
     military_document_relation_to_military_duty = models.TextField(default=None, null=True)
-    military_document__rank = models.TextField(default=None, null=True)
+    military_document_rank = models.TextField(default=None, null=True)
     military_document_composition = models.TextField(default=None, null=True)
     military_document_stock_category = models.TextField(default=None, null=True)
     military_document_vus = models.TextField(default=None, null=True)
-    military_document__fitness = models.BooleanField(default=None, null=True)
-    military_document__commissariat = models.TextField(default=None, null=True)
-    military_document__relation_to_military_registration = models.TextField(default=None, null=True)
-    military_document__photo = models.ImageField(default=None, null=True)
+    military_document_fitness = models.BooleanField(default=None, null=True)
+    military_document_commissariat = models.TextField(default=None, null=True)
+    military_document_relation_to_military_registration = models.TextField(default=None, null=True)
+    military_document_photo = models.ImageField(default=None, null=True)
 
-    childrens_birth_certificates__full_name = models.TextField(default=None, null=True)
-    childrens_birth_certificates__date_of_birthday = models.DateField(default=None, null=True)
-    childrens_birth_certificates__relation_degree = models.TextField(default=None, null=True)
+    childrens_birth_certificates_full_name = models.TextField(default=None, null=True)
+    childrens_birth_certificates_date_of_birthday = models.DateField(default=None, null=True)
+    childrens_birth_certificates_relation_degree = models.TextField(default=None, null=True)
     snils_number = models.TextField(default=None, null=True)
     snils_photo = models.ImageField(default=None, null=True)
     inn_number = models.TextField(default=None, null=True)
@@ -90,9 +90,8 @@ class FormField(models.Model):
 
     is_checked = models.BooleanField()
 
-
-class Meta:
-    abstract = True
+    class Meta:
+        abstract = True
 
 
 class DraftEmployeeInformation(FormField):
@@ -106,3 +105,5 @@ class ServerEmployeeInformation(FormField):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user_id = models.TextField()
+
+
