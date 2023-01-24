@@ -28,7 +28,8 @@ RUN pip3 install poetry && \
 
 RUN apk del .tmp-build-deps
 
-RUN yes | python3 manage.py migrate
+RUN python3 manage.py migrate && \
+    yes | python3 manage.py search_index --rebuild
 
 
 EXPOSE 8000
