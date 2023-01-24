@@ -1,4 +1,4 @@
-from .models import ServerEmployeeInformation, DraftEmployeeInformation
+from .models import ServerEmployeeInformation
 from django_elasticsearch_dsl import (
     Document,
     fields,
@@ -28,7 +28,7 @@ class ServerSearchEmployeeInformationDocument(Document):
     )
 
     class Django:
-        model = DraftEmployeeInformation
+        model = ServerEmployeeInformation
         fields = [
             'im_foreigner',
             'user_id',

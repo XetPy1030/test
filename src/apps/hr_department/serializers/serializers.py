@@ -24,7 +24,7 @@ class DraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
 # elasticsearch-dsl-drf serializers for ServerSearchEmployeeInformationDocument
 class ServerSearchEmployeeInformationDocumentSerializer(DocumentSerializer):
     class Meta:
-        document = DraftEmployeeInformation
+        document = ServerSearchEmployeeInformationDocument
         fields = (
             'id',
             'user_id',
