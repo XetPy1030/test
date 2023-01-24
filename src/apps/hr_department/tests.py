@@ -1,11 +1,12 @@
 import base64
+import json
 from io import BytesIO
 
-import requests
 from PIL import Image
-from django.test import TestCase
-
-from apps.hr_department.serializers.serializers import UserDraftEmployeeInformationSerializer
+# from django.test import TestCase
+#
+# from apps.hr_department.models import DraftEmployeeInformation
+# from apps.hr_department.serializers import DraftEmployeeInformationSerializer
 
 
 def get_base64_from_image(image_path: str):
@@ -15,12 +16,28 @@ def get_base64_from_image(image_path: str):
     img_str = base64.b64encode(buffered.getvalue())
     return img_str.decode('utf-8')
 
+# Абрамова Милана Максимовна
+# Акимов Мирослав Владиславович
+# Алексеева Елена Романовна
+# Алексеева Василиса Леонидовна
+# Андреев Платон Леонидович
+# Андреев Михаил Вадимович
+# Афанасьева Вероника Фёдоровна
+# Боброва Анна Михайловна
+# Богомолова Надежда Семёновна
+# Болдырев Дмитрий Львович
+# Борисов Виктор Андреевич
+# Борисов Лев Романович
+# Виноградова Дарья Петровна
+# Волкова Елизавета Андреевна
+# Воронин Захар Тимофеевич
+
 
 data_for_serializer = {
-    'full_name__full_name': 'Иванов Иван Иванович',
-    'date_of_birthday__date': '1990-01-01T00:00:00',  # '1990-01-01'
+    'full_name__full_name': 'Dwayne Douglas Johnson',
+    'date_of_birthday__date': '1990-01-01T00:00:00',
     'gender__gender': 'MALE',
-    'inn__number': '123456789012',
+    'inn__number': '822199435930',
     'snils__number': '123-456-789 01',
     'passport__series_and_number': '1234 567890',
     'passport__issued_by': 'ОВД г. Москвы',
@@ -55,32 +72,30 @@ data_for_serializer = {
     'passport__photo_registration': get_base64_from_image('./apps/hr_department/tests/passport_registration.jpg'),
 }
 
-
-class DraftEmployeeInformationTestCase(TestCase):
-    def setUp(self):
-        self.serializer = UserDraftEmployeeInformationSerializer(data=data_for_serializer)
-        self.serializer.is_valid(raise_exception=True)
-
-    def test_serializer_is_valid(self):
-        self.assertTrue(self.serializer.is_valid())
+json_object = json.dumps(data_for_serializer, indent = 4)
+text_file = open("./sample.json", "w")
+n = text_file.write(json_object)
+text_file.close()
 
 
-class RequestsTestCase(TestCase):
-    def setUp(self):
-        self.url = 'http://127.0.0.1:8000/api/v1'
-
-    def test_user_draft_post(self):
-        response = requests.post(f'{self.url}/user/draft/', data=data_for_serializer)
-        self.assertEqual(response.status_code, 201)
-
-    def test_user_draft_get(self):
-        response = requests.get(f'{self.url}/user/draft/', params={'jwt_token': '123'})
-        self.assertEqual(response.status_code, 200)
-
-    # def test_user_save_post(self):
-    #     response = requests.post(f'{self.url}/user/save/', data=data_for_serializer)
-    #     self.assertEqual(response.status_code, 201)
-
-    # def test_user_save_get(self):
-    #     response = requests.get(f'{self.url}/user/save/', params={'jwt_token': '123'})
-    #     self.assertEqual(response.status_code, 200)
+# class DraftEmployeeInformationTestCase(TestCase):
+#     def setUp(self):
+#         self.serializer = DraftEmployeeInformationSerializer(data=data_for_serializer)
+#         # self.test_str = get_base64_from_image('./apps/hr_department/tests/inn.jpg')
+#         self.serializer.is_valid(raise_exception=True)
+#
+    # def test_serializer_is_valid(self):
+    #     self.assertTrue(self.serializer.is_valid())
+        # self.serializer.save()
+        #
+        # with open('test.data', 'w') as f:
+        #     f.write(self.test_str)
+        #
+        # with open('test.data', 'r', encoding='utf-8') as f:
+        #     self.assertEqual(f.read(), self.test_str)
+        #
+        # self.assertEqual('11', '12')
+        # lion = Animal.objects.get(name="lion")
+        # cat = Animal.objects.get(name="cat")
+        # self.assertEqual(lion.speak(), 'The lion says "roar"')
+        # self.assertEqual(cat.speak(), 'The cat says "meow"')

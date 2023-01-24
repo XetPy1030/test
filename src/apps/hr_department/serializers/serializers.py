@@ -1,9 +1,9 @@
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 from rest_framework import serializers
 
 from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
 from apps.hr_department.serializers.base import BaseEmployeeInformationSerializer
-from apps.hr_department.serializers.reformaters import reformat_frontend_fields
-from apps.hr_department.serializers.token_refactor import jwt_token_refactor
+from apps.hr_department.documents import ServerSearchEmployeeInformationDocument
 from apps.hr_department.validators.other_validators import NotMeValidator
 
 
@@ -16,6 +16,17 @@ class DraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
         ]
 
 
+# elasticsearch-dsl-drf serializers for ServerSearchEmployeeInformationDocument
+class ServerSearchEmployeeInformationDocumentSerializer(DocumentSerializer):
+    class Meta:
+        document = ServerSearchEmployeeInformationDocument
+        fields = (
+            'id',
+            'user_id',
+            'full_name',
+            'date_of_birthday',
+        )
+
 class UserDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
     class Meta:
         model = DraftEmployeeInformation
@@ -25,10 +36,9 @@ class UserDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
         ]
 
     def to_internal_value(self, data):
-        jwt_token_refactor(data)
+        data = super().to_internal_value(data)
         data['owner_id'] = data['user_id']
-
-        return super().to_internal_value(data)
+        return data
 
 
 class UserSaveEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
