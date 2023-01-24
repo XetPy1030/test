@@ -1,3 +1,6 @@
+
+from pprint import pprint
+
 fields_frontend = [
     'im_foreigner__im_foreigner',
     'full_name__full_name',
@@ -90,8 +93,8 @@ fields_backend = [
     'passport_date_of_issue',
     'passport_division_code',
     'passport_valid_until',
-    'passport_registered_address',
     'passport_registration_date',
+    'passport_registered_address',
     'passport_reversal_photo',
     'passport_registration_photo',
     'education_document_education_type',
@@ -104,17 +107,17 @@ fields_backend = [
     'education_document_language_proficiency',
     'education_document_photo',
     'military_document_relation_to_military_duty',
-    'military_document__rank',
+    'military_document_rank',
     'military_document_composition',
     'military_document_stock_category',
     'military_document_vus',
-    'military_document__fitness',
-    'military_document__commissariat',
-    'military_document__relation_to_military_registration',
-    'military_document__photo',
-    'childrens_birth_certificates__full_name',
-    'childrens_birth_certificates__date_of_birthday',
-    'childrens_birth_certificates__relation_degree',
+    'military_document_fitness',
+    'military_document_commissariat',
+    'military_document_relation_to_military_registration',
+    'military_document_photo',
+    'childrens_birth_certificates_full_name',
+    'childrens_birth_certificates_date_of_birthday',
+    'childrens_birth_certificates_relation_degree',
     'snils_number',
     'snils_photo',
     'inn_number',
@@ -153,5 +156,7 @@ fields_backend_to_frontend = {
 }
 
 date_fields = [
-    # TODO
+    'passport_registration_date',
 ]
+
+# pprint(fields_frontend_to_backend)

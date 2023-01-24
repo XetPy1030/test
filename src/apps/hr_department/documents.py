@@ -16,16 +16,20 @@ serversearchemployeeinformation.settings(
 #
 @serversearchemployeeinformation.doc_type
 class ServerSearchEmployeeInformationDocument(Document):
+    id = fields.IntegerField(attr='id')
     full_name = fields.TextField(
         attr='full_name',
         fields={
+            'raw': fields.TextField(analyzer='keyword'),
             'suggest': fields.CompletionField(),
         }
     )
+
+    location = fields.GeoPointField(attr='location')
+
     class Django:
         model = ServerEmployeeInformation
         fields = [
-            'id',
             'user_id',
             'date_of_birthday',
         ]

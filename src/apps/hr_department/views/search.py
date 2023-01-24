@@ -10,21 +10,12 @@ from apps.hr_department.documents import ServerSearchEmployeeInformationDocument
 from apps.hr_department.serializers.serializers import ServerSearchEmployeeInformationDocumentSerializer
 
 from django_elasticsearch_dsl_drf.constants import (
-    LOOKUP_FILTER_PREFIX,
-    LOOKUP_FILTER_WILDCARD,
-    LOOKUP_QUERY_EXCLUDE,
-    LOOKUP_QUERY_ISNULL,
-    LOOKUP_QUERY_STARTSWITH,
-    LOOKUP_QUERY_IN, SUGGESTER_COMPLETION,
+    SUGGESTER_COMPLETION, LOOKUP_FILTER_GEO_DISTANCE
 
 )
 
 from django_elasticsearch_dsl_drf.filter_backends import (
-    DefaultOrderingFilterBackend,
-    FacetedSearchFilterBackend,
-    FilteringFilterBackend,
-    SearchFilterBackend,
-    SuggesterFilterBackend, OrderingFilterBackend, CompoundSearchFilterBackend,
+    SuggesterFilterBackend
 )
 
 
@@ -32,28 +23,26 @@ class ServerSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
     document = ServerSearchEmployeeInformationDocument
     serializer_class = ServerSearchEmployeeInformationDocumentSerializer
 
-    filtering_backends = [
-        FilteringFilterBackend,
-        SearchFilterBackend,
+    filter_backends = [
         SuggesterFilterBackend,
     ]
 
-    search_fields = ("full_name",)
-
-    filter_fields = {
-        "id": {
-            "field": "id",
-            "lookups": [
-                LOOKUP_QUERY_IN,
-                ],
-            },
-        }
-
     suggester_fields = {
-        "full_name_suggest": {
-            "field": "full_name_suggest",
-            "suggesters": [
+        'full_name_suggest': {
+            'field': 'full_name.suggest',
+            'suggesters': [
                 SUGGESTER_COMPLETION,
-                ],
-        }
+            ],
+            'options': {
+                'size': 10,
+            },
+        },
+    }
+
+    geo_spatial_filter_fields = {
+        'location': {
+            'lookups': [
+                LOOKUP_FILTER_GEO_DISTANCE,
+            ],
+        },
     }

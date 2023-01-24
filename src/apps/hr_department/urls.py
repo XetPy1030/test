@@ -4,13 +4,9 @@ from rest_framework.routers import DefaultRouter
 from apps.hr_department import views
 
 router = DefaultRouter()
-books = router.register(r'employers',
+books = router.register(r'search_employers',
                         views.ServerSearchEmployeeInformationDocumentViewSet,
                         basename='searversearchdocument')
-
-urlpatterns_search = [
-    re_path(r'^', include(router.urls)),
-]
 
 urlpatterns_user = [
     path('draft/', views.UserDraftEmployeeHandler.as_view()),
@@ -20,7 +16,6 @@ urlpatterns_user = [
 urlpatterns_admin = [
     # path('draft/', views.FormDraftHandler.as_view()),  # TODO
     # path('save/', views.SearchHandler.as_view()),  # TODO
-    path('search_server/', include(urlpatterns_search)),
 ]
 
 urlpatterns = [
@@ -28,3 +23,4 @@ urlpatterns = [
     path('admin/', include(urlpatterns_admin)),
 ]
 
+urlpatterns += router.urls

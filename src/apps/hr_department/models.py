@@ -88,7 +88,7 @@ class FormField(models.Model):
     migration_card_photo = models.ImageField(default=None, null=True)
     notice_of_registration_in_russia_photo = models.ImageField(default=None, null=True)
 
-    is_checked = models.BooleanField()
+    is_approved = models.BooleanField(default=None, null=True)
 
     class Meta:
         abstract = True
@@ -105,5 +105,4 @@ class ServerEmployeeInformation(FormField):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user_id = models.TextField()
-
 
