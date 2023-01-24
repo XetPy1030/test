@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DEFAULT_TIMEOUT=100 \
     \
     POETRY_VIRTUALENVS_IN_PROJECT=true \
-    POETRY_NO_INTERACTION=1 
+    POETRY_NO_INTERACTION=1
 
 ENV PYTHONPATH=${PYTHONPATH}:${PWD}
 
@@ -26,7 +26,13 @@ RUN pip3 install poetry && \
     poetry config virtualenvs.create false && \
     poetry install --no-dev
 
+RUN apk del .tmp-build-deps
+
+RUN python3 manage.py migrate && \
+    python3 manage.py search_index --rebuild
+
+
 EXPOSE 8000
 
 
-ENTRYPOINT ["gunicorn", "-w", "2", "-b", "0.0.0.0:8000", "config.wsgi:application"]
+ENTRYPOINT ["gunicorn", "-w", "2", "--threads", "2", "-b", "0.0.0.0:8000", "config.wsgi:application"]
