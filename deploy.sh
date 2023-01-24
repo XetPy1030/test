@@ -1,6 +1,3 @@
-sh ./getenv.sh
-echo $PWD
-echo ./.env
 scp ./.env $SERVER_USER@$SERVER_IP:/home/dell-dev/
 ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY"
 ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull $TAG_COMMIT"
