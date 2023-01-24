@@ -3,4 +3,6 @@ from ..env_variables import MODE
 
 if MODE != 'local':
     from .prod import *
-    INSTALLED_APPS.extend(PROD_APPS)
+    INSTALLED_APPS += PROD_APPS
+
+print(INSTALLED_APPS)
