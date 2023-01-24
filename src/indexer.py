@@ -7,7 +7,7 @@ import pandas as pd
 import time
 
 # follow Mihai Todor's suggestion on https://stackoverflow.com/questions/48711455/create-dockerized-elasticsearch-index-using-a-python-script-running-in-docker/48712414#48712414
-es = Elasticsearch(hosts=[{"host": "localhost"}], retry_on_timeout=True)
+es = Elasticsearch(hosts=[{"host": "es01"}], retry_on_timeout=True)
 
 for _ in range(100):
     try:
