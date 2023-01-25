@@ -6,8 +6,6 @@ from django_elasticsearch_dsl import (
 )
 from django_elasticsearch_dsl.registries import registry
 
-
-
 serversearchemployeeinformation = Index('serversearchemployeeinformation')
 serversearchemployeeinformation.settings(
     number_of_shards=1,

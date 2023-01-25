@@ -1,6 +1,5 @@
 # Elasticsearch
 # https://django-elasticsearch-dsl.readthedocs.io/en/latest/settings.html
-from config.env_variables import DATABASE_PASSWORD
 
 ELASTIC_SEARCH_HOST = 'es01'
 ELASTIC_SEARCH_PORT = 9200

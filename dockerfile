@@ -27,10 +27,6 @@ RUN pip3 install poetry && \
     poetry config virtualenvs.create false && \
     poetry install --no-dev
 
-RUN apk del .tmp-build-deps
-
 EXPOSE 8000
 
-ENTRYPOINT ["python3", "manage.py", "migrate"]
-ENTRYPOINT ["gunicorn", "-w", "2", "--threads", "2", "-b", "0.0.0.0:8000", "config.wsgi:application"]
 ENTRYPOINT ["sh", "indexing.sh"]
