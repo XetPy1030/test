@@ -11,13 +11,13 @@ ELASTICSEARCH_DSL = {
     },
 }
 
-DATABASES = {
-    'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "hrdb",
-        "USER": "master",
-        "PASSWORD": "9D9*1$!kVZRo",
-        "HOST": "postgres",
-        "PORT": 5432,
-    }
-}
+# DATABASES = {
+#     'default': {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "hrdb",
+#         "USER": "master",
+#         "PASSWORD": "9D9*1$!kVZRo",
+#         "HOST": "postgres",
+#         "PORT": 5432,
+#     }
+# }
