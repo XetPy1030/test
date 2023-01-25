@@ -1,12 +1,8 @@
 from config.env_variables import MODE
 
-if MODE != 'local':
-    from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
-    from apps.hr_department.documents import ServerSearchEmployeeInformationDocument
-else:
-    # base class python
-    DocumentSerializer = object
-    ServerSearchEmployeeInformationDocument = None
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+from apps.hr_department.documents import ServerSearchEmployeeInformationDocument
+
 
 from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
 from apps.hr_department.serializers.base import BaseEmployeeInformationSerializer

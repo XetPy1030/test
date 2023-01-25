@@ -1,3 +1,6 @@
+
+from pprint import pprint
+
 fields_frontend = [
     'im_foreigner__im_foreigner',
     'full_name__full_name',
@@ -70,7 +73,6 @@ fields_frontend = [
     'migration_card__photo',
     'notice_of_registration_in_russia__photo',
 ]
-
 fields_backend = [
     'im_foreigner',
     'full_name',

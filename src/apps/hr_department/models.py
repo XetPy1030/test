@@ -85,9 +85,8 @@ class FormField(models.Model):
 
     is_checked = models.BooleanField(default=None, null=True)
 
-
-class Meta:
-    abstract = True
+    class Meta:
+        abstract = True
 
 
 class DraftEmployeeInformation(FormField):
@@ -101,3 +100,4 @@ class ServerEmployeeInformation(FormField):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user_id = models.TextField()
+

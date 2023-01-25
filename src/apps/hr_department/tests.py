@@ -1,6 +1,7 @@
 import base64
 import json
 from io import BytesIO
+from django.test import TestCase
 
 import requests
 from PIL import Image
@@ -41,7 +42,7 @@ def get_base64_from_image(image_path: str):
 
 
 data_for_serializer = {
-    'full_name__full_name': 'Dwayne Douglas Johnson',
+    'full_name__full_name': 'Богомолова Надежда Семёновна',
     'date_of_birthday__date': '1990-01-01T00:00:00',
     'gender__gender': 'MALE',
     'inn__number': '822199435930',

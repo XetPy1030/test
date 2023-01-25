@@ -26,7 +26,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
+
 # Application definition
+
 
 MAX_LENGTH_FOR_SEARCH_USERS = 10
 
@@ -39,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
     'apps.hr_department.apps.HrDepartmentConfig',
 ]
 
