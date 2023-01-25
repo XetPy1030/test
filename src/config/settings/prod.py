@@ -7,14 +7,9 @@ ELASTIC_SEARCH_PORT = 9200
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'localhost:9200'
+        'hosts': 'es01:9200'
     },
 }
-
-PROD_APPS = [
-    'django_elasticsearch_dsl',
-    'django_elasticsearch_dsl_drf',
-]
 
 DATABASES = {
     'default': {
