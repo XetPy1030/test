@@ -11,7 +11,7 @@ urlpatterns_user = [
 
 urlpatterns_admin = [
     # path('draft/', views.FormDraftHandler.as_view()),  # TODO
-    # path('save/', views.SearchHandler.as_view()),  # TODO
+    path('search/', views.SearchHandler.as_view()),  # TODO
 ]
 
 if MODE != 'local':
@@ -29,5 +29,6 @@ if MODE != 'local':
 
 urlpatterns = [
     path('user/', include(urlpatterns_user)),
-    # path('admin/', include(urlpatterns_admin)),
+    path('admin/', include(urlpatterns_admin)),
+    path('test/', views.test)
 ]

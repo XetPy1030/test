@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from rest_framework.views import APIView
+import json
 
 from apps.hr_department.models import ServerEmployeeInformation, DraftEmployeeInformation
 from apps.hr_department.serializers import ServerSearchEmployeeInformationDocumentSerializer
@@ -19,9 +20,17 @@ class SearchHandler(APIView):
     def get(request):
         full_name = request.GET.get('full_name')
         # TODO: check for admin
-        server_employee_information = search_by_full_name(full_name, max_length=MAX_LENGTH_FOR_SEARCH_USERS)
-        serializer = DraftEmployeeInformationSerializer(server_employee_information, many=True)
-        return HttpResponse(serializer.data)
+        # server_employee_information = search_by_full_name(full_name, max_length=MAX_LENGTH_FOR_SEARCH_USERS)
+        server_employee_information = ServerEmployeeInformation.objects.filter(full_name__icontains=full_name)
+        serializer = UserSaveEmployeeInformationSerializer(server_employee_information, many=True)
+
+        reformatted_data = []
+        for item in serializer.data:
+            reformatted_data.append({key: value for key, value in item.items()})
+        
+        reformatted_data = json.dumps(reformatted_data)
+
+        return HttpResponse(reformatted_data, content_type='application/json')
 
 
 class AdminDraftEmployeeHandler(APIView):
@@ -61,7 +70,8 @@ class AdminDraftEmployeeHandler(APIView):
         Возвращает список всех полей модели DraftEmployeeInformation в виде json.
         Получает сам создатель. Owner_id = user_id.
         """
-
+        owner_id = request.GET['owner_id']
+        user_id = request.GET['user_id']
         model = DraftEmployeeInformation.objects.all()[0]  # TODO: get the object by id from request
         serializer = UserDraftEmployeeInformationSerializer(model)
         return HttpResponse(serializer.data)

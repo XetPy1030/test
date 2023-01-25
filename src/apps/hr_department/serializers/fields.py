@@ -156,6 +156,15 @@ fields_backend_to_frontend = {
 date_fields = [
     'passport_registration_date',
     'date_of_birthday',
-    'passport_date_of_issue'
+    'work_permit_date_of_issue',
+    'married_status_date_of_birthday',
+    'passport_date_of_issue',
+    'patent_date_of_issue',
+    'temporary_residence_permit_date_of_issue',
+    'residence_date_of_issue',
+    'education_document_date_range_of_education'
+    'education_document_date_of_issue',
+    'childrens_birth_certificates_date_of_birthday',
+    'education_document_date_of_issue'
 ]
 

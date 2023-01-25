@@ -20,15 +20,22 @@ def convert_base64_to_pillow_image(data):
     for field in data:
         if 'photo' in field:
             if data[field]:
-                decoded_data = base64.b64decode(data[field].encode('utf-8'))
-                file_name = str(uuid4())[:12]
-                full_file_name = get_file_extension(file_name, decoded_data)
-                data[field] = ContentFile(decoded_data, name=full_file_name)
+                try:
+                    data[field] = data[field].split(',')[1]
+                    decoded_data = base64.b64decode(data[field].encode('utf-8'))
+                    file_name = str(uuid4())[:12]
+                    full_file_name = get_file_extension(file_name, decoded_data)
+                    data[field] = ContentFile(decoded_data, name=full_file_name)
+                except Exception as e:
+                    # print(e)
+                    data[field] = None
 
 
 def reformat_date_fields(data):
     for field in date_fields:
         if field in data:
+            if not data[field]:
+                return
             # check format of date fields and reformat if needed
             if 'T' in data[field]:
                 data[field] = data[field].split('T')[0]
@@ -37,6 +44,8 @@ def reformat_date_fields(data):
 
 def reformat_documents(data, re_pattern, field_name):
     if field_name in data:
+        if not data[field_name]:
+            return
         # check format of document fields and reformat if needed
         if re.fullmatch(re_pattern, data[field_name]):
             data[field_name] = data[field_name].replace(' ', '')
