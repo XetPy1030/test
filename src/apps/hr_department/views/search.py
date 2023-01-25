@@ -29,6 +29,10 @@ class ServerSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
         SuggesterFilterBackend,
     ]
 
+    search_fields = [
+        'id',
+    ]
+
     filtering_fields = {
         'id': {
             'field': 'id',
