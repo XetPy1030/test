@@ -41,7 +41,7 @@ class FormField(models.Model):
     education_document_date_of_issue = models.DateField(default=None, null=True)
     education_document_date_range_of_education = models.TextField(default=None, null=True)
     education_document_language_proficiency = models.TextField(default=None, null=True)
-    education_document_photo = models.TextField(default=None, null=True)
+    education_document_photo = models.ImageField(default=None, null=True)
 
     military_document_relation_to_military_duty = models.TextField(default=None, null=True)
     military_document_rank = models.TextField(default=None, null=True)

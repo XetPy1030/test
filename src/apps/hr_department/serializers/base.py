@@ -35,7 +35,7 @@ class BaseEmployeeInformationSerializer(serializers.ModelSerializer):
                     img.save(buffered, format="JPEG")
                     img_str = base64.b64encode(buffered.getvalue())
                     img_str = img_str.decode('utf-8')
-                    data[image] = img_str
+                    data[image] = "data:image/jpeg;base64,"+img_str
     
         # TODO: reformat
     
