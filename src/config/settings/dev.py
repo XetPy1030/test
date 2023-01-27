@@ -1,5 +1,6 @@
-# Elasticsearch
-# https://django-elasticsearch-dsl.readthedocs.io/en/latest/settings.html
+DEBUG = True
+
+ALLOWED_HOSTS = ["*"]
 
 ELASTIC_SEARCH_HOST = 'es01'
 ELASTIC_SEARCH_PORT = 9200
@@ -20,3 +21,6 @@ DATABASES = {
         "PORT": 5432,
     }
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
+

@@ -1,14 +1,14 @@
 from django.db import models
 
 genders = (
-    ("MALE", "Муж"),
-    ("FEMALE", "Жен")
+    ("male", "Муж"),
+    ("female", "Жен")
 )
 
 
 class FormField(models.Model):
     im_foreigner = models.BooleanField(default=None, null=True)
-    full_name = models.TextField(default=None)
+    full_name = models.TextField(default=None, null=True)
     date_of_birthday = models.DateField(default=None, null=True)
     citizenship = models.TextField(default=None, null=True)
     place_of_birthday = models.TextField(default=None, null=True)
@@ -41,7 +41,7 @@ class FormField(models.Model):
     education_document_date_of_issue = models.DateField(default=None, null=True)
     education_document_date_range_of_education = models.TextField(default=None, null=True)
     education_document_language_proficiency = models.TextField(default=None, null=True)
-    education_document_photo = models.TextField(default=None, null=True)
+    education_document_photo = models.ImageField(default=None, null=True)
 
     military_document_relation_to_military_duty = models.TextField(default=None, null=True)
     military_document_rank = models.TextField(default=None, null=True)
@@ -83,7 +83,7 @@ class FormField(models.Model):
     migration_card_photo = models.ImageField(default=None, null=True)
     notice_of_registration_in_russia_photo = models.ImageField(default=None, null=True)
 
-    is_approved = models.BooleanField(default=None, null=True)
+    is_checked = models.BooleanField(default=None, null=True)
 
     class Meta:
         abstract = True

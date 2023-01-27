@@ -1,13 +1,3 @@
-from config.env_variables import MODE
-
-if MODE != 'local':
-    from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
-    from apps.hr_department.documents import ServerSearchEmployeeInformationDocument
-else:
-    # base class python
-    DocumentSerializer = object
-    ServerSearchEmployeeInformationDocument = None
-
 from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
 from apps.hr_department.serializers.base import BaseEmployeeInformationSerializer
 
@@ -19,18 +9,6 @@ class DraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
         validators = [
             # JwtTokenValidator(),
         ]
-
-
-# elasticsearch-dsl-drf serializers for ServerSearchEmployeeInformationDocument
-class ServerSearchEmployeeInformationDocumentSerializer(DocumentSerializer):
-    class Meta:
-        document = ServerSearchEmployeeInformationDocument
-        fields = (
-            'id',
-            'user_id',
-            'full_name',
-            'date_of_birthday',
-        )
 
 
 class UserDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
@@ -48,6 +26,24 @@ class UserDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
 
 
 class UserSaveEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
+    class Meta:
+        model = ServerEmployeeInformation
+        fields = '__all__'
+        validators = [
+            # NotMeValidator()
+        ]
+
+
+class AdminDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
+    class Meta:
+        model = DraftEmployeeInformation
+        fields = '__all__'
+        validators = [
+            # NotMeValidator()
+        ]
+
+
+class AdminSaveEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
     class Meta:
         model = ServerEmployeeInformation
         fields = '__all__'
