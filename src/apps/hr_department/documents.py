@@ -79,5 +79,5 @@ class ServerSearchEmployeeInformationDocument(Document):
             'temporary_residence_permit_date_of_issue',
             'temporary_residence_permit_valid_until',
             'temporary_residence_permit_issued_by',
-            'is_approved',
+            'is_checked',
         ]
