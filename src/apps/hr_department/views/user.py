@@ -61,14 +61,18 @@ class UserDraftEmployeeHandler(APIView):
         return HttpResponse(json_data)
 
 
-class UserSaveEmployeeDraftHandler(APIView):
+class UserSaveEmployeeHandler(APIView):
     """
     Сохраняет форму сотрудника в БД.
     И удаляет черновик из БД.
     """
     @staticmethod
     def post(request):
+        print(11)
+        print(request.data)
         clone = request.data.copy()
+        if 'user_id' not in clone:
+            return HttpResponse({'error': 'user_id not found in params request'}, status=401)
         clone['owner_id'] = clone['user_id']
         serializer = UserSaveEmployeeInformationSerializer(data=clone)
         if serializer.is_valid():
@@ -86,7 +90,7 @@ class UserSaveEmployeeDraftHandler(APIView):
             return HttpResponse(status=201)
 
         print(serializer.errors)
-        return HttpResponse(status=400)
+        return HttpResponse({'error': 'data in request not valid'}, status=402)
 
     @staticmethod
     def get(request):

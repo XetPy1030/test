@@ -6,7 +6,6 @@ from apps.hr_department.models import ServerEmployeeInformation, DraftEmployeeIn
 from apps.hr_department.serializers import ServerSearchEmployeeInformationDocumentSerializer
 from apps.hr_department.serializers.serializers import DraftEmployeeInformationSerializer, \
     UserSaveEmployeeInformationSerializer, UserDraftEmployeeInformationSerializer
-from apps.hr_department.utils.search_engine import search_by_full_name
 from config.settings import MAX_LENGTH_FOR_SEARCH_USERS
 
 

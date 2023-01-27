@@ -6,7 +6,7 @@ from config.env_variables import MODE
 
 urlpatterns_user = [
     path('draft/', views.UserDraftEmployeeHandler.as_view()),
-    path('save/', views.UserSaveEmployeeDraftHandler.as_view()),
+    path('save/', views.UserSaveEmployeeHandler.as_view()),
 ]
 
 urlpatterns_admin = [
