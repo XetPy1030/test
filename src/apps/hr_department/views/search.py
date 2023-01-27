@@ -1,7 +1,7 @@
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
 from apps.hr_department.documents import ServerSearchEmployeeInformationDocument
-from apps.hr_department.serializers.serializers import ServerSearchEmployeeInformationDocumentSerializer
+from apps.hr_department.serializers.document_serializers import ServerSearchEmployeeInformationDocumentSerializer
 
 from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_COMPLETION, LOOKUP_FILTER_GEO_DISTANCE, LOOKUP_FILTER_RANGE, LOOKUP_QUERY_IN, LOOKUP_QUERY_GT,

@@ -1,9 +1,3 @@
-from config.env_variables import MODE
-
-from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
-from apps.hr_department.documents import ServerSearchEmployeeInformationDocument
-
-
 from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
 from apps.hr_department.serializers.base import BaseEmployeeInformationSerializer
 
@@ -15,18 +9,6 @@ class DraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
         validators = [
             # JwtTokenValidator(),
         ]
-
-
-# elasticsearch-dsl-drf serializers for ServerSearchEmployeeInformationDocument
-class ServerSearchEmployeeInformationDocumentSerializer(DocumentSerializer):
-    class Meta:
-        document = ServerSearchEmployeeInformationDocument
-        fields = (
-            'id',
-            'user_id',
-            'full_name',
-            'date_of_birthday',
-        )
 
 
 class UserDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):

@@ -3,10 +3,8 @@ from rest_framework.views import APIView
 import json
 
 from apps.hr_department.models import ServerEmployeeInformation, DraftEmployeeInformation
-from apps.hr_department.serializers import ServerSearchEmployeeInformationDocumentSerializer
-from apps.hr_department.serializers.serializers import DraftEmployeeInformationSerializer, \
-    UserSaveEmployeeInformationSerializer, UserDraftEmployeeInformationSerializer
-from config.settings import MAX_LENGTH_FOR_SEARCH_USERS
+from apps.hr_department.serializers.serializers import UserSaveEmployeeInformationSerializer, \
+    UserDraftEmployeeInformationSerializer
 
 
 class SearchHandler(APIView):
