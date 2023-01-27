@@ -262,3 +262,5 @@ poetry.toml
 
 /src/.idea/
 /src/pictures/
+/poetry.lock
+/tests/temp/

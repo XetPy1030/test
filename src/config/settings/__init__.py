@@ -1,6 +1,11 @@
 from .base import *
 from ..env_variables import MODE
 
-if MODE != 'local':
+if MODE == 'local':
+    from .local import *
+
+elif MODE == 'production':
     from .prod import *
-    INSTALLED_APPS.extend(PROD_APPS)
+
+elif MODE == 'dev':
+    from .dev import *
