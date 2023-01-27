@@ -16,19 +16,16 @@ urlpatterns_admin = [
 
 if MODE != 'local':
     router = DefaultRouter()
-    books = router.register(r'employers',
+    search = router.register(r'search_employers',
                             views.ServerSearchEmployeeInformationDocumentViewSet,
                             basename='searversearchdocument')
-
-    urlpatterns_search = [
-        re_path(r'^', include(router.urls)),
-    ]
-    urlpatterns_admin += [
-        path('search_server/', include(urlpatterns_search))
-    ]
 
 urlpatterns = [
     path('user/', include(urlpatterns_user)),
     path('admin/', include(urlpatterns_admin)),
     path('test/', views.test)
 ]
+
+if MODE != 'local':
+    urlpatterns += router.urls
+
