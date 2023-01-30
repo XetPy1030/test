@@ -7,7 +7,8 @@ ELASTIC_SEARCH_PORT = 9200
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'es01:9200'
+        'hosts': 'es01:9200',
+        'timeout': 60,
     },
 }
 

@@ -1,7 +1,7 @@
 FROM python:3.10.8-alpine3.16
 
 ENV PYTHONUNBUFFERED=1 \
-#    mode=production \
+    mode=production \
     PYTHONDONTWRITEBYTECODE=1 \
     \
     PIP_NO_CACHE_DIR=off \
