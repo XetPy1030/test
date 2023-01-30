@@ -2,6 +2,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+ELASTIC_SEARCH_HOST = 'es01'
+ELASTIC_SEARCH_PORT = 9200
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -14,7 +17,7 @@ DATABASES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'localhost:9200'
+        'hosts': 'es01:9200'
     },
 }
 
