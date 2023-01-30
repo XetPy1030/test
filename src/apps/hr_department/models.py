@@ -84,6 +84,7 @@ class FormField(models.Model):
     notice_of_registration_in_russia_photo = models.ImageField(default=None, null=True)
 
     is_checked = models.BooleanField(default=None, null=True)
+    is_editable = models.BooleanField(default=None, null=True)
 
     class Meta:
         abstract = True
