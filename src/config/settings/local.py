@@ -12,10 +12,4 @@ DATABASES = {
     }
 }
 
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': 'localhost:9200'
-    },
-}
-
 CORS_ORIGIN_ALLOW_ALL = True
