@@ -12,6 +12,8 @@ ELASTICSEARCH_DSL = {
     },
 }
 
+
+
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
@@ -25,3 +27,7 @@ DATABASES = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+APPS = [
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
+]

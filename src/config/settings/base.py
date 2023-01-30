@@ -32,8 +32,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'django_elasticsearch_dsl',
-    'django_elasticsearch_dsl_drf',
     'apps.hr_department.apps.HrDepartmentConfig',
 ]
 
