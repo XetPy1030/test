@@ -7,9 +7,12 @@ ELASTIC_SEARCH_PORT = 9200
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'es01:9200'
+        'hosts': 'es01:9200',
+        'timeout': 60,
     },
 }
+
+
 
 DATABASES = {
     'default': {
@@ -24,3 +27,7 @@ DATABASES = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+APPS = [
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
+]
