@@ -79,9 +79,9 @@ class AdminDraftHandler(APIView):
         owner_id = request.GET['owner_id']
         user_id = request.GET['user_id']
 
-        model = DraftEmployeeInformation.objects.get(owner_id=owner_id, user_id=user_id)
-
-        if not model.exists():
+        try:
+            model = DraftEmployeeInformation.objects.get(owner_id=owner_id, user_id=user_id)
+        except DraftEmployeeInformation.DoesNotExist:
             return HttpResponse(status=404)
 
         serializer = UserDraftSerializer(model)
@@ -133,9 +133,9 @@ class AdminSaveHandler(APIView):
         owner_id = request.GET['owner_id']
         user_id = request.GET['user_id']
 
-        model = ServerEmployeeInformation.objects.get(owner_id=owner_id, user_id=user_id)
-
-        if not model.exists():
+        try:
+            model = ServerEmployeeInformation.objects.get(owner_id=owner_id, user_id=user_id)
+        except ServerEmployeeInformation.DoesNotExist:
             return HttpResponse(status=404)
 
         serializer = UserSaveSerializer(model)

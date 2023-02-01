@@ -48,15 +48,18 @@ class UserDraftHandler(APIView):
         Возвращает список всех полей модели DraftEmployeeInformation в виде json.
         Получает сам создатель.
         """
+        if 'user_id' not in request.GET:
+            return HttpResponse({'error': 'user_id not found in params request'}, status=401)
+
         user_id = request.GET.get('user_id')
 
-        model = DraftEmployeeInformation.objects.filter(user_id=user_id,
-                                                        owner_id=user_id)  # TODO: get the object by id from request
-
-        if not model.exists():
+        try:
+            model = DraftEmployeeInformation.objects.get(user_id=user_id,
+                                                         owner_id=user_id)
+        except DraftEmployeeInformation.DoesNotExist:
             return HttpResponse(status=404)
 
-        serializer = UserDraftSerializer(model, many=True)
+        serializer = UserDraftSerializer(model)
 
         json_data = serializer.data
         json_data = json.dumps(json_data)
@@ -82,9 +85,12 @@ class UserSaveHandler(APIView):
         if serializer.is_valid():
             user_id = serializer.validated_data['user_id']
 
-            user = ServerEmployeeInformation.objects.get(user_id=user_id, owner_id=user_id)
-            if not user.is_editable and False:
-                return HttpResponse({'error': 'user is not editable'}, status=403)
+            try:
+                user = ServerEmployeeInformation.objects.get(user_id=user_id, owner_id=user_id)
+                if not user.is_editable and False:
+                    return HttpResponse({'error': 'user is not editable'}, status=403)
+            except ServerEmployeeInformation.DoesNotExist:
+                pass
 
             users = ServerEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)
             drafts = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)
@@ -104,8 +110,16 @@ class UserSaveHandler(APIView):
         """
         Возвращает список всех полей модели DraftEmployeeInformation в виде json.
         """
+        if 'user_id' not in request.GET:
+            return HttpResponse({'error': 'user_id not found in params request'}, status=401)
+
         user_id = request.GET.get('user_id')
-        model = ServerEmployeeInformation.objects.get(user_id=user_id, owner_id=user_id)  # TODO: get the object by id from request
+
+        try:
+            model = ServerEmployeeInformation.objects.get(user_id=user_id,
+                                                          owner_id=user_id)
+        except ServerEmployeeInformation.DoesNotExist:
+            return HttpResponse(status=404)
 
         if not model.exists():
             return HttpResponse(status=404)
