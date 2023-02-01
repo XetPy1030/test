@@ -79,12 +79,12 @@ class AdminDraftHandler(APIView):
         owner_id = request.GET['owner_id']
         user_id = request.GET['user_id']
 
-        model = DraftEmployeeInformation.objects.filter(owner_id=owner_id, user_id=user_id)
+        model = DraftEmployeeInformation.objects.get(owner_id=owner_id, user_id=user_id)
 
         if not model.exists():
             return HttpResponse(status=404)
 
-        serializer = UserDraftSerializer(model, many=True)
+        serializer = UserDraftSerializer(model)
 
         data = serializer.data
         data = json.dumps(data)
@@ -133,12 +133,12 @@ class AdminSaveHandler(APIView):
         owner_id = request.GET['owner_id']
         user_id = request.GET['user_id']
 
-        model = ServerEmployeeInformation.objects.filter(owner_id=owner_id, user_id=user_id)
+        model = ServerEmployeeInformation.objects.get(owner_id=owner_id, user_id=user_id)
 
         if not model.exists():
             return HttpResponse(status=404)
 
-        serializer = UserSaveSerializer(model, many=True)
+        serializer = UserSaveSerializer(model)
 
         data = serializer.data
         data = json.dumps(data)
