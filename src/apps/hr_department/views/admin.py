@@ -111,7 +111,7 @@ class AdminSaveHandler(APIView):
             models = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=owner_id)
             if models.exists():
                 models.delete()
-            models = ServerEmployeeInformation.objects.filter(user_id=user_id, owner_id=owner_id)
+            models = ServerEmployeeInformation.objects.filter(user_id=user_id)
             if models.exists():
                 models.delete()
 
@@ -134,7 +134,7 @@ class AdminSaveHandler(APIView):
         user_id = request.GET['user_id']
 
         try:
-            model = ServerEmployeeInformation.objects.get(owner_id=owner_id, user_id=user_id)
+            model = ServerEmployeeInformation.objects.get(user_id=user_id)
         except ServerEmployeeInformation.DoesNotExist:
             return HttpResponse(status=404)
 
