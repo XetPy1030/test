@@ -1,17 +1,8 @@
 from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
-from apps.hr_department.serializers.base import BaseEmployeeInformationSerializer
+from apps.hr_department.serializers.base import BaseSerializer
 
 
-class DraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
-    class Meta:
-        model = DraftEmployeeInformation
-        fields = '__all__'
-        validators = [
-            # JwtTokenValidator(),
-        ]
-
-
-class UserDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
+class UserDraftSerializer(BaseSerializer):
     class Meta:
         model = DraftEmployeeInformation
         fields = '__all__'
@@ -25,7 +16,7 @@ class UserDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
         return data
 
 
-class UserSaveEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
+class UserSaveSerializer(BaseSerializer):
     class Meta:
         model = ServerEmployeeInformation
         fields = '__all__'
@@ -34,7 +25,7 @@ class UserSaveEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
         ]
 
 
-class AdminDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
+class AdminDraftSerializer(BaseSerializer):
     class Meta:
         model = DraftEmployeeInformation
         fields = '__all__'
@@ -43,7 +34,7 @@ class AdminDraftEmployeeInformationSerializer(BaseEmployeeInformationSerializer)
         ]
 
 
-class AdminSaveEmployeeInformationSerializer(BaseEmployeeInformationSerializer):
+class AdminSaveSerializer(BaseSerializer):
     class Meta:
         model = ServerEmployeeInformation
         fields = '__all__'

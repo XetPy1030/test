@@ -9,7 +9,7 @@ from django.test import TestCase
 
 from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
 from apps.hr_department.serializers.serializers import DraftEmployeeInformationSerializer, \
-    UserSaveEmployeeInformationSerializer
+    UserSaveSerializer
 
 
 #
@@ -116,7 +116,7 @@ class DraftEmployeeInformationTestCase(TestCase):
         clone_data_for_serializer = data_for_serializer.copy()
         clone_data_for_serializer['user_id'] = 1
         clone_data_for_serializer['owner_id'] = 1
-        serializer = UserSaveEmployeeInformationSerializer(data=clone_data_for_serializer)
+        serializer = UserSaveSerializer(data=clone_data_for_serializer)
         self.assertTrue(serializer.is_valid())
         serializer.save()
         self.assertEqual(ServerEmployeeInformation.objects.count(), 1)
@@ -124,7 +124,11 @@ class DraftEmployeeInformationTestCase(TestCase):
 
     def testUserSaveWithoutUserId(self):
         clone_data_for_serializer = data_for_serializer.copy()
-        serializer = UserSaveEmployeeInformationSerializer(data=clone_data_for_serializer)
+        serializer = UserSaveSerializer(data=clone_data_for_serializer)
         self.assertFalse(serializer.is_valid())
         self.assertEqual(serializer.errors, {'user_id': ['This field is required.']})
 
+
+def file_to_json(file):
+    with open(file, 'r') as f:
+        return json.load(f)

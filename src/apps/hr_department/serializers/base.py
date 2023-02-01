@@ -8,7 +8,7 @@ from apps.hr_department.serializers.utils.fields import fields_frontend_to_backe
 from apps.hr_department.serializers.utils.reformaters import reformat_frontend_fields
 
 
-class BaseEmployeeInformationSerializer(serializers.ModelSerializer):
+class BaseSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
         data = {
             self.get_field_backend_name(key): value for key, value in data.items()
@@ -37,7 +37,8 @@ class BaseEmployeeInformationSerializer(serializers.ModelSerializer):
                     img_str = base64.b64encode(buffered.getvalue())
                     img_str = img_str.decode('utf-8')
                     # data[image] = f'<img src="data:image/jpeg;base64,{img_str}">'
-                    data[image] = f'data:image/jpeg;base64,{img_str}'
+                    # data[image] = f'data:image/jpeg;base64,{img_str}'
+                    # data[image] = (data[image], open("."+data[image], 'rb').read(), 'image/jpeg')
 
         # TODO: reformat
     
