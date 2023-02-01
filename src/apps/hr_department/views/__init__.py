@@ -2,7 +2,7 @@ import base64
 from io import BytesIO
 
 from apps.hr_department.views.admin import SearchHandler
-from apps.hr_department.views.user import UserSaveEmployeeHandler, UserDraftEmployeeHandler
+from apps.hr_department.views.user import UserSaveHandler, UserDraftHandler
 from config.env_variables import MODE
 
 if MODE != 'local':

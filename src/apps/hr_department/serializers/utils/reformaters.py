@@ -27,7 +27,6 @@ def convert_base64_to_pillow_image(data):
                     full_file_name = get_file_extension(file_name, decoded_data)
                     data[field] = ContentFile(decoded_data, name=full_file_name)
                 except Exception as e:
-                    # print(e)
                     data[field] = None
 
 
@@ -72,5 +71,5 @@ def reformat_frontend_fields(data):
     reformat_passport_number(data)
     reformat_snils_number(data)
     reformat_passport_division_code(data)
-    convert_base64_to_pillow_image(data)
+    # convert_base64_to_pillow_image(data)
     jwt_token_refactor(data)

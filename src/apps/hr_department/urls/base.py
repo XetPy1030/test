@@ -2,8 +2,8 @@ from django.urls import path, include
 from apps.hr_department import views
 
 urlpatterns_user = [
-    path('draft/', views.UserDraftEmployeeHandler.as_view()),
-    path('save/', views.UserSaveEmployeeHandler.as_view()),
+    path('draft/', views.UserDraftHandler.as_view()),
+    path('save/', views.UserSaveHandler.as_view()),
 ]
 
 urlpatterns_admin = [
