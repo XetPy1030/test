@@ -82,14 +82,16 @@ class UserSaveHandler(APIView):
         if serializer.is_valid():
             user_id = serializer.validated_data['user_id']
 
-            draft = DraftEmployeeInformation.objects.filter(user_id=user_id)
-            user = ServerEmployeeInformation.objects.filter(user_id=user_id)
-            if draft.exists():
-                draft.delete()
-            if user.exists():
-                if not user.is_editable:
-                    return HttpResponse({'error': 'user is not editable'}, status=403)
-                user.delete()
+            user = ServerEmployeeInformation.objects.get(user_id=user_id, owner_id=user_id)
+            if not user.is_editable and False:
+                return HttpResponse({'error': 'user is not editable'}, status=403)
+
+            users = ServerEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)
+            drafts = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)
+            if drafts.exists():
+                drafts.delete()
+            if users.exists():
+                users.delete()
 
             serializer.validated_data['is_editable'] = False
             serializer.save()
@@ -103,12 +105,12 @@ class UserSaveHandler(APIView):
         Возвращает список всех полей модели DraftEmployeeInformation в виде json.
         """
         user_id = request.GET.get('user_id')
-        model = ServerEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)  # TODO: get the object by id from request
+        model = ServerEmployeeInformation.objects.get(user_id=user_id, owner_id=user_id)  # TODO: get the object by id from request
 
         if not model.exists():
             return HttpResponse(status=404)
 
-        serializer = UserSaveSerializer(model, many=True)
+        serializer = UserSaveSerializer(model)
 
         json_data = serializer.data
         self.clean_none_values(json_data)
