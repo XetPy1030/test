@@ -23,7 +23,14 @@ class UserDraftHandler(APIView):
     @staticmethod
     def post(request):
         clone = request.data.copy()
+
+        if 'user_id' not in clone and 'user_id' not in request.GET:
+            return HttpResponse({'error': 'user_id not found in params request'}, status=401)
+
+        user_id = clone.get('user_id', request.GET.get('user_id'))
+        clone['user_id'] = user_id
         clone['owner_id'] = clone['user_id']
+
         serializer = UserDraftSerializer(data=clone)
         if serializer.is_valid():
             user_id = serializer.validated_data['user_id']
@@ -76,13 +83,14 @@ class UserSaveHandler(APIView):
     def post(request):
         clone = request.data.copy()
 
-        if 'user_id' not in clone:
+        if 'user_id' not in clone and 'user_id' not in request.GET:
             return HttpResponse({'error': 'user_id not found in params request'}, status=401)
+
+        user_id = clone.get('user_id', request.GET.get('user_id'))
+        clone['user_id'] = user_id
 
         serializer = UserSaveSerializer(data=clone)
         if serializer.is_valid():
-            user_id = serializer.validated_data['user_id']
-
             try:
                 user = ServerEmployeeInformation.objects.get(user_id=user_id)
                 if not user.is_editable and False:
@@ -102,7 +110,7 @@ class UserSaveHandler(APIView):
 
             return HttpResponse(status=201)
 
-        return HttpResponse({'error': 'data in request not valid', 'errors': serializer.errors}, status=400)
+        return HttpResponse(json.dumps({'error': 'data in request not valid', 'errors': serializer.errors}), status=400, content_type='application/json')
 
     def get(self, request):
         """
@@ -116,9 +124,6 @@ class UserSaveHandler(APIView):
         try:
             model = ServerEmployeeInformation.objects.get(user_id=user_id)
         except ServerEmployeeInformation.DoesNotExist:
-            return HttpResponse(status=404)
-
-        if not model.exists():
             return HttpResponse(status=404)
 
         serializer = UserSaveSerializer(model)
@@ -142,7 +147,6 @@ class UserSaveHandler(APIView):
 
     @staticmethod
     def clean_none_values(data):
-        for i in range(len(data)):
-            for key in list(data[i].keys()):
-                if data[i][key] is None:
-                    del data[i][key]
+        for key in list(data.keys()):
+            if data[key] is None:
+                del data[key]
