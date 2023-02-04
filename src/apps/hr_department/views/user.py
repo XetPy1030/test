@@ -55,6 +55,15 @@ class UserDraftHandler(APIView):
         Возвращает список всех полей модели DraftEmployeeInformation в виде json.
         Получает сам создатель.
         """
+        if 'all' in request.GET:
+            if request.GET.get('all') != 'true':
+                return HttpResponse({'error': 'all must be true'}, status=401)
+            models = DraftEmployeeInformation.objects.all()
+            serializer = UserDraftSerializer(models, many=True)
+            json_data = serializer.data
+            json_data = json.dumps(json_data)
+            return HttpResponse(json_data, content_type='application/json')
+
         if 'user_id' not in request.GET:
             return HttpResponse({'error': 'user_id not found in params request'}, status=401)
 
@@ -116,6 +125,16 @@ class UserSaveHandler(APIView):
         """
         Возвращает список всех полей модели DraftEmployeeInformation в виде json.
         """
+        if 'all' in request.GET:
+            if request.GET.get('all') != 'true':
+                return HttpResponse({'error': 'all must be true'}, status=401)
+            models = ServerEmployeeInformation.objects.all()
+            serializer = UserSaveSerializer(models, many=True)
+            json_data = serializer.data
+            self.clean_none_values(json_data)
+            json_data = json.dumps(json_data)
+            return HttpResponse(json_data, content_type='application/json')
+
         if 'user_id' not in request.GET:
             return HttpResponse({'error': 'user_id not found in params request'}, status=401)
 
