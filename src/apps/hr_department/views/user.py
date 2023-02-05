@@ -131,7 +131,6 @@ class UserSaveHandler(APIView):
             models = ServerEmployeeInformation.objects.all()
             serializer = UserSaveSerializer(models, many=True)
             json_data = serializer.data
-            self.clean_none_values(json_data)
             json_data = json.dumps(json_data)
             return HttpResponse(json_data, content_type='application/json')
 
@@ -148,7 +147,6 @@ class UserSaveHandler(APIView):
         serializer = UserSaveSerializer(model)
 
         json_data = serializer.data
-        self.clean_none_values(json_data)
 
         type_of_send = 'json'
         return self.send_data(json_data, type_of_send)
