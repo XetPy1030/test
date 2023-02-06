@@ -6,6 +6,9 @@ from urllib3 import encode_multipart_formdata
 from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
 from apps.hr_department.serializers.serializers import UserDraftSerializer, \
     UserSaveSerializer
+from apps.hr_department.views.decorators import add_user_id
+from apps.hr_department.views.errors import RequiredError, UserIsNotEditable
+from apps.hr_department.views.utils import get_user_id, delete_drafts, delete_server_saves, user_is_editable
 
 
 class UserDraftHandler(APIView):
@@ -21,33 +24,22 @@ class UserDraftHandler(APIView):
     """
 
     @staticmethod
-    def post(request):
-        clone = request.data.copy()
-
-        if 'user_id' not in clone and 'user_id' not in request.GET:
+    @add_user_id
+    def post(request, user_id):
+        if not user_id:
             return HttpResponse({'error': 'user_id not found in params request'}, status=401)
 
-        user_id = clone.get('user_id', request.GET.get('user_id'))
-        clone['user_id'] = user_id
-        clone['owner_id'] = clone['user_id']
+        request.clone_data['owner_id'] = request.clone_data['user_id']
 
-        serializer = UserDraftSerializer(data=clone)
-        if serializer.is_valid():
-            user_id = serializer.validated_data['user_id']
+        serializer = UserDraftSerializer(data=request.clone_data)
 
-            # Удаляем старый черновик, если он есть.
-            models = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)
-            if models.exists():
-                models.delete()
+        if not serializer.is_valid():
+            return HttpResponse({'error': 'data in request not valid', 'errors': serializer.errors}, status=400)
 
-            # Сохраняем/создаем черновик.
-            serializer.save()
+        delete_drafts(user_id)
+        serializer.save()
 
-            json_data = serializer.data
-            json_data = json.dumps(json_data)
-            return HttpResponse(json_data)
-
-        return HttpResponse({'error': 'data in request not valid', 'errors': serializer.errors}, status=400)
+        return HttpResponse(status=201)
 
     @staticmethod
     def get(request):
@@ -64,10 +56,10 @@ class UserDraftHandler(APIView):
             json_data = json.dumps(json_data)
             return HttpResponse(json_data, content_type='application/json')
 
-        if 'user_id' not in request.GET:
+        try:
+            user_id = get_user_id(request_data=None, request_get_data=request.GET, request_headers=request.headers)
+        except RequiredError:
             return HttpResponse({'error': 'user_id not found in params request'}, status=401)
-
-        user_id = request.GET.get('user_id')
 
         try:
             model = DraftEmployeeInformation.objects.get(user_id=user_id,
@@ -89,37 +81,28 @@ class UserSaveHandler(APIView):
     """
 
     @staticmethod
-    def post(request):
-        clone = request.data.copy()
+    @add_user_id
+    def post(request, user_id):
+        if not user_id:
+            return HttpResponse(json.dumps({'error': 'user_id not found in params request'}), status=401, content_type='application/json')
 
-        if 'user_id' not in clone and 'user_id' not in request.GET:
-            return HttpResponse({'error': 'user_id not found in params request'}, status=401)
+        request.clone_data['owner_id'] = request.clone_data['user_id']
 
-        user_id = clone.get('user_id', request.GET.get('user_id'))
-        clone['user_id'] = user_id
+        serializer = UserSaveSerializer(data=request.clone_data)
 
-        serializer = UserSaveSerializer(data=clone)
-        if serializer.is_valid():
-            try:
-                user = ServerEmployeeInformation.objects.get(user_id=user_id)
-                if not user.is_editable and False:
-                    return HttpResponse({'error': 'user is not editable'}, status=403)
-            except ServerEmployeeInformation.DoesNotExist:
-                pass
+        if not serializer.is_valid():
+            return HttpResponse(json.dumps({'error': 'data in request not valid', 'errors': serializer.errors}), status=400, content_type='application/json')
 
-            users = ServerEmployeeInformation.objects.filter(user_id=user_id)
-            drafts = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)
-            if drafts.exists():
-                drafts.delete()
-            if users.exists():
-                users.delete()
+        if not user_is_editable(user_id):
+            return HttpResponse(json.dumps({'error': 'user is not editable'}), status=400, content_type='application/json')
 
-            serializer.validated_data['is_editable'] = False
-            serializer.save()
+        delete_drafts(user_id)
+        delete_server_saves(user_id)
 
-            return HttpResponse(status=201)
+        serializer.validated_data['is_editable'] = False
+        serializer.save()
 
-        return HttpResponse(json.dumps({'error': 'data in request not valid', 'errors': serializer.errors}), status=400, content_type='application/json')
+        return HttpResponse(status=201)
 
     def get(self, request):
         """
@@ -128,16 +111,16 @@ class UserSaveHandler(APIView):
         if 'all' in request.GET:
             if request.GET.get('all') != 'true':
                 return HttpResponse({'error': 'all must be true'}, status=401)
-            models = ServerEmployeeInformation.objects.all()
-            serializer = UserSaveSerializer(models, many=True)
+            models = DraftEmployeeInformation.objects.all()
+            serializer = UserDraftSerializer(models, many=True)
             json_data = serializer.data
             json_data = json.dumps(json_data)
             return HttpResponse(json_data, content_type='application/json')
 
-        if 'user_id' not in request.GET:
+        try:
+            user_id = get_user_id(request_data=None, request_get_data=request.GET, request_headers=request.headers)
+        except RequiredError:
             return HttpResponse({'error': 'user_id not found in params request'}, status=401)
-
-        user_id = request.GET.get('user_id')
 
         try:
             model = ServerEmployeeInformation.objects.get(user_id=user_id)

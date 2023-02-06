@@ -8,7 +8,7 @@ from PIL import Image
 from django.test import TestCase
 
 from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
-from apps.hr_department.serializers.serializers import DraftEmployeeInformationSerializer, \
+from apps.hr_department.serializers.serializers import UserDraftSerializer, \
     UserSaveSerializer
 
 
@@ -44,7 +44,7 @@ def get_base64_from_image(image_path: str):
 data_for_serializer = {
     'full_name__full_name': 'Богомолова Надежда Семёновна',
     'date_of_birthday__date': '1990-01-01T00:00:00',
-    'gender__gender': 'MALE',
+    'gender__gender': 'male',
     'inn__number': '822199435930',
     'snils__number': '123-456-789 01',
     'passport__series_and_number': '1234 567890',
@@ -100,7 +100,7 @@ class DraftEmployeeInformationTestCase(TestCase):
         clone_data_for_serializer = data_for_serializer.copy()
         clone_data_for_serializer['user_id'] = 1
         clone_data_for_serializer['owner_id'] = 1
-        serializer = DraftEmployeeInformationSerializer(data=clone_data_for_serializer)
+        serializer = UserDraftSerializer(data=clone_data_for_serializer)
         self.assertTrue(serializer.is_valid(raise_exception=True))
         serializer.save()
         self.assertEqual(DraftEmployeeInformation.objects.count(), 1)
@@ -108,7 +108,7 @@ class DraftEmployeeInformationTestCase(TestCase):
 
     def testDraftEmployeeInformationWithoutUserId(self):
         clone_data_for_serializer = data_for_serializer.copy()
-        serializer = DraftEmployeeInformationSerializer(data=clone_data_for_serializer)
+        serializer = UserDraftSerializer(data=clone_data_for_serializer)
         self.assertFalse(serializer.is_valid())
         self.assertEqual(serializer.errors, {'user_id': ['This field is required.'], 'owner_id': ['This field is required.']})
 
