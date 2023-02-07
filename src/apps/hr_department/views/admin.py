@@ -5,6 +5,8 @@ import json
 from apps.hr_department.models import ServerEmployeeInformation, DraftEmployeeInformation
 from apps.hr_department.serializers.serializers import UserSaveSerializer, \
     UserDraftSerializer
+from apps.hr_department.views.decorators import add_user_id, add_owner_id, handler_all_decorator
+from apps.hr_department.views.utils import delete_drafts, delete_server_saves, send_data
 
 
 class SearchHandler(APIView):
@@ -30,108 +32,78 @@ class SearchHandler(APIView):
 
 
 class AdminDraftHandler(APIView):
-    """
-    Форма для заполнения черновика информации о сотруднике.
-    Отправляется фронтендом.
-    Сериализуется в модель AdminDraftEmployeeInformation.
-    И сохраняется в БД если валидация прошла успешно.
-    Нужно для того, чтобы сотрудник мог сохранить свою форму и вернуться к ней позже.
-    owner_id - id сотрудника, который заполняет форму.
-    user_id - id сотрудника, которого заполняют.
+    @staticmethod
+    @add_user_id
+    @add_owner_id
+    def post(request, user_id, owner_id):
+        if not user_id:
+            return HttpResponse({'error': 'user_id not found in params request'}, status=401)
+        if not owner_id:
+            return HttpResponse({'error': 'owner_id not found in params request'}, status=401)
 
-    При создании черновика, owner_id и user_id должны быть разными.
-    """
+        serializer = UserDraftSerializer(data=request.clone_data)
+
+        if not serializer.is_valid():
+            return HttpResponse(json.dumps({'error': 'data in request not valid', 'errors': serializer.errors}), status=400)
+
+        delete_drafts(user_id, owner_id)
+        serializer.save()
+
+        return HttpResponse(status=201)
 
     @staticmethod
-    def post(request):
-        # TODO: check for admin
-
-        if 'user_id' not in request.data or 'owner_id' not in request.data:
-            return HttpResponse({'error': 'user_id or owner_id not in request'}, status=400)
-
-        serializer = UserDraftSerializer(data={key: value for key, value in request.data.items()})
-        if serializer.is_valid():
-            user_id = serializer.validated_data['user_id']
-            owner_id = serializer.validated_data['owner_id']
-
-            # Удаляем старый черновик, если он есть.
-            models = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=owner_id)
-            if models.exists():
-                models.delete()
-
-            # Сохраняем/создаем черновик.
-            serializer.save()
-
-            return HttpResponse(status=201)
-
-        return HttpResponse({'error': 'data in request not valid', 'errors': serializer.errors}, status=400)
-
-    @staticmethod
-    def get(request):
-        """
-        Возвращает список всех полей модели DraftEmployeeInformation в виде json.
-        Получает сам создатель. Owner_id = user_id.
-        """
-
-        if 'user_id' not in request.data or 'owner_id' not in request.data:
-            return HttpResponse({'error': 'user_id or owner_id not in request'}, status=400)
-
-        owner_id = request.GET['owner_id']
-        user_id = request.GET['user_id']
+    @handler_all_decorator(DraftEmployeeInformation, UserDraftSerializer)
+    @add_user_id
+    @add_owner_id
+    def get(request, user_id, owner_id):
+        if not user_id:
+            return HttpResponse({'error': 'user_id not found in params request'}, status=401)
+        if not owner_id:
+            return HttpResponse({'error': 'owner_id not found in params request'}, status=401)
 
         try:
-            model = DraftEmployeeInformation.objects.get(owner_id=owner_id, user_id=user_id)
+            model = DraftEmployeeInformation.objects.get(user_id=user_id,
+                                                         owner_id=user_id)
         except DraftEmployeeInformation.DoesNotExist:
             return HttpResponse(status=404)
 
         serializer = UserDraftSerializer(model)
 
-        data = serializer.data
-        data = json.dumps(data)
-        return HttpResponse(data, content_type='application/json')
+        json_data = json.dumps(serializer.data)
+        return HttpResponse(json_data, content_type='application/json')
 
 
 class AdminSaveHandler(APIView):
-    """
-    Сохраняет форму сотрудника в БД.
-    И удаляет черновик из БД.
-    """
+    @staticmethod
+    @add_user_id
+    @add_owner_id
+    def post(request, user_id, owner_id):
+        if not user_id:
+            return HttpResponse(json.dumps({'error': 'user_id not found in params request'}), status=401, content_type='application/json')
+        if not owner_id:
+            return HttpResponse(json.dumps({'error': 'owner_id not found in params request'}), status=401, content_type='application/json')
+
+        serializer = UserSaveSerializer(data=request.clone_data)
+
+        if not serializer.is_valid():
+            return HttpResponse(json.dumps({'error': 'data in request not valid', 'errors': serializer.errors}), status=400, content_type='application/json')
+
+        delete_drafts(user_id, owner_id)
+        delete_server_saves(user_id)
+
+        serializer.save()
+
+        return HttpResponse(status=201)
 
     @staticmethod
-    def post(request):
-        if 'user_id' not in request.data or 'owner_id' not in request.data:
-            return HttpResponse({'error': 'user_id or owner_id not in request'}, status=400)
-
-        serializer = UserSaveSerializer(data={key: value for key, value in request.data.items()})
-        if serializer.is_valid():
-            user_id = serializer.validated_data['user_id']
-            owner_id = serializer.validated_data['owner_id']
-
-            # Удаляем старый черновик, если он есть.
-            models = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=owner_id)
-            if models.exists():
-                models.delete()
-            models = ServerEmployeeInformation.objects.filter(user_id=user_id)
-            if models.exists():
-                models.delete()
-
-            serializer.save()
-
-            return HttpResponse(status=201)
-
-        return HttpResponse({'error': 'data in request not valid', 'errors': serializer.errors}, status=400)
-
-    @staticmethod
-    def get(request):
-        """
-        Возвращает список всех полей модели DraftEmployeeInformation в виде json.
-        """
-
-        if 'user_id' not in request.data or 'owner_id' not in request.data:
-            return HttpResponse({'error': 'user_id or owner_id not in request'}, status=400)
-
-        owner_id = request.GET['owner_id']
-        user_id = request.GET['user_id']
+    @handler_all_decorator(DraftEmployeeInformation, UserDraftSerializer)
+    @add_user_id
+    @add_owner_id
+    def get(request, user_id, owner_id):
+        if not user_id:
+            return HttpResponse(json.dumps({'error': 'user_id not found in params request'}), status=401, content_type='application/json')
+        if not owner_id:
+            return HttpResponse(json.dumps({'error': 'owner_id not found in params request'}), status=401, content_type='application/json')
 
         try:
             model = ServerEmployeeInformation.objects.get(user_id=user_id)
@@ -140,6 +112,7 @@ class AdminSaveHandler(APIView):
 
         serializer = UserSaveSerializer(model)
 
-        data = serializer.data
-        data = json.dumps(data)
-        return HttpResponse(data, content_type='application/json')
+        json_data = serializer.data
+
+        type_of_send = 'json'
+        return send_data(json_data, type_of_send)

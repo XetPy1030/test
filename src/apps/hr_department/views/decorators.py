@@ -1,14 +1,15 @@
 from functools import wraps
 
 from apps.hr_department.views.errors import RequiredError
-from apps.hr_department.views.utils import get_user_id, handler_all
+from apps.hr_department.views.utils import get_user_id, handler_all, get_owner_id
 
 
 def add_user_id(func):
     @wraps(func)
     def wrapper(request, *args, **kwargs):
         try:
-            user_id = get_user_id(request_data=request.data, request_get_data=request.GET, request_headers=request.headers)
+            user_id = get_user_id(request_data=request.data, request_get_data=request.GET,
+                                  request_headers=request.headers)
         except RequiredError:
             user_id = None
         clone_request_data = request.data.copy()
@@ -19,14 +20,30 @@ def add_user_id(func):
     return wrapper
 
 
-# decorator для обработки, есть ли в запросе all, если есть, то возвращаем все записи
-#
-def add_all(func):
+def add_owner_id(func):
     @wraps(func)
     def wrapper(request, *args, **kwargs):
-        if 'all' in request.GET:
-            handler_all
-
-        return func(request, *args, **kwargs)
+        try:
+            owner_id = get_owner_id(request_data=request.data, request_get_data=request.GET,
+                                    request_headers=request.headers)
+        except RequiredError:
+            owner_id = None
+        clone_request_data = request.data.copy()
+        clone_request_data['owner_id'] = owner_id
+        request.clone_data = clone_request_data
+        return func(request, *args, owner_id, **kwargs)
 
     return wrapper
+
+
+def handler_all_decorator(models, serializer):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(request, *args, **kwargs):
+            if 'all' in request.GET:
+                return handler_all(request, models, serializer)
+            return func(request, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
