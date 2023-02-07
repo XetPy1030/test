@@ -8,7 +8,7 @@ urlpatterns_user = [
 
 urlpatterns_admin = [
     # path('draft/', views.FormDraftHandler.as_view()),  # TODO
-    path('search/', views.SearchHandler.as_view()),  # TODO
+    path('search/', views.SearchHandler.as_view()),
 ]
 
 urlpatterns = [
