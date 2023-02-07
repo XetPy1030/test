@@ -5,12 +5,13 @@ from apps.hr_department.serializers.document_serializers import ServerSearchEmpl
 
 from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_COMPLETION, LOOKUP_FILTER_GEO_DISTANCE, LOOKUP_FILTER_RANGE, LOOKUP_QUERY_IN, LOOKUP_QUERY_GT,
-    LOOKUP_QUERY_GTE, LOOKUP_QUERY_LT, LOOKUP_QUERY_LTE
+    LOOKUP_QUERY_GTE, LOOKUP_QUERY_LT, LOOKUP_QUERY_LTE, FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+    FUNCTIONAL_SUGGESTER_COMPLETION_MATCH
 
 )
 
 from django_elasticsearch_dsl_drf.filter_backends import (
-    SuggesterFilterBackend, SearchFilterBackend, IdsFilterBackend
+    SuggesterFilterBackend, SearchFilterBackend, IdsFilterBackend, FunctionalSuggesterFilterBackend
 )
 
 
@@ -21,7 +22,7 @@ class ServerSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
     filter_backends = [
         SearchFilterBackend,
         SuggesterFilterBackend,
-        IdsFilterBackend,
+        FunctionalSuggesterFilterBackend,
     ]
 
     search_fields = [
@@ -41,6 +42,28 @@ class ServerSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
             ],
         },
         }
+
+    functional_suggester_fields = {
+        'full_name_suggest': {
+            'field': 'full_name.raw',
+            'suggesters': [
+                FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            ],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            'options': {
+                'size': 10,
+            },
+        },
+        'full_name_suggest_match': {
+            'field': 'full_name.edge_ngram_completion',
+            'suggesters': [FUNCTIONAL_SUGGESTER_COMPLETION_MATCH],
+            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+            'options': {
+                'size': 10,
+            },
+        },
+    }
+
 
     suggester_fields = {
         'full_name_suggest': {
