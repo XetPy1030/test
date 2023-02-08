@@ -72,3 +72,12 @@ def clean_none_values(data):
     for key in list(data.keys()):
         if data[key] is None:
             del data[key]
+
+
+def get_serializer(serializer, class_model, data, many=False, **kwargs):
+    try:
+        model = class_model.objects.get(**kwargs)
+        serializer = serializer(model, data=data, many=many)
+    except class_model.DoesNotExist:
+        serializer = serializer(data=data, many=many)
+    return serializer
