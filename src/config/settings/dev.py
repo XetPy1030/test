@@ -27,7 +27,7 @@ DATABASES = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-MEDIA_URL = '/pictures/'
+MEDIA_ROOT = 'pictures'
 
 APPS = [
     'django_elasticsearch_dsl',
