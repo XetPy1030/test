@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'corsheaders',
     'rest_framework',
     'apps.hr_department.apps.HrDepartmentConfig',
@@ -114,5 +115,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MAX_UPLOAD_SIZE = 5242880
+MAX_UPLOAD_SIZE = 52428800
 
