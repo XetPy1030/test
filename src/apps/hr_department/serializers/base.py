@@ -1,13 +1,9 @@
-import base64
 import os
-from io import BytesIO
-
-from PIL import Image
 from rest_framework import serializers
 
 from apps.hr_department.serializers.utils.fields import fields_frontend_to_backend, fields_backend_to_frontend
 from apps.hr_department.serializers.utils.reformaters import reformat_frontend_fields
-
+from config import settings
 
 class BaseSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
@@ -29,8 +25,8 @@ class BaseSerializer(serializers.ModelSerializer):
         for image in data:
             if 'photo' in image:
                 if data[image]:
-                    if not os.path.isfile("."+data[image]):
-                        data[image] = None
+                    path = os.path.join(settings.MEDIA_ROOT, data[image])
+                    if not os.path.isfile(path):
                         continue
 
         # TODO: reformat
