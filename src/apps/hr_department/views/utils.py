@@ -57,7 +57,7 @@ def handler_all(request, model, serializer):
     return HttpResponse(json_data, content_type='application/json')
 
 
-def send_data(json_data, type_of_send):
+def send_data_by_type(json_data, type_of_send):
     if type_of_send == 'json':
         json_data = json.dumps(json_data)
         return HttpResponse(json_data, content_type='application/json')

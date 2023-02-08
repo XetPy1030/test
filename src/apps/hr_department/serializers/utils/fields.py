@@ -1,5 +1,4 @@
 
-from pprint import pprint
 
 fields_frontend = [
     'im_foreigner__im_foreigner',
