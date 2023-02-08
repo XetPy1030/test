@@ -40,7 +40,7 @@ class FormField(models.Model):
     military_document_composition = models.TextField(default=None, null=True)
     military_document_stock_category = models.TextField(default=None, null=True)
     military_document_vus = models.TextField(default=None, null=True)
-    military_document_fitness = models.BooleanField(default=None, null=True)
+    military_document_fitness = models.TextField(default=None, null=True)
     military_document_commissariat = models.TextField(default=None, null=True)
     military_document_relation_to_military_registration = models.TextField(default=None, null=True)
     military_document_photo = models.ImageField(default=None, null=True)
