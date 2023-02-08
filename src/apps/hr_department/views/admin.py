@@ -4,7 +4,7 @@ import json
 
 from apps.hr_department.models import ServerEmployeeInformation, DraftEmployeeInformation
 from apps.hr_department.serializers.serializers import UserSaveSerializer, \
-    UserDraftSerializer
+    UserDraftSerializer, AdminDraftSerializer, AdminSaveSerializer
 from apps.hr_department.views.decorators import add_user_id, add_owner_id, handler_all_decorator
 from apps.hr_department.views.utils import delete_drafts, delete_server_saves, send_data
 
@@ -41,7 +41,7 @@ class AdminDraftHandler(APIView):
         if not owner_id:
             return HttpResponse({'error': 'owner_id not found in params request'}, status=401)
 
-        serializer = UserDraftSerializer(data=request.clone_data)
+        serializer = AdminDraftSerializer(data=request.clone_data)
 
         if not serializer.is_valid():
             return HttpResponse(json.dumps({'error': 'data in request not valid', 'errors': serializer.errors}), status=400)
@@ -52,7 +52,7 @@ class AdminDraftHandler(APIView):
         return HttpResponse(status=201)
 
     @staticmethod
-    @handler_all_decorator(DraftEmployeeInformation, UserDraftSerializer)
+    @handler_all_decorator(DraftEmployeeInformation, AdminDraftSerializer)
     @add_user_id
     @add_owner_id
     def get(request, user_id, owner_id):
@@ -63,11 +63,11 @@ class AdminDraftHandler(APIView):
 
         try:
             model = DraftEmployeeInformation.objects.get(user_id=user_id,
-                                                         owner_id=user_id)
+                                                         owner_id=owner_id)
         except DraftEmployeeInformation.DoesNotExist:
             return HttpResponse(status=404)
 
-        serializer = UserDraftSerializer(model)
+        serializer = AdminDraftSerializer(model)
 
         json_data = json.dumps(serializer.data)
         return HttpResponse(json_data, content_type='application/json')
@@ -76,19 +76,15 @@ class AdminDraftHandler(APIView):
 class AdminSaveHandler(APIView):
     @staticmethod
     @add_user_id
-    @add_owner_id
-    def post(request, user_id, owner_id):
+    def post(request, user_id):
         if not user_id:
             return HttpResponse(json.dumps({'error': 'user_id not found in params request'}), status=401, content_type='application/json')
-        if not owner_id:
-            return HttpResponse(json.dumps({'error': 'owner_id not found in params request'}), status=401, content_type='application/json')
 
-        serializer = UserSaveSerializer(data=request.clone_data)
+        serializer = AdminSaveSerializer(data=request.clone_data)
 
         if not serializer.is_valid():
             return HttpResponse(json.dumps({'error': 'data in request not valid', 'errors': serializer.errors}), status=400, content_type='application/json')
 
-        delete_drafts(user_id, owner_id)
         delete_server_saves(user_id)
 
         serializer.save()
@@ -96,21 +92,18 @@ class AdminSaveHandler(APIView):
         return HttpResponse(status=201)
 
     @staticmethod
-    @handler_all_decorator(DraftEmployeeInformation, UserDraftSerializer)
+    @handler_all_decorator(ServerEmployeeInformation, AdminSaveSerializer)
     @add_user_id
-    @add_owner_id
-    def get(request, user_id, owner_id):
+    def get(request, user_id):
         if not user_id:
             return HttpResponse(json.dumps({'error': 'user_id not found in params request'}), status=401, content_type='application/json')
-        if not owner_id:
-            return HttpResponse(json.dumps({'error': 'owner_id not found in params request'}), status=401, content_type='application/json')
 
         try:
             model = ServerEmployeeInformation.objects.get(user_id=user_id)
         except ServerEmployeeInformation.DoesNotExist:
             return HttpResponse(status=404)
 
-        serializer = UserSaveSerializer(model)
+        serializer = AdminSaveSerializer(model)
 
         json_data = serializer.data
 
