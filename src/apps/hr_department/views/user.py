@@ -7,7 +7,8 @@ from apps.hr_department.serializers.serializers import UserDraftSerializer, \
     UserSaveSerializer
 from apps.hr_department.views.decorators import add_user_id, handler_all_decorator
 from apps.hr_department.views.errors import RequiredError
-from apps.hr_department.views.utils import get_user_id, delete_drafts, delete_server_saves, user_is_editable, send_data
+from apps.hr_department.views.utils import get_user_id, delete_drafts, delete_server_saves, user_is_editable, send_data, \
+    get_serializer
 
 
 class UserDraftHandler(APIView):
@@ -19,7 +20,7 @@ class UserDraftHandler(APIView):
 
         request.clone_data['owner_id'] = request.clone_data['user_id']
 
-        serializer = UserDraftSerializer(data=request.clone_data)
+        serializer = get_serializer(UserDraftSerializer, DraftEmployeeInformation, request.clone_data, user_id=user_id, owner_id=user_id)
 
         if not serializer.is_valid():
             return HttpResponse({'error': 'data in request not valid', 'errors': serializer.errors}, status=400)
@@ -57,7 +58,7 @@ class UserSaveHandler(APIView):
 
         request.clone_data['owner_id'] = request.clone_data['user_id']
 
-        serializer = UserSaveSerializer(data=request.clone_data)
+        serializer = get_serializer(UserSaveSerializer, ServerEmployeeInformation, request.clone_data, user_id=user_id)
 
         if not serializer.is_valid():
             return HttpResponse(json.dumps({'error': 'data in request not valid', 'errors': serializer.errors}), status=400, content_type='application/json')
