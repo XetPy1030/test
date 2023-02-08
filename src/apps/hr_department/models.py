@@ -33,15 +33,7 @@ class FormField(models.Model):
     passport_reversal_photo = models.ImageField(default=None, null=True)
     passport_registration_photo = models.ImageField(default=None, null=True)
 
-    education_document_education_type = models.TextField(default=None, null=True)
-    education_document_educational_institution_name = models.TextField(default=None, null=True)
-    education_document_speciality = models.TextField(default=None, null=True)
-    education_document_qualification = models.TextField(default=None, null=True)
-    education_document_series_and_number = models.TextField(default=None, null=True)
-    education_document_date_of_issue = models.DateField(default=None, null=True)
-    education_document_date_range_of_education = models.TextField(default=None, null=True)
-    education_document_language_proficiency = models.TextField(default=None, null=True)
-    education_document_photo = models.ImageField(default=None, null=True)
+    education = models.JSONField(default=None, null=True)
 
     military_document_relation_to_military_duty = models.TextField(default=None, null=True)
     military_document_rank = models.TextField(default=None, null=True)
@@ -53,9 +45,7 @@ class FormField(models.Model):
     military_document_relation_to_military_registration = models.TextField(default=None, null=True)
     military_document_photo = models.ImageField(default=None, null=True)
 
-    childrens_birth_certificates_full_name = models.TextField(default=None, null=True)
-    childrens_birth_certificates_date_of_birthday = models.DateField(default=None, null=True)
-    childrens_birth_certificates_relation_degree = models.TextField(default=None, null=True)
+    childrens = models.JSONField(default=None, null=True)
     snils_number = models.TextField(default=None, null=True)
     snils_photo = models.ImageField(default=None, null=True)
     inn_number = models.TextField(default=None, null=True)
