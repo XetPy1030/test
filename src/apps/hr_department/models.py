@@ -6,6 +6,22 @@ genders = (
 )
 
 
+class Education(models.Model):
+    education_type = models.TextField(default=None, null=True)
+    educational_institution_name = models.TextField(default=None, null=True)
+    speciality = models.TextField(default=None, null=True)
+    qualification = models.TextField(default=None, null=True)
+    series_and_number = models.TextField(default=None, null=True)
+    date_of_issue = models.DateField(default=None, null=True)
+    photo = models.ImageField(default=None, null=True)
+
+
+class Children(models.Model):
+    full_name = models.TextField(default=None, null=True)
+    date_of_birthday = models.DateField(default=None, null=True)
+    relation_degree = models.TextField(default=None, null=True)
+
+
 class FormField(models.Model):
     im_foreigner = models.BooleanField(default=None, null=True)
     full_name = models.TextField(default=None, null=True)
@@ -33,7 +49,8 @@ class FormField(models.Model):
     passport_reversal_photo = models.ImageField(default=None, null=True)
     passport_registration_photo = models.ImageField(default=None, null=True)
 
-    education = models.JSONField(default=None, null=True)
+    # many to many
+    education = models.ManyToManyField(Education, default=None, null=True)
 
     military_document_relation_to_military_duty = models.TextField(default=None, null=True)
     military_document_rank = models.TextField(default=None, null=True)
@@ -45,7 +62,8 @@ class FormField(models.Model):
     military_document_relation_to_military_registration = models.TextField(default=None, null=True)
     military_document_photo = models.ImageField(default=None, null=True)
 
-    childrens = models.JSONField(default=None, null=True)
+    # many to many
+    childrens = models.ManyToManyField(Children, default=None, null=True)
     snils_number = models.TextField(default=None, null=True)
     snils_photo = models.ImageField(default=None, null=True)
     inn_number = models.TextField(default=None, null=True)
