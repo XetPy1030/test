@@ -66,7 +66,7 @@ class UserSaveHandler(APIView):
         return success_save(request)
 
     @staticmethod
-    @handler_all_decorator(DraftEmployeeInformation, UserDraftSerializer)
+    @handler_all_decorator(ServerEmployeeInformation, UserSaveSerializer)
     @add_user_id
     def get(request, user_id):
         try:
