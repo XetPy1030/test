@@ -1,6 +1,6 @@
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
-from apps.hr_department.documents import ServerSearchEmployeeInformationDocument
+from apps.hr_department.documents.admin_search_document import ServerSearchEmployeeInformationDocument
 from apps.hr_department.serializers.document_serializers import ServerSearchEmployeeInformationDocumentSerializer
 
 from django_elasticsearch_dsl_drf.constants import (
@@ -11,7 +11,7 @@ from django_elasticsearch_dsl_drf.constants import (
 )
 
 from django_elasticsearch_dsl_drf.filter_backends import (
-    SuggesterFilterBackend, SearchFilterBackend, IdsFilterBackend, FunctionalSuggesterFilterBackend
+    SuggesterFilterBackend, SearchFilterBackend, FunctionalSuggesterFilterBackend
 )
 
 
