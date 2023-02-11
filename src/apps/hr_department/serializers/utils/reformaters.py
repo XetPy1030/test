@@ -6,7 +6,7 @@ from uuid import uuid4
 from PIL import Image
 from django.core.files.base import ContentFile
 
-from apps.hr_department.serializers.utils.fields import date_fields
+from apps.hr_department.serializers.utils.fields import date_fields, iter_fields
 from apps.hr_department.serializers.utils.token_refactor import jwt_token_refactor
 
 
@@ -71,5 +71,38 @@ def reformat_frontend_fields(data):
     reformat_passport_number(data)
     reformat_snils_number(data)
     reformat_passport_division_code(data)
-    # convert_base64_to_pillow_image(data)
     jwt_token_refactor(data)
+
+
+def reformat_iter_frontend_fields(data: dict):
+    clear_data = data
+
+    for infos_field in iter_fields:
+        for field in infos_field['frontend_fields']:
+            if "0__" + field['frontend_name'] in data:
+                clear_data[infos_field['backend_name']] = []
+
+    count = {
+        i['backend_name']: data.keys().__str__().count(i['frontend_fields'][0]['frontend_name'])
+        for i in iter_fields
+    }
+
+    for infos_field in iter_fields:
+        for field in infos_field['frontend_fields']:
+            for i in range(count[infos_field['backend_name']]):
+                if f"{i}__" + field['frontend_name'] in data:
+                    if infos_field['backend_name'] in clear_data:
+                        if len(clear_data[infos_field['backend_name']]) < i + 1:
+                            clear_data[infos_field['backend_name']].append({})
+                        clear_data[infos_field['backend_name']][i][field['backend_name']] = data[
+                            f"{i}__" + field['frontend_name']
+                        ]
+                    else:
+                        clear_data[infos_field['backend_name']] = [
+                            {field['backend_name']: data[f"{i}__" + field['frontend_name']]}
+                        ]
+
+    for infos_field in iter_fields:
+        for field in infos_field['frontend_fields']:
+            if "0__" + field['frontend_name'] in data:
+                pass  # TODO: удалять лишние поля

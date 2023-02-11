@@ -24,15 +24,6 @@ fields_frontend = [
     'passport__registered_address',
     'passport__reversal_photo',
     'passport__registration_photo',
-    'education_document__education_type',
-    'education_document__educational_institution_name',
-    'education_document__speciality',
-    'education_document__qualification',
-    'education_document__series_and_number',
-    'education_document__date_of_issue',
-    'education_document__date_range_of_education',
-    'education_document__language_proficiency',
-    'education_document__photo',
     'military_document__relation_to_military_duty',
     'military_document__rank',
     'military_document__composition',
@@ -42,9 +33,6 @@ fields_frontend = [
     'military_document__commissariat',
     'military_document__relation_to_military_registration',
     'military_document__photo',
-    'childrens_birth_certificates__full_name',
-    'childrens_birth_certificates__date_of_birthday',
-    'childrens_birth_certificates__relation_degree',
     'snils__number',
     'snils__photo',
     'inn__number',
@@ -96,15 +84,6 @@ fields_backend = [
     'passport_registered_address',
     'passport_reversal_photo',
     'passport_registration_photo',
-    'education_document_education_type',
-    'education_document_educational_institution_name',
-    'education_document_speciality',
-    'education_document_qualification',
-    'education_document_series_and_number',
-    'education_document_date_of_issue',
-    'education_document_date_range_of_education',
-    'education_document_language_proficiency',
-    'education_document_photo',
     'military_document_relation_to_military_duty',
     'military_document_rank',
     'military_document_composition',
@@ -114,9 +93,6 @@ fields_backend = [
     'military_document_commissariat',
     'military_document_relation_to_military_registration',
     'military_document_photo',
-    'childrens_birth_certificates_full_name',
-    'childrens_birth_certificates_date_of_birthday',
-    'childrens_birth_certificates_relation_degree',
     'snils_number',
     'snils_photo',
     'inn_number',
@@ -169,3 +145,63 @@ date_fields = [
     'education_document_date_of_issue'
 ]
 
+iter_fields = [
+    {
+        'backend_name': 'education',
+        'frontend_fields': [
+            {
+                'backend_name': 'education_type',
+                'frontend_name': 'education__education_type',
+            },
+            {
+                'backend_name': 'educational_institution_name',
+                'frontend_name': 'education__educational_institution_name',
+            },
+            {
+                'backend_name': 'speciality',
+                'frontend_name': 'education__speciality',
+            },
+            {
+                'backend_name': 'qualification',
+                'frontend_name': 'education__qualification',
+            },
+            {
+                'backend_name': 'series_and_number',
+                'frontend_name': 'education__series_and_number',
+            },
+            {
+                'backend_name': 'date_of_issue',
+                'frontend_name': 'education__date_of_issue',
+            },
+            {
+                'backend_name': 'date_range_of_education',
+                'frontend_name': 'education__date_range_of_education',
+            },
+            {
+                'backend_name': 'language_proficiency',
+                'frontend_name': 'education__language_proficiency',
+            },
+            {
+                'backend_name': 'photo',
+                'frontend_name': 'education__photo',
+            }
+        ]
+    },
+    {
+        'backend_name': 'childrens',
+        'frontend_fields': [
+            {
+                'backend_name': 'full_name',
+                'frontend_name': 'children__full_name',
+            },
+            {
+                'backend_name': 'date_of_birthday',
+                'frontend_name': 'children__date_of_birthday',
+            },
+            {
+                'backend_name': 'relation_degree',
+                'frontend_name': 'children__relation_degree',
+            }
+        ]
+    }
+]
