@@ -67,6 +67,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+MEDIA_ROOT = 'pictures'
+
 
 
 # Password validation
