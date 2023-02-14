@@ -6,6 +6,7 @@ from django.test import TestCase, Client
 
 from apps.hr_department.views import UserSaveHandler
 
+
 def get_base64_from_image(image_path: str):
     image = Image.open(open(image_path, 'rb'))
     buffered = BytesIO()

@@ -61,6 +61,8 @@ class AdminSaveHandler(APIView):
     @staticmethod
     @add_user_id
     def post(request, user_id):
+        print(request.clone_data)
+
         serializer = get_serializer(AdminSaveSerializer, ServerEmployeeInformation, request.clone_data, user_id=user_id)
 
         if not serializer.is_valid():

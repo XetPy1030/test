@@ -10,11 +10,6 @@ class UserDraftSerializer(BaseSerializer):
             # NotMeValidator()
         ]
 
-    def to_internal_value(self, data):
-        data = super().to_internal_value(data)
-        data['owner_id'] = data['user_id']
-        return data
-
 
 class UserSaveSerializer(BaseSerializer):
     class Meta:
