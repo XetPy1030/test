@@ -15,6 +15,6 @@ urlpatterns_admin = [
 urlpatterns = [
     path('user/', include(urlpatterns_user)),
     path('admin/', include(urlpatterns_admin)),
-    path('test/', views.test)
+    # path('test/', views.test)
 ]
 
