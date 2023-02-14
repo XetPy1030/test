@@ -96,10 +96,8 @@ class FormField(models.Model):
     second_vaccination_date = models.DateField(default=None, null=True)
     is_checked = models.BooleanField(default=None, null=True)
     is_editable = models.BooleanField(default=None, null=True)
-
-
-class Meta:
-    abstract = True
+    class Meta:
+        abstract = True
 
 
 class DraftEmployeeInformation(FormField):
