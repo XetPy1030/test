@@ -1,4 +1,6 @@
 import os
+
+from django.http import QueryDict
 from rest_framework import serializers
 
 from apps.hr_department.models import Children, Education
@@ -19,15 +21,15 @@ class EducationSerializer(serializers.ModelSerializer):
         fields = ("education_type", "educational_institution_name", "speciality", "qualification", "series_and_number")
 
 
+class BaseMeta:
+    fields = '__all__'
+    validator_classes = []
+    validators = [
+        validator_classes
+    ]
+
+
 class BaseSerializer(serializers.ModelSerializer):
-    """
-    childrens - ManyToManyField
-    model - Children
-    for example childrens = [ {'full_name': 'Ivanov Ivan Ivanovich', 'date_of_birthday': '1990-01-01', 'relation_degree': 'son'} ]
-    ChildrenSerializer - serializer for model Children
-    childrens = list[dict]
-    create new if not exist
-    """
     childrens = ChildrenSerializer(many=True, required=False)
     education = EducationSerializer(many=True, required=False)
 
@@ -61,10 +63,15 @@ class BaseSerializer(serializers.ModelSerializer):
 
         return instance
 
-    def to_internal_value(self, data):
-        data = {
-            self.get_field_backend_name(key): value for key, value in data.items()
-        }
+    def to_internal_value(self, data: QueryDict):
+        # data = {
+        #     self.get_field_backend_name(key): value for key, value in data.items()
+        # }
+
+        # QueryDict to dict
+        if isinstance(data, QueryDict):
+            data = data.dict()
+
         reformat_iter_frontend_fields(data)
 
         reformat_frontend_fields(data)
@@ -77,10 +84,11 @@ class BaseSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
+        data = data.copy()
 
-        data = {
-            self.get_field_frontend_name(key): value for key, value in data.items()
-        }
+        # data = {
+        #     self.get_field_frontend_name(key): value for key, value in data.items()
+        # }
 
         for image in data:
             if 'photo' in image:

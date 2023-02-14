@@ -47,6 +47,9 @@ class UserSaveHandler(APIView):
     @staticmethod
     @add_user_id
     def post(request, user_id):
+        print(
+            request.clone_data
+        )
         request.clone_data['owner_id'] = request.clone_data['user_id']
 
         serializer = get_serializer(UserSaveSerializer, ServerEmployeeInformation, request.clone_data, user_id=user_id)

@@ -7,7 +7,6 @@ from PIL import Image
 from django.core.files.base import ContentFile
 
 from apps.hr_department.serializers.utils.fields import date_fields, iter_fields
-from apps.hr_department.serializers.utils.token_refactor import jwt_token_refactor
 
 
 def get_file_extension(file_name, decoded_data):
@@ -45,10 +44,6 @@ def reformat_documents(data, re_pattern, field_name):
     if field_name in data:
         if not data[field_name]:
             return
-        # check format of document fields and reformat if needed
-        # if not None
-        if not data[field_name]:
-            return
         if re.fullmatch(re_pattern, data[field_name]):
             data[field_name] = data[field_name].replace(' ', '')
             data[field_name] = data[field_name].replace('-', '')
@@ -67,36 +62,51 @@ def reformat_passport_division_code(data):
 
 
 def reformat_frontend_fields(data):
-    reformat_date_fields(data)
+    reformat_date_fields(data)  # TODO: в валидации даты
     reformat_passport_number(data)
     reformat_snils_number(data)
     reformat_passport_division_code(data)
-    jwt_token_refactor(data)
 
 
 def reformat_iter_frontend_fields(data: dict):
     clear_data = data
 
-    for infos_field in iter_fields:
-        for field in infos_field['frontend_fields']:
+    for infos_field in iter_fields:  # children, education
+        for field in infos_field['frontend_fields']:  # full_name, birth_date
             if "0__" + field['frontend_name'] in data:
+                print(11)
                 clear_data[infos_field['backend_name']] = []
 
     count = {
-        i['backend_name']: data.keys().__str__().count(i['frontend_fields'][0]['frontend_name'])
+        i['backend_name']: data.keys().__str__().count(
+            i['frontend_fields'][0]['frontend_name']
+        )
         for i in iter_fields
     }
 
-    for infos_field in iter_fields:
-        for field in infos_field['frontend_fields']:
+    print(data.keys().__str__())
+
+    print(
+        iter_fields[0]['frontend_fields'][0]['frontend_name']
+    )
+
+    print(
+        count
+    )
+
+    for infos_field in iter_fields:  # children, education
+        for field in infos_field['frontend_fields']:  # full_name, birth_date
             for i in range(count[infos_field['backend_name']]):
                 if f"{i}__" + field['frontend_name'] in data:
                     if infos_field['backend_name'] in clear_data:
                         if len(clear_data[infos_field['backend_name']]) < i + 1:
                             clear_data[infos_field['backend_name']].append({})
-                        clear_data[infos_field['backend_name']][i][field['backend_name']] = data[
+                        new_value = data[
                             f"{i}__" + field['frontend_name']
                         ]
+                        if isinstance(new_value, list):
+                            new_value = new_value[0]
+                        clear_data[infos_field['backend_name']][i][field['backend_name']] = new_value
                     else:
                         clear_data[infos_field['backend_name']] = [
                             {field['backend_name']: data[f"{i}__" + field['frontend_name']]}
@@ -106,3 +116,8 @@ def reformat_iter_frontend_fields(data: dict):
         for field in infos_field['frontend_fields']:
             if "0__" + field['frontend_name'] in data:
                 pass  # TODO: удалять лишние поля
+
+
+# dd = {'education': ['undefined'], '0__childrens_full_name': ['ываыва'], '0__childrens_date_of_birthday': ['2023-02-02'], '0__childrens_relation_degree': ['фывафыва'], '1__childrens_full_name': ['ыфвавыфа'], '1__childrens_relation_degree': ['ыфва'], '1__childrens_date_of_birthday': ['2023-02-01'], 'passport_reversal_photo': ['null'], 'passport_registration_photo': ['null'], 'military_document_photo': ['null'], 'snils_photo': ['null'], 'inn_photo': ['null'], 'user_id': ['test']}
+# print(reformat_iter_frontend_fields(dd))
+# print(dd)
