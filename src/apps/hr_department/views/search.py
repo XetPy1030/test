@@ -94,8 +94,6 @@ class ServerSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
 
 class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
     document = SpreadSheetSearchEmployeeInformationDocument
-    serializer_class = SpreadSheetSearchEmployeeInformationDocumentSerializer
-    pagination_class = QueryFriendlyPageNumberPagination
 
     filter_backends = [
         FilteringFilterBackend,
@@ -104,6 +102,8 @@ class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
         DefaultOrderingFilterBackend,
         SearchFilterBackend,
     ]
+
+    pagination_class = QueryFriendlyPageNumberPagination
 
     # search_fields all
     search_fields = tuple(get_all_fields_for_document(DraftEmployeeInformation) + ['id'])
