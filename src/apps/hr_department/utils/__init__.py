@@ -1,0 +1,1 @@
+from .get_all_fields import get_all_fields_for_document

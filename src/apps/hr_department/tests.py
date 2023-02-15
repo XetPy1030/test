@@ -1,21 +1,11 @@
 import base64
-import json
 from io import BytesIO
-from django.test import TestCase
 
-import requests
 from PIL import Image
-from django.test import TestCase
-
-from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
-from apps.hr_department.serializers.serializers import DraftEmployeeInformationSerializer, \
-    UserSaveEmployeeInformationSerializer
+from django.test import TestCase, Client
 
 
-#
-# from apps.hr_department.models import DraftEmployeeInformation
-# from apps.hr_department.serializers import DraftEmployeeInformationSerializer
-
+from apps.hr_department.views import UserSaveHandler
 
 def get_base64_from_image(image_path: str):
     image = Image.open(open(image_path, 'rb'))
@@ -24,27 +14,11 @@ def get_base64_from_image(image_path: str):
     img_str = base64.b64encode(buffered.getvalue())
     return img_str.decode('utf-8')
 
-# Абрамова Милана Максимовна
-# Акимов Мирослав Владиславович
-# Алексеева Елена Романовна
-# Алексеева Василиса Леонидовна
-# Андреев Платон Леонидович
-# Андреев Михаил Вадимович
-# Афанасьева Вероника Фёдоровна
-# Боброва Анна Михайловна
-# Богомолова Надежда Семёновна
-# Болдырев Дмитрий Львович
-# Борисов Виктор Андреевич
-# Борисов Лев Романович
-# Виноградова Дарья Петровна
-# Волкова Елизавета Андреевна
-# Воронин Захар Тимофеевич
-
 
 data_for_serializer = {
     'full_name__full_name': 'Богомолова Надежда Семёновна',
     'date_of_birthday__date': '1990-01-01T00:00:00',
-    'gender__gender': 'MALE',
+    'gender__gender': 'male',
     'inn__number': '822199435930',
     'snils__number': '123-456-789 01',
     'passport__series_and_number': '1234 567890',
@@ -80,51 +54,18 @@ data_for_serializer = {
     # 'passport__photo_registration': get_base64_from_image('./apps/hr_department/tests/passport_registration.jpg'),
 }
 
-# json_object = json.dumps(data_for_serializer, indent = 4)
-# text_file = open("./sample.json", "w")
-# n = text_file.write(json_object)
-# text_file.close()
-
 
 class DraftEmployeeInformationTestCase(TestCase):
     def setUp(self):
-        ...
+        # Client with headers
+        self.client = Client(HTTP_USER_AGENT='Mozilla/5.0', HTTP_HOST='localhost', user_id='1')
+        self.user_save_url = '/api/v1/user/save/?user_id={}'
+        self.user_draft_url = '/api/v1/user/draft/?user_id={}'
+        self.admin_save_url = '/api/v1/admin/save/?user_id={}'
+        self.admin_draft_url = '/api/v1/admin/draft/?user_id={}'
 
-    # def testRequest(self):
-    #     clone_data_for_serializer = data_for_serializer.copy()
-    #     clone_data_for_serializer['user_id'] = 1
-    #     response = requests.post('http://127.0.0.1:8000/api/v1/user/draft/', data=clone_data_for_serializer)
-    #     self.assertEqual(response.status_code, 201)
-
-    def testDraftEmployeeInformation(self):
-        clone_data_for_serializer = data_for_serializer.copy()
-        clone_data_for_serializer['user_id'] = 1
-        clone_data_for_serializer['owner_id'] = 1
-        serializer = DraftEmployeeInformationSerializer(data=clone_data_for_serializer)
-        self.assertTrue(serializer.is_valid(raise_exception=True))
-        serializer.save()
-        self.assertEqual(DraftEmployeeInformation.objects.count(), 1)
-        self.assertEqual(DraftEmployeeInformation.objects.get().user_id, '1')
-
-    def testDraftEmployeeInformationWithoutUserId(self):
-        clone_data_for_serializer = data_for_serializer.copy()
-        serializer = DraftEmployeeInformationSerializer(data=clone_data_for_serializer)
-        self.assertFalse(serializer.is_valid())
-        self.assertEqual(serializer.errors, {'user_id': ['This field is required.'], 'owner_id': ['This field is required.']})
-
-    def testUserSave(self):
-        clone_data_for_serializer = data_for_serializer.copy()
-        clone_data_for_serializer['user_id'] = 1
-        clone_data_for_serializer['owner_id'] = 1
-        serializer = UserSaveEmployeeInformationSerializer(data=clone_data_for_serializer)
-        self.assertTrue(serializer.is_valid())
-        serializer.save()
-        self.assertEqual(ServerEmployeeInformation.objects.count(), 1)
-        self.assertEqual(ServerEmployeeInformation.objects.get().id, 1)
-
-    def testUserSaveWithoutUserId(self):
-        clone_data_for_serializer = data_for_serializer.copy()
-        serializer = UserSaveEmployeeInformationSerializer(data=clone_data_for_serializer)
-        self.assertFalse(serializer.is_valid())
-        self.assertEqual(serializer.errors, {'user_id': ['This field is required.']})
-
+    def testSaveHandlers(self):
+        response = self.client.post(self.user_save_url.format(1), data_for_serializer)
+        self.assertEqual(response.status_code, 201)
+        response = self.client.post(self.admin_save_url.format(1), data_for_serializer)
+        self.assertEqual(response.status_code, 201)

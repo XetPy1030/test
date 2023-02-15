@@ -3,97 +3,86 @@ from rest_framework.views import APIView
 import json
 
 from apps.hr_department.models import ServerEmployeeInformation, DraftEmployeeInformation
-from apps.hr_department.serializers.serializers import UserSaveEmployeeInformationSerializer, \
-    UserDraftEmployeeInformationSerializer
+from apps.hr_department.serializers.serializers import UserSaveSerializer, \
+    AdminDraftSerializer, AdminSaveSerializer
+from apps.hr_department.views.decorators import add_user_id, add_owner_id, handler_all_decorator
+from apps.hr_department.views.sends import not_valid_data, not_found, send_data, success_save
+from apps.hr_department.views.utils import delete_drafts, delete_server_saves, get_serializer
 
 
 class SearchHandler(APIView):
-    """
-    Возвращает список сотрудников по полному имени.
-    Отправитель: Администратор.
-    """
-
     @staticmethod
     def get(request):
         full_name = request.GET.get('full_name')
-        # TODO: check for admin
-        # server_employee_information = search_by_full_name(full_name, max_length=MAX_LENGTH_FOR_SEARCH_USERS)
         server_employee_information = ServerEmployeeInformation.objects.filter(full_name__icontains=full_name)
-        serializer = UserSaveEmployeeInformationSerializer(server_employee_information, many=True)
+        serializer = UserSaveSerializer(server_employee_information, many=True)
 
         reformatted_data = []
         for item in serializer.data:
             reformatted_data.append({key: value for key, value in item.items()})
-        
+
         reformatted_data = json.dumps(reformatted_data)
 
         return HttpResponse(reformatted_data, content_type='application/json')
 
 
-class AdminDraftEmployeeHandler(APIView):
-    """
-    Форма для заполнения черновика информации о сотруднике.
-    Отправляется фронтендом.
-    Сериализуется в модель AdminDraftEmployeeInformation.
-    И сохраняется в БД если валидация прошла успешно.
-    Нужно для того, чтобы сотрудник мог сохранить свою форму и вернуться к ней позже.
-    owner_id - id сотрудника, который заполняет форму.
-    user_id - id сотрудника, которого заполняют.
+class AdminDraftHandler(APIView):
+    @staticmethod
+    @add_user_id
+    @add_owner_id
+    def post(request, user_id, owner_id):
+        serializer = get_serializer(AdminDraftSerializer, DraftEmployeeInformation, request.clone_data, user_id=user_id, owner_id=owner_id)
 
-    При создании черновика, owner_id и user_id должны быть разными.
-    """
+        if not serializer.is_valid():
+            return not_valid_data(request, serializer.errors)
 
-    def post(self, request):
-        serializer = UserDraftEmployeeInformationSerializer(data={key: value for key, value in request.data.items()})
-        if serializer.is_valid():
-            user_id = serializer.validated_data['user_id']
-            owner_id = serializer.validated_data['owner_id']
+        delete_drafts(user_id, owner_id)
+        serializer.save()
 
-            # Удаляем старый черновик, если он есть.
-            models = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=owner_id)
-            if models.exists():
-                models.delete()
-
-            # Сохраняем/создаем черновик.
-            serializer.save()
-
-            return HttpResponse(status=201)
-        print(serializer.errors)
-        return HttpResponse(status=400)
+        return HttpResponse(status=201)
 
     @staticmethod
-    def get(request):
-        """
-        Возвращает список всех полей модели DraftEmployeeInformation в виде json.
-        Получает сам создатель. Owner_id = user_id.
-        """
-        owner_id = request.GET['owner_id']
-        user_id = request.GET['user_id']
-        model = DraftEmployeeInformation.objects.all()[0]  # TODO: get the object by id from request
-        serializer = UserDraftEmployeeInformationSerializer(model)
-        return HttpResponse(serializer.data)
+    @handler_all_decorator(DraftEmployeeInformation, AdminDraftSerializer)
+    @add_user_id
+    @add_owner_id
+    def get(request, user_id, owner_id):
+        try:
+            model = DraftEmployeeInformation.objects.get(user_id=user_id,
+                                                         owner_id=owner_id)
+        except DraftEmployeeInformation.DoesNotExist:
+            return not_found(request)
+
+        serializer = AdminDraftSerializer(model)
+
+        return send_data(request, serializer.data)
 
 
-class AdminSaveEmployeeDraftHandler(APIView):
-    """
-    Сохраняет форму сотрудника в БД.
-    И удаляет черновик из БД.
-    """
+class AdminSaveHandler(APIView):
     @staticmethod
-    def post(request):
-        serializer = UserSaveEmployeeInformationSerializer(data={key: value for key, value in request.data.items()})
-        if serializer.is_valid():
-            serializer.save()
+    @add_user_id
+    def post(request, user_id):
+        print(request.clone_data)
 
-            return HttpResponse(status=201)
-        return HttpResponse(status=400)
+        serializer = get_serializer(AdminSaveSerializer, ServerEmployeeInformation, request.clone_data, user_id=user_id)
+
+        if not serializer.is_valid():
+            return not_valid_data(request, serializer.errors)
+
+        delete_server_saves(user_id)
+
+        serializer.save()
+
+        return success_save(request)
 
     @staticmethod
-    def get(request):
-        """
-        Возвращает список всех полей модели DraftEmployeeInformation в виде json.
-        """
-        model = ServerEmployeeInformation.objects.all()[0]
-        serializer = UserSaveEmployeeInformationSerializer(model)
-        return HttpResponse(serializer.data)
+    @handler_all_decorator(ServerEmployeeInformation, AdminSaveSerializer)
+    @add_user_id
+    def get(request, user_id):
+        try:
+            model = ServerEmployeeInformation.objects.get(user_id=user_id)
+        except ServerEmployeeInformation.DoesNotExist:
+            return not_found(request)
 
+        serializer = AdminSaveSerializer(model)
+
+        return send_data(request, serializer.data)

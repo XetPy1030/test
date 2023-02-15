@@ -6,6 +6,24 @@ genders = (
 )
 
 
+class Education(models.Model):
+    education_type = models.TextField(default=None, null=True)
+    educational_institution_name = models.TextField(default=None, null=True)
+    speciality = models.TextField(default=None, null=True)
+    qualification = models.TextField(default=None, null=True)
+    series_and_number = models.TextField(default=None, null=True)
+    date_of_issue = models.DateField(default=None, null=True)
+    photo = models.ImageField(default=None, null=True)
+    language_proficiency = models.TextField(default=None, null=True)
+    date_range_of_education = models.DateField(default=None, null=True)
+
+
+class Children(models.Model):
+    full_name = models.TextField(default=None, null=True)
+    date_of_birthday = models.DateField(default=None, null=True)
+    relation_degree = models.TextField(default=None, null=True)
+
+
 class FormField(models.Model):
     im_foreigner = models.BooleanField(default=None, null=True)
     full_name = models.TextField(default=None, null=True)
@@ -14,8 +32,8 @@ class FormField(models.Model):
     place_of_birthday = models.TextField(default=None, null=True)
     email = models.TextField(default=None, null=True)
     phone_number = models.TextField(default=None, null=True)
-    address_outside_russia = models.TextField(default=None, null=True)
-    address_for_information = models.TextField(default=None, null=True)
+    addresses_address_outside_russia = models.TextField(default=None, null=True)
+    addresses_address_for_information = models.TextField(default=None, null=True)
     married_status_relation_degree = models.TextField(default=None, null=True)
     married_status_full_name = models.TextField(default=None, null=True)
     married_status_date_of_birthday = models.DateField(default=None, null=True)
@@ -33,29 +51,22 @@ class FormField(models.Model):
     passport_reversal_photo = models.ImageField(default=None, null=True)
     passport_registration_photo = models.ImageField(default=None, null=True)
 
-    education_document_education_type = models.TextField(default=None, null=True)
-    education_document_educational_institution_name = models.TextField(default=None, null=True)
-    education_document_speciality = models.TextField(default=None, null=True)
-    education_document_qualification = models.TextField(default=None, null=True)
-    education_document_series_and_number = models.TextField(default=None, null=True)
-    education_document_date_of_issue = models.DateField(default=None, null=True)
-    education_document_date_range_of_education = models.TextField(default=None, null=True)
-    education_document_language_proficiency = models.TextField(default=None, null=True)
-    education_document_photo = models.ImageField(default=None, null=True)
+    # many to many
+    education = models.ManyToManyField(Education, default=[])
 
     military_document_relation_to_military_duty = models.TextField(default=None, null=True)
     military_document_rank = models.TextField(default=None, null=True)
     military_document_composition = models.TextField(default=None, null=True)
     military_document_stock_category = models.TextField(default=None, null=True)
     military_document_vus = models.TextField(default=None, null=True)
-    military_document_fitness = models.BooleanField(default=None, null=True)
+    military_document_fitness = models.TextField(default=None, null=True)
     military_document_commissariat = models.TextField(default=None, null=True)
     military_document_relation_to_military_registration = models.TextField(default=None, null=True)
     military_document_photo = models.ImageField(default=None, null=True)
 
-    childrens_birth_certificates_full_name = models.TextField(default=None, null=True)
-    childrens_birth_certificates_date_of_birthday = models.DateField(default=None, null=True)
-    childrens_birth_certificates_relation_degree = models.TextField(default=None, null=True)
+    # many to many
+    childrens = models.ManyToManyField(Children, default=[])
+
     snils_number = models.TextField(default=None, null=True)
     snils_photo = models.ImageField(default=None, null=True)
     inn_number = models.TextField(default=None, null=True)
@@ -83,10 +94,24 @@ class FormField(models.Model):
     migration_card_photo = models.ImageField(default=None, null=True)
     notice_of_registration_in_russia_photo = models.ImageField(default=None, null=True)
 
+    wage_salary = models.TextField(default=None, null=True)
+    wage_di_award = models.TextField(default=None, null=True)
+    wage_monthly_mbo_award = models.TextField(default=None, null=True)
+    wage_mbo_award_quarter = models.TextField(default=None, null=True)
+    wage_quarterly_option = models.TextField(default=None, null=True)
+    wage_yearly_option = models.TextField(default=None, null=True)
+    wage_quasi_option = models.TextField(default=None, null=True)
+
+    first_vaccination_date = models.DateField(default=None, null=True)
+    second_vaccination_date = models.DateField(default=None, null=True)
+
     is_checked = models.BooleanField(default=None, null=True)
+    is_editable = models.BooleanField(default=None, null=True)
 
     class Meta:
         abstract = True
+
+
 
 
 class DraftEmployeeInformation(FormField):
@@ -94,7 +119,6 @@ class DraftEmployeeInformation(FormField):
     updated_at = models.DateTimeField(auto_now=True)
     user_id = models.TextField()
     owner_id = models.TextField()
-
 
 class ServerEmployeeInformation(FormField):
     created_at = models.DateTimeField(auto_now_add=True)

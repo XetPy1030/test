@@ -3,108 +3,80 @@ from rest_framework.views import APIView
 import json
 
 from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
-from apps.hr_department.serializers.serializers import UserDraftEmployeeInformationSerializer, \
-    UserSaveEmployeeInformationSerializer
+from apps.hr_department.serializers.serializers import UserDraftSerializer, \
+    UserSaveSerializer
+from apps.hr_department.views.decorators import add_user_id, handler_all_decorator
+from apps.hr_department.views.sends import not_valid_data, success_save, not_found, \
+    not_permission_save, send_data
+from apps.hr_department.views.utils import delete_drafts, delete_server_saves, user_is_editable, \
+    get_serializer
 
 
-class UserDraftEmployeeHandler(APIView):
-    """
-    Форма для заполнения черновика информации о сотруднике.
-    Отправляется фронтендом.
-    Сериализуется в модель UserDraftEmployeeInformation.
-    И сохраняется в БД если валидация прошла успешно.
-    Нужно для того, чтобы сотрудник мог сохранить свою форму и вернуться к ней позже.
-    owner_id - id сотрудника, который заполняет форму.
+class UserDraftHandler(APIView):
+    @staticmethod
+    @add_user_id
+    def post(request, user_id):
+        request.clone_data['owner_id'] = request.clone_data['user_id']
 
-    При создании черновика, owner_id и user_id должны быть одинаковыми.
-    """
+        serializer = get_serializer(UserDraftSerializer, DraftEmployeeInformation, request.clone_data, user_id=user_id, owner_id=user_id)
 
-    def post(self, request):
-        clone = request.data.copy()
-        clone['owner_id'] = clone['user_id']
-        serializer = UserDraftEmployeeInformationSerializer(data=clone)
-        if serializer.is_valid():
-            user_id = serializer.validated_data['user_id']
+        if not serializer.is_valid():
+            return not_valid_data(request, serializer.errors)
 
-            # Удаляем старый черновик, если он есть.
-            models = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)
-            if models.exists():
-                models.delete()
+        delete_drafts(user_id, user_id)
+        serializer.save()
 
-            # Сохраняем/создаем черновик.
-            serializer.save()
-
-            json_data = serializer.data
-            json_data = json.dumps(json_data)
-            return HttpResponse(json_data)
-
-
-        return HttpResponse(status=400)
+        return success_save(request)
 
     @staticmethod
-    def get(request):
-        """
-        Возвращает список всех полей модели DraftEmployeeInformation в виде json.
-        Получает сам создатель.
-        """
-        user_id = request.GET.get('user_id')
+    @handler_all_decorator(DraftEmployeeInformation, UserDraftSerializer)
+    @add_user_id
+    def get(request, user_id):
+        try:
+            model = DraftEmployeeInformation.objects.get(user_id=user_id,
+                                                         owner_id=user_id)
+        except DraftEmployeeInformation.DoesNotExist:
+            return not_found(request)
 
-        model = DraftEmployeeInformation.objects.filter(user_id=user_id, owner_id=user_id)  # TODO: get the object by id from request
+        serializer = UserDraftSerializer(model)
 
-        if not model.exists():
-            return HttpResponse(status=404)
-
-        serializer = UserDraftEmployeeInformationSerializer(model, many=True)
-
-        json_data = serializer.data
-        json_data = json.dumps(json_data)
-        return HttpResponse(json_data)
+        return send_data(request, serializer.data)
 
 
-class UserSaveEmployeeHandler(APIView):
-    """
-    Сохраняет форму сотрудника в БД.
-    И удаляет черновик из БД.
-    """
+class UserSaveHandler(APIView):
     @staticmethod
-    def post(request):
-        print(11)
-        print(request.data)
-        clone = request.data.copy()
-        if 'user_id' not in clone:
-            return HttpResponse({'error': 'user_id not found in params request'}, status=401)
-        clone['owner_id'] = clone['user_id']
-        serializer = UserSaveEmployeeInformationSerializer(data=clone)
-        if serializer.is_valid():
-            user_id = serializer.validated_data['user_id']
+    @add_user_id
+    def post(request, user_id):
+        print(
+            request.clone_data
+        )
+        request.clone_data['owner_id'] = request.clone_data['user_id']
 
-            draft = DraftEmployeeInformation.objects.filter(user_id=user_id)
-            if draft.exists():
-                draft.delete()
-            user = ServerEmployeeInformation.objects.filter(user_id=user_id)
-            if user.exists():
-                user.delete()
+        serializer = get_serializer(UserSaveSerializer, ServerEmployeeInformation, request.clone_data, user_id=user_id)
 
-            serializer.save()
+        if not serializer.is_valid():
+            return not_valid_data(request, serializer.errors)
 
-            return HttpResponse(status=201)
+        if not user_is_editable(user_id):
+            return not_permission_save(request)
 
-        print(serializer.errors)
-        return HttpResponse({'error': 'data in request not valid'}, status=402)
+        delete_drafts(user_id, user_id)
+        delete_server_saves(user_id)
+
+        serializer.validated_data['is_editable'] = False
+        serializer.save()
+
+        return success_save(request)
 
     @staticmethod
-    def get(request):
-        """
-        Возвращает список всех полей модели DraftEmployeeInformation в виде json.
-        """
-        user_id = request.GET.get('user_id')
-        model = ServerEmployeeInformation.objects.filter(user_id=user_id)  # TODO: get the object by id from request
+    @handler_all_decorator(ServerEmployeeInformation, UserSaveSerializer)
+    @add_user_id
+    def get(request, user_id):
+        try:
+            model = ServerEmployeeInformation.objects.get(user_id=user_id)
+        except ServerEmployeeInformation.DoesNotExist:
+            return not_found(request)
 
-        if not model.exists():
-            return HttpResponse(status=404)
+        serializer = UserSaveSerializer(model)
 
-        serializer = UserSaveEmployeeInformationSerializer(model, many=True)
-
-        json_data = serializer.data
-        json_data = json.dumps(json_data)
-        return HttpResponse(json_data)
+        return send_data(request, serializer.data)

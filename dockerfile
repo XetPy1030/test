@@ -21,7 +21,6 @@ WORKDIR /usr/src/web/src
 
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
     gcc libc-dev linux-headers postgresql-dev bash && \
-    pip install poetry && \
     pip install gunicorn 
 RUN pip3 install poetry && \
     poetry config virtualenvs.create false && \

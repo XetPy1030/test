@@ -1,1 +1,1 @@
-from .document_serializers import ServerSearchEmployeeInformationDocumentSerializer
+from apps.hr_department.serializers.document_serializers import ServerSearchEmployeeInformationDocumentSerializer
