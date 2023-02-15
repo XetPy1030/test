@@ -130,4 +130,4 @@ class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
     }
 
     # ordering_fields all
-    ordering_fields = set(get_all_fields_for_document(DraftEmployeeInformation) + ['id'])
+    ordering_fields = tuple(get_all_fields_for_document(DraftEmployeeInformation) + ['id'])

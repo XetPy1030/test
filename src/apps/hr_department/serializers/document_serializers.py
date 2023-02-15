@@ -20,4 +20,4 @@ class ServerSearchEmployeeInformationDocumentSerializer(DocumentSerializer):
 class SpreadSheetSearchEmployeeInformationDocumentSerializer(DocumentSerializer):
     class Meta:
         document = ServerSearchEmployeeInformationDocument
-        fields = set(get_all_fields_for_document(DraftEmployeeInformation))
+        fields = tuple(get_all_fields_for_document(DraftEmployeeInformation))
