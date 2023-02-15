@@ -1,8 +1,7 @@
 # elasticsearch-dsl-drf serializers for ServerSearchEmployeeInformationDocument
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 
-from apps.hr_department.documents import ServerSearchEmployeeInformationDocument
-
+from apps.hr_department.documents.admin_search_document import ServerSearchEmployeeInformationDocument
 
 class ServerSearchEmployeeInformationDocumentSerializer(DocumentSerializer):
     class Meta:

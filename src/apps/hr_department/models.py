@@ -1,7 +1,9 @@
 from django.db import models
 
-genders = (("male", "Муж"),
-           ("female", "Жен"))
+genders = (
+    ("male", "Муж"),
+    ("female", "Жен")
+)
 
 
 class Education(models.Model):
@@ -36,7 +38,9 @@ class FormField(models.Model):
     married_status_full_name = models.TextField(default=None, null=True)
     married_status_date_of_birthday = models.DateField(default=None, null=True)
     status_of_the_insured_person_status = models.TextField(default=None, null=True)
+
     gender = models.TextField(choices=genders, default=None, null=True)
+
     passport_series_and_number = models.TextField(default=None, null=True)
     passport_issued_by = models.TextField(default=None, null=True)
     passport_date_of_issue = models.DateField(default=None, null=True)
@@ -46,8 +50,10 @@ class FormField(models.Model):
     passport_registration_date = models.DateField(default=None, null=True)
     passport_reversal_photo = models.ImageField(default=None, null=True)
     passport_registration_photo = models.ImageField(default=None, null=True)
+
     # many to many
-    education = models.ManyToManyField(Education, default=[], null=True)
+    education = models.ManyToManyField(Education, default=[])
+
     military_document_relation_to_military_duty = models.TextField(default=None, null=True)
     military_document_rank = models.TextField(default=None, null=True)
     military_document_composition = models.TextField(default=None, null=True)
@@ -57,8 +63,10 @@ class FormField(models.Model):
     military_document_commissariat = models.TextField(default=None, null=True)
     military_document_relation_to_military_registration = models.TextField(default=None, null=True)
     military_document_photo = models.ImageField(default=None, null=True)
+
     # many to many
-    childrens = models.ManyToManyField(Children, default=[], null=True)
+    childrens = models.ManyToManyField(Children, default=[])
+
     snils_number = models.TextField(default=None, null=True)
     snils_photo = models.ImageField(default=None, null=True)
     inn_number = models.TextField(default=None, null=True)
@@ -85,6 +93,7 @@ class FormField(models.Model):
     temporary_residence_permit_photo = models.ImageField(default=None, null=True)
     migration_card_photo = models.ImageField(default=None, null=True)
     notice_of_registration_in_russia_photo = models.ImageField(default=None, null=True)
+
     wage_salary = models.TextField(default=None, null=True)
     wage_di_award = models.TextField(default=None, null=True)
     wage_monthly_mbo_award = models.TextField(default=None, null=True)
@@ -92,10 +101,13 @@ class FormField(models.Model):
     wage_quarterly_option = models.TextField(default=None, null=True)
     wage_yearly_option = models.TextField(default=None, null=True)
     wage_quasi_option = models.TextField(default=None, null=True)
+
     first_vaccination_date = models.DateField(default=None, null=True)
     second_vaccination_date = models.DateField(default=None, null=True)
+
     is_checked = models.BooleanField(default=None, null=True)
     is_editable = models.BooleanField(default=None, null=True)
+
     class Meta:
         abstract = True
 
@@ -111,3 +123,4 @@ class ServerEmployeeInformation(FormField):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user_id = models.TextField()
+
