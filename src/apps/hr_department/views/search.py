@@ -106,26 +106,26 @@ class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
     # search_fields all
     search_fields = tuple(get_all_fields_for_document(DraftEmployeeInformation) + ['id'])
 
-    # filter_fields = {
-    #     'id': {
-    #         'field': 'id',
-    #         'lookups': [
-    #             LOOKUP_FILTER_RANGE,
-    #             LOOKUP_QUERY_IN,
-    #             LOOKUP_QUERY_GT,
-    #             LOOKUP_QUERY_GTE,
-    #             LOOKUP_QUERY_LT,
-    #             LOOKUP_QUERY_LTE,
-    #         ],
-    #     },
-    #     # for all fields
-    #     **{field: {
-    #         'field': field,
-    #         'lookups': [
-    #             LOOKUP_FILTER_EXISTS
-    #         ]} for field in get_all_fields_for_document(DraftEmployeeInformation)
-    #     },
-    # }
+    filter_fields = {
+        'id': {
+            'field': 'id',
+            'lookups': [
+                LOOKUP_FILTER_RANGE,
+                LOOKUP_QUERY_IN,
+                LOOKUP_QUERY_GT,
+                LOOKUP_QUERY_GTE,
+                LOOKUP_QUERY_LT,
+                LOOKUP_QUERY_LTE,
+            ],
+        },
+        # for all fields
+        **{field: {
+            'field': field,
+            'lookups': [
+                LOOKUP_FILTER_EXISTS
+            ]} for field in get_all_fields_for_document(DraftEmployeeInformation)
+        },
+    }
 
     # generate ordering_fields
     ordering_fields = {
