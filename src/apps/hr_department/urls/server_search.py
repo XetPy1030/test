@@ -6,7 +6,7 @@ router = DefaultRouter()
 search = router.register(r'search_employers',
                          views.ServerSearchEmployeeInformationDocumentViewSet,
                          basename='searversearchdocument')
-search.register(r'spreadSheet_search_document',
+spreadSheet_search = router.register(r'spreadSheet_search_document',
                 views.SpreadSheetSearchEmployeeInformationDocumentViewSet,
                 basename='spreadSheetSearchdocument',)
 urlpatterns = router.urls
