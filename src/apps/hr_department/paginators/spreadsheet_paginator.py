@@ -6,7 +6,7 @@ class SpreadSheetPagination(QueryFriendlyPageNumberPagination):
 
     def get_paginated_response_context(self, data):
         __data = super(
-            CustomPageNumberPagination,
+            SpreadSheetPagination,
             self
         ).get_paginated_response_context(data)
         __data.append(
