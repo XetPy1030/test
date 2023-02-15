@@ -34,6 +34,7 @@ html_strip = analyzer(
     char_filter=["html_strip"]
 )
 
+
 #
 @serversearchemployeeinformation.doc_type
 class ServerSearchEmployeeInformationDocument(Document):
