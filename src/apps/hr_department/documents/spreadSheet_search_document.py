@@ -50,6 +50,7 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
             analyzer=html_strip,
             fields={
                 'raw': fields.TextField(analyzer='keyword'),
+                'keyword': fields.TextField(analyzer='keyword'),
             }
         )
 
