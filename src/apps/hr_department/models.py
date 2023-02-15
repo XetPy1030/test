@@ -112,12 +112,13 @@ class FormField(models.Model):
         abstract = True
 
 
+
+
 class DraftEmployeeInformation(FormField):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user_id = models.TextField()
     owner_id = models.TextField()
-
 
 class ServerEmployeeInformation(FormField):
     created_at = models.DateTimeField(auto_now_add=True)
