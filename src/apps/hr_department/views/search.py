@@ -130,4 +130,5 @@ class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
     }
 
     # dsl drf ordering_fields all
-    ordering_fields = tuple(get_all_fields_for_document(DraftEmployeeInformation)) + ('id',)
+    # ordering_fields = tuple(get_all_fields_for_document(DraftEmployeeInformation)) + ('id',)
+    ordering_fields = ('id',)
