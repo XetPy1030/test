@@ -10,7 +10,7 @@ from apps.hr_department.utils import get_all_fields_for_document
 
 # document for spreadSheet_search_document
 
-spreadSheet_search_document = Index('spreadSheet_search_document')
+spreadSheet_search_document = Index('spreadsheet_search_document')
 spreadSheet_search_document.settings(
     number_of_shards=1,
     number_of_replicas=0
