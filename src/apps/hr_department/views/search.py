@@ -5,6 +5,7 @@ from apps.hr_department.serializers.document_serializers import SpreadSheetSearc
 from apps.hr_department.documents.admin_search_document import ServerSearchEmployeeInformationDocument
 from apps.hr_department.models import DraftEmployeeInformation
 from apps.hr_department.serializers.document_serializers import ServerSearchEmployeeInformationDocumentSerializer
+from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
 
 from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_COMPLETION, LOOKUP_FILTER_GEO_DISTANCE, LOOKUP_FILTER_RANGE, LOOKUP_QUERY_IN, LOOKUP_QUERY_GT,
@@ -94,6 +95,7 @@ class ServerSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
 class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
     document = SpreadSheetSearchEmployeeInformationDocument
     serializer_class = SpreadSheetSearchEmployeeInformationDocumentSerializer
+    pagination_class = PageNumberPagination
 
     filter_backends = [
         FilteringFilterBackend,
