@@ -94,6 +94,7 @@ class ServerSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
 
 class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
     document = SpreadSheetSearchEmployeeInformationDocument
+    serializer_class = SpreadSheetSearchEmployeeInformationDocumentSerializer
 
     filter_backends = [
         FilteringFilterBackend,
