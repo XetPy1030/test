@@ -1,5 +1,6 @@
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 from apps.hr_department.documents.spreadSheet_search_document import SpreadSheetSearchEmployeeInformationDocument
+from apps.hr_department.paginators.spreadsheet_paginator import SpreadSheetPagination
 from apps.hr_department.serializers.document_serializers import SpreadSheetSearchEmployeeInformationDocumentSerializer
 
 from apps.hr_department.documents.admin_search_document import ServerSearchEmployeeInformationDocument
@@ -104,7 +105,7 @@ class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
         SearchFilterBackend,
     ]
 
-    pagination_class = QueryFriendlyPageNumberPagination
+    pagination_class = SpreadSheetPagination
 
     # search_fields all
     search_fields = tuple(get_all_fields_for_document(DraftEmployeeInformation) + ['id'])
