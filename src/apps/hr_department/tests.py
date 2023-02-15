@@ -4,8 +4,8 @@ from io import BytesIO
 from PIL import Image
 from django.test import TestCase, Client
 
-from apps.hr_department.views import UserSaveHandler
 
+from apps.hr_department.views import UserSaveHandler
 
 def get_base64_from_image(image_path: str):
     image = Image.open(open(image_path, 'rb'))

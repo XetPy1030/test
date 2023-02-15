@@ -45,7 +45,7 @@ class ServerSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
                 LOOKUP_QUERY_LTE,
             ],
         },
-        }
+    }
 
     functional_suggester_fields = {
         'full_name_suggest': {
@@ -67,7 +67,6 @@ class ServerSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
             },
         },
     }
-
 
     suggester_fields = {
         'full_name_suggest': {
@@ -94,6 +93,7 @@ class ServerSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
 from apps.hr_department.documents.spreadSheet_search_document import SpreadSheetSearchEmployeeInformationDocument
 from apps.hr_department.serializers.document_serializers import SpreadSheetSearchEmployeeInformationDocumentSerializer
 
+
 class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
     document = SpreadSheetSearchEmployeeInformationDocument
     serializer_class = SpreadSheetSearchEmployeeInformationDocumentSerializer
@@ -103,13 +103,12 @@ class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,
         SearchFilterBackend,
-        ]
+    ]
 
     # search_fields all
     search_fields = get_all_fields_for_document(DraftEmployeeInformation) + ['id']
 
-
-    filtering_fields = {
+    filter_fields = {
         'id': {
             'field': 'id',
             'lookups': [
