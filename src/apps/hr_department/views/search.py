@@ -134,6 +134,6 @@ class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
     # generate ordering_fields
     ordering_fields = {
         'id': 'id',
-        **{field: field + ".keyword" for field in get_all_fields_for_document(DraftEmployeeInformation)}
+        **{field: field + ".raw" for field in get_all_fields_for_document(DraftEmployeeInformation)}
     }
     ordering = ('id',)

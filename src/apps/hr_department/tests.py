@@ -4,7 +4,7 @@ from io import BytesIO
 from PIL import Image
 from django.test import TestCase, Client
 
-
+from apps.hr_department.documents.spreadSheet_search_document import SpreadSheetSearchEmployeeInformationDocument
 from apps.hr_department.views import UserSaveHandler
 
 def get_base64_from_image(image_path: str):
@@ -69,3 +69,5 @@ class DraftEmployeeInformationTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
         response = self.client.post(self.admin_save_url.format(1), data_for_serializer)
         self.assertEqual(response.status_code, 201)
+        # get all field from SpreadSheetSearchEmployeeInformationDocument
+        print(SpreadSheetSearchEmployeeInformationDocument._fields)

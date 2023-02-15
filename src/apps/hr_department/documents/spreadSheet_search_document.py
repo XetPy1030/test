@@ -43,16 +43,22 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
 
     # generate fields for all fields_list
     for field in get_all_fields_for_document(ServerEmployeeInformation):
-        if field == 'user_id':
+        if field == 'user_id' or field == 'full_name':
             continue
         locals()[field] = fields.TextField(
             attr=field,
             analyzer=html_strip,
             fields={
                 'raw': fields.TextField(analyzer='keyword'),
-                'keyword': fields.TextField(analyzer='keyword'),
             }
         )
+    full_name = fields.TextField(
+        attr="full_name",
+        analyzer=html_strip,
+        fields={
+            'raw': fields.TextField(analyzer='keyword')
+        }
+    )
 
     class Django:
         model = ServerEmployeeInformation
