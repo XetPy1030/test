@@ -25,7 +25,7 @@ class Children(models.Model):
 
 
 class FormField(models.Model):
-    im_foreigner = models.BooleanField(default=None, null=True)
+    im_foreigner = models.BooleanField(default=False, null=True)
     full_name = models.TextField(default=None, null=True)
     date_of_birthday = models.DateField(default=None, null=True)
     citizenship = models.TextField(default=None, null=True)

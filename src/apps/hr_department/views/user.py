@@ -10,6 +10,7 @@ from apps.hr_department.views.utils import delete_drafts, delete_server_saves, u
     get_serializer
 
 
+
 class UserDraftHandler(APIView):
     @staticmethod
     @add_user_id
