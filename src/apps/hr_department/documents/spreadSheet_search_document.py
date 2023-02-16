@@ -42,14 +42,12 @@ html_strip = analyzer(
 class SpreadSheetSearchEmployeeInformationDocument(Document):
     id = fields.IntegerField(attr='id')
 
-    date_fields = get_date_fields_for_document(ServerEmployeeInformation)
-
-    other_fields = get_all_fields_for_document(ServerEmployeeInformation)
+    date_fields, other_fields = get_date_fields_for_document(ServerEmployeeInformation)
 
     for field in date_fields:
         locals()[field] = fields.TextField(
             attr=field,
-            analyzer="keyword"
+            analyzer="keyword",
         )
 
     # generate fields for all fields_list
