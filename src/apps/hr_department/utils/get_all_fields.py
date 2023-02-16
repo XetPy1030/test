@@ -12,6 +12,7 @@ def get_all_fields_for_document(model):
 
 def get_date_fields_for_document(model):
     date_fields_list = []
+    fields_without_format = []
     other = []
     for field in model._meta.fields:
         # if type of django field == ImageField or FileField, then skip
@@ -22,7 +23,10 @@ def get_date_fields_for_document(model):
         if type(field).__name__ == 'DateField':
             date_fields_list.append(field.name)
             continue
+        elif field.name == "status":
+            fields_without_format.append(field.name)
+            continue
         else:
             other.append(field.name)
             continue
-    return date_fields_list, other
+    return date_fields_list, fields_without_format, other
