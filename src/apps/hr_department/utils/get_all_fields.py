@@ -10,6 +10,8 @@ def get_all_fields_for_document(model):
         if field.name == 'id':
             continue
         fields_list.append(field.name)
+    for field in model._meta.local_many_to_many:
+        fields_list.append(field.name)
     return fields_list
 
 
