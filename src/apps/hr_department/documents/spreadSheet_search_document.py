@@ -7,6 +7,7 @@ from django_elasticsearch_dsl import (
 )
 
 from apps.hr_department.utils import get_all_fields_for_document
+from apps.hr_department.utils.get_all_fields import get_date_fields_for_document
 
 # document for spreadSheet_search_document
 
@@ -41,8 +42,17 @@ html_strip = analyzer(
 class SpreadSheetSearchEmployeeInformationDocument(Document):
     id = fields.IntegerField(attr='id')
 
+    date_fields = get_date_fields_for_document(ServerEmployeeInformation)
+
+    other_fields = get_all_fields_for_document(ServerEmployeeInformation)
+
+    for field in date_fields:
+        locals()[field] = fields.TextField(
+            attr=field,
+        )
+
     # generate fields for all fields_list
-    for field in get_all_fields_for_document(ServerEmployeeInformation):
+    for field in other_fields:
         if field == 'user_id' or field == 'full_name':
             continue
         locals()[field] = fields.TextField(
