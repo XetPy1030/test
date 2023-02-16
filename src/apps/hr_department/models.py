@@ -102,11 +102,15 @@ class FormField(models.Model):
     wage_yearly_option = models.TextField(default=None, null=True)
     wage_quasi_option = models.TextField(default=None, null=True)
 
-    first_vaccination_date = models.DateField(default=None, null=True)
-    second_vaccination_date = models.DateField(default=None, null=True)
+    vaccination_first_date = models.DateField(default=None, null=True)
+    vaccination_second_date = models.DateField(default=None, null=True)
 
     is_checked = models.BooleanField(default=None, null=True)
     is_editable = models.BooleanField(default=None, null=True)
+
+    status = models.TextField(default=None, null=True)
+
+
 
     class Meta:
         abstract = True

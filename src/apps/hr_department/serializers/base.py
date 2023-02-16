@@ -3,9 +3,10 @@ import os
 from django.http import QueryDict
 from rest_framework import serializers
 
-from apps.hr_department.models import Children, Education
+from apps.hr_department.models import Children, Education, ServerEmployeeInformation
 from apps.hr_department.serializers.utils.fields import fields_frontend_to_backend, fields_backend_to_frontend
 from apps.hr_department.serializers.utils.reformaters import reformat_frontend_fields, reformat_iter_frontend_fields
+from apps.hr_department.serializers.utils.status import calculate_status
 from config import settings
 
 
@@ -14,11 +15,41 @@ class ChildrenSerializer(serializers.ModelSerializer):
         model = Children
         fields = ("full_name", "date_of_birthday", "relation_degree")
 
+    def to_internal_value(self, data):
+        if isinstance(data, QueryDict):
+            data = data.dict()
+
+        for key, value in data.items():
+            if value == 'null' or value == 'undefined':
+                data[key] = None
+
+        return super().to_internal_value(data)
+
 
 class EducationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Education
-        fields = ("education_type", "educational_institution_name", "speciality", "qualification", "series_and_number")
+        fields = (
+            "education_type",
+            "educational_institution_name",
+            "speciality",
+            "qualification",
+            "series_and_number",
+            "date_of_issue",
+            "date_range_of_education",
+            "language_proficiency",
+            "photo"
+        )
+
+    def to_internal_value(self, data):
+        if isinstance(data, QueryDict):
+            data = data.dict()
+
+        for key, value in data.items():
+            if value == 'null' or value == 'undefined':
+                data[key] = None
+
+        return super().to_internal_value(data)
 
 
 class BaseMeta:
@@ -64,11 +95,6 @@ class BaseSerializer(serializers.ModelSerializer):
         return instance
 
     def to_internal_value(self, data: QueryDict):
-        # data = {
-        #     self.get_field_backend_name(key): value for key, value in data.items()
-        # }
-
-        # QueryDict to dict
         if isinstance(data, QueryDict):
             data = data.dict()
 
@@ -86,9 +112,9 @@ class BaseSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         data = data.copy()
 
-        # data = {
-        #     self.get_field_frontend_name(key): value for key, value in data.items()
-        # }
+        if isinstance(self.Meta.model, ServerEmployeeInformation) or self.Meta.model == ServerEmployeeInformation:
+            status = calculate_status(instance.user_id)
+            data['status'] = status
 
         for image in data:
             if 'photo' in image:
@@ -106,3 +132,7 @@ class BaseSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_field_backend_name(field):
         return fields_frontend_to_backend.get(field, field)
+
+    def get_status(self):
+        user_id = self.validated_data.get('user_id')
+        return calculate_status(user_id)

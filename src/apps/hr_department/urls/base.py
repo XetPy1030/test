@@ -15,6 +15,7 @@ urlpatterns_admin = [
 urlpatterns = [
     path('user/', include(urlpatterns_user)),
     path('admin/', include(urlpatterns_admin)),
-    path('image/', views.image_handler)
+    path('image/', views.image_handler),
+    path('status/', views.status_handler)
 ]
 

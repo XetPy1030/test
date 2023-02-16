@@ -11,8 +11,7 @@ from django_elasticsearch_dsl_drf.pagination import PageNumberPagination, QueryF
 from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_COMPLETION, LOOKUP_FILTER_GEO_DISTANCE, LOOKUP_FILTER_RANGE, LOOKUP_QUERY_IN, LOOKUP_QUERY_GT,
     LOOKUP_QUERY_GTE, LOOKUP_QUERY_LT, LOOKUP_QUERY_LTE, FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
-    FUNCTIONAL_SUGGESTER_COMPLETION_MATCH, LOOKUP_QUERY_CONTAINS
-
+    FUNCTIONAL_SUGGESTER_COMPLETION_MATCH, LOOKUP_FILTER_WILDCARD
 )
 
 from django_elasticsearch_dsl_drf.filter_backends import (
@@ -126,7 +125,7 @@ class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
         **{field: {
             'field': field,
             'lookups': [
-                LOOKUP_QUERY_CONTAINS
+                LOOKUP_FILTER_WILDCARD
             ]} for field in get_all_fields_for_document(DraftEmployeeInformation)
         },
     }

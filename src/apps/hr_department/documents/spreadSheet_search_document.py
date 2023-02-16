@@ -49,7 +49,7 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
             attr=field,
             analyzer=html_strip,
             fields={
-                'raw': fields.TextField(analyzer='keyword'),
+                'raw': fields.TextField(analyzer='keyword')
             }
         )
     full_name = fields.TextField(

@@ -5,6 +5,7 @@ import json
 from apps.hr_department.models import ServerEmployeeInformation, DraftEmployeeInformation
 from apps.hr_department.serializers.serializers import UserSaveSerializer, \
     AdminDraftSerializer, AdminSaveSerializer
+from apps.hr_department.serializers.utils.status import calculate_status, calculate_check_is_server_model
 from apps.hr_department.views.decorators import add_user_id, add_owner_id, handler_all_decorator
 from apps.hr_department.views.sends import not_valid_data, not_found, send_data, success_save
 from apps.hr_department.views.utils import delete_drafts, delete_server_saves, get_serializer
@@ -61,8 +62,6 @@ class AdminSaveHandler(APIView):
     @staticmethod
     @add_user_id
     def post(request, user_id):
-        print(request.clone_data)
-
         serializer = get_serializer(AdminSaveSerializer, ServerEmployeeInformation, request.clone_data, user_id=user_id)
 
         if not serializer.is_valid():
@@ -70,6 +69,15 @@ class AdminSaveHandler(APIView):
 
         delete_server_saves(user_id)
 
+        is_editable = serializer.validated_data.get('is_editable', False)
+        is_checked = serializer.validated_data.get('is_checked', False)
+        data = {
+            'is_editable': is_editable,
+            'is_checked': is_checked,
+            'user_id': user_id
+        }
+        status = calculate_check_is_server_model(data)
+        serializer.validated_data['status'] = status
         serializer.save()
 
         return success_save(request)

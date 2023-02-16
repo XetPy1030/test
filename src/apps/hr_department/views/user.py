@@ -1,6 +1,4 @@
-from django.http import HttpResponse
 from rest_framework.views import APIView
-import json
 
 from apps.hr_department.models import DraftEmployeeInformation, ServerEmployeeInformation
 from apps.hr_department.serializers.serializers import UserDraftSerializer, \
@@ -47,9 +45,6 @@ class UserSaveHandler(APIView):
     @staticmethod
     @add_user_id
     def post(request, user_id):
-        print(
-            request.clone_data
-        )
         request.clone_data['owner_id'] = request.clone_data['user_id']
 
         serializer = get_serializer(UserSaveSerializer, ServerEmployeeInformation, request.clone_data, user_id=user_id)
@@ -64,6 +59,8 @@ class UserSaveHandler(APIView):
         delete_server_saves(user_id)
 
         serializer.validated_data['is_editable'] = False
+        serializer.validated_data['is_checked'] = False
+        serializer.validated_data['status'] = "user_sent"
         serializer.save()
 
         return success_save(request)

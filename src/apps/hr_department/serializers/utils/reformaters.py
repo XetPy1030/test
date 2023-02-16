@@ -74,7 +74,6 @@ def reformat_iter_frontend_fields(data: dict):
     for infos_field in iter_fields:  # children, education
         for field in infos_field['frontend_fields']:  # full_name, birth_date
             if "0__" + field['frontend_name'] in data:
-                print(11)
                 clear_data[infos_field['backend_name']] = []
 
     count = {
@@ -83,16 +82,6 @@ def reformat_iter_frontend_fields(data: dict):
         )
         for i in iter_fields
     }
-
-    print(data.keys().__str__())
-
-    print(
-        iter_fields[0]['frontend_fields'][0]['frontend_name']
-    )
-
-    print(
-        count
-    )
 
     for infos_field in iter_fields:  # children, education
         for field in infos_field['frontend_fields']:  # full_name, birth_date

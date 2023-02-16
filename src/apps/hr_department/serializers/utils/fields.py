@@ -163,7 +163,7 @@ iter_fields = [
             },
             {
                 'backend_name': 'qualification',
-                'frontend_name': 'education__qualification',
+                'frontend_name': 'education_qualification',
             },
             {
                 'backend_name': 'series_and_number',

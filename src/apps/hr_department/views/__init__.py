@@ -1,3 +1,4 @@
+from apps.hr_department.serializers.utils.status import calculate_status
 from apps.hr_department.views.admin import SearchHandler, AdminSaveHandler, AdminDraftHandler
 from apps.hr_department.views.user import UserSaveHandler, UserDraftHandler
 from config import settings
@@ -34,3 +35,9 @@ def image_handler(request):
         return HttpResponse(data, content_type=content_type)
     except FileNotFoundError:
         return HttpResponse({'error': 'image not found'}, status=404)
+
+
+def status_handler(request):
+    user_id = request.GET['user_id']
+    status = calculate_status(user_id)
+    return HttpResponse({"status": status}, content_type='application/json')
