@@ -49,6 +49,7 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
     for field in date_fields:
         locals()[field] = fields.TextField(
             attr=field,
+            analyzer="keyword"
         )
 
     # generate fields for all fields_list
