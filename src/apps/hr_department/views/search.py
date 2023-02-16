@@ -124,7 +124,7 @@ class SpreadSheetSearchEmployeeInformationDocumentViewSet(DocumentViewSet):
         },
         # for all fields
         **{field: {
-            'field': field + ".raw",
+            'field': field,
             'lookups': [
                 LOOKUP_QUERY_CONTAINS
             ]} for field in get_all_fields_for_document(DraftEmployeeInformation)
