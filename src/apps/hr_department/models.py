@@ -65,7 +65,7 @@ class FormField(models.Model):
     military_document_photo = models.ImageField(default=None, null=True)
 
     # many to many
-    childrens = models.ManyToManyField(Children, default=[])
+    children = models.ManyToManyField(Children, default=[])
 
     snils_number = models.TextField(default=None, null=True, blank=True)
     snils_photo = models.ImageField(default=None, null=True)
@@ -118,7 +118,7 @@ class FormField(models.Model):
 
     @property
     def childrens_indexing(self):
-        return [children_item for children_item in self.childrens.all()]
+        return [children_item for children_item in self.children.all()]
 
 
 

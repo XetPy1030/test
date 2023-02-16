@@ -57,14 +57,16 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
         )
 
     for field in nested:
-        locals()[str(field.__name__).lower()] = fields.NestedField(
-            attr=str(field.__name__).lower() + "_indexing",
+        print(field.verbose_name)
+        print(get_model_by_name("hr_department", field.verbose_name))
+        locals()[field.verbose_name] = fields.NestedField(
+            attr=field.verbose_name + "_indexing",
             # generate fields for each nested field
             fields={
                 **{gen_field: fields.TextField(
                     attr=gen_field,
                     analyzer="keyword"
-                ) for gen_field in get_all_fields_for_document(field)}
+                ) for gen_field in get_all_fields_for_document(get_model_by_name("hr_department", field.verbose_name))},
             },
             multi=True,
         )

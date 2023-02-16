@@ -70,4 +70,3 @@ class DraftEmployeeInformationTestCase(TestCase):
         response = self.client.post(self.admin_save_url.format(1), data_for_serializer)
         self.assertEqual(response.status_code, 201)
         # dsl drf get all fields from elastic search document SpreadSheetSearchEmployeeInformationDocument
-        print(SpreadSheetSearchEmployeeInformationDocument.__dict__)

@@ -26,6 +26,8 @@ def get_date_fields_for_document(model):
     fields_without_format = []
     nested_fields = []
     other = []
+    # get ManyToMany fields
+    # print(model._meta.__dict__)
     for field in model._meta.fields:
         # if type of django field == ImageField or FileField, then skip
         if type(field).__name__ == 'ImageField' or type(field).__name__ == 'FileField':
@@ -38,9 +40,9 @@ def get_date_fields_for_document(model):
         elif field.name == "status" or field.name == "gender":
             fields_without_format.append(field.name)
             continue
-        elif type(field).__name__ == 'ManyToManyField':
-            nested_fields.append(field.name)
         else:
             other.append(field.name)
             continue
+    for field in model._meta.local_many_to_many:
+        nested_fields.append(field)
     return date_fields_list, fields_without_format, nested_fields, other
