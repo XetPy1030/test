@@ -38,7 +38,7 @@ def get_date_fields_for_document(model):
         elif field.name == "status" or field.name == "gender":
             fields_without_format.append(field.name)
             continue
-        elif type(field).__name__ == 'ForeignKey':
+        elif type(field).__name__ == 'ManyToManyField':
             nested_fields.append(field.name)
         else:
             other.append(field.name)
