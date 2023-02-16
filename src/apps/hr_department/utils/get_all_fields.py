@@ -23,7 +23,7 @@ def get_date_fields_for_document(model):
         if type(field).__name__ == 'DateField':
             date_fields_list.append(field.name)
             continue
-        elif field.name == "status":
+        elif field.name == "status" or field.name == "gender":
             fields_without_format.append(field.name)
             continue
         else:
