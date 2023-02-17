@@ -51,6 +51,7 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
         )
 
     for field in date_fields:
+        print(photos_field)
         locals()[field] = fields.TextField(
             attr=field,
             analyzer="keyword",
