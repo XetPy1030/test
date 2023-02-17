@@ -26,13 +26,13 @@ def get_model_by_name(app_name, model_name):
 def get_date_fields_for_document(model):
     date_fields_list = []
     fields_without_format = []
+    photo_fields = []
     nested_fields = []
     other = []
     # get ManyToMany fields
-    # print(model._meta.__dict__)
     for field in model._meta.fields:
         # if type of django field == ImageField or FileField, then skip
-        if type(field).__name__ == 'ImageField' or type(field).__name__ == 'FileField':
+        if type(field).__name__ == 'FileField':
             continue
         if field.name == 'id':
             continue
@@ -42,9 +42,11 @@ def get_date_fields_for_document(model):
         elif field.name == "status" or field.name == "gender":
             fields_without_format.append(field.name)
             continue
+        elif type(field).__name__ == 'ImageField':
+            photo_fields.append(field.name)
         else:
             other.append(field.name)
             continue
     for field in model._meta.local_many_to_many:
         nested_fields.append(field)
-    return date_fields_list, fields_without_format, nested_fields, other
+    return date_fields_list, fields_without_format, photo_fields, nested_fields, other

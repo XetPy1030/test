@@ -42,7 +42,13 @@ html_strip = analyzer(
 class SpreadSheetSearchEmployeeInformationDocument(Document):
     id = fields.IntegerField(attr='id')
 
-    date_fields, fields_without_format, nested, other_fields = get_date_fields_for_document(ServerEmployeeInformation)
+    date_fields, fields_without_format, photos_field, nested, other_fields = get_date_fields_for_document(ServerEmployeeInformation)
+
+    for photo in photos_field:
+        locals()[photo] = fields.TextField(
+            attr=photo,
+            analyzer="keyword",
+        )
 
     for field in date_fields:
         locals()[field] = fields.TextField(
