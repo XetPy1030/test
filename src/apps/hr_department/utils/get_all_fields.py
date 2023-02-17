@@ -5,7 +5,7 @@ def get_all_fields_for_document(model):
     fields_list = []
     for field in model._meta.fields:
         # if type of django field == ImageField or FileField, then skip
-        if type(field).__name__ == 'ImageField' or type(field).__name__ == 'FileField':
+        if type(field).__name__ == 'FileField':
             continue
         if field.name == 'id':
             continue
@@ -32,7 +32,7 @@ def get_date_fields_for_document(model):
     # get ManyToMany fields
     for field in model._meta.fields:
         # if type of django field == ImageField or FileField, then skip
-        if type(field).__name__ == 'FileField' or type(field).__name__ == 'ImageField':
+        if type(field).__name__ == 'FileField':
             continue
         if field.name == 'id':
             continue
@@ -42,8 +42,8 @@ def get_date_fields_for_document(model):
         elif field.name == "status" or field.name == "gender":
             fields_without_format.append(field.name)
             continue
-        # elif type(field).__name__ == 'ImageField':
-        #     photo_fields.append(field.name)
+        elif type(field).__name__ == 'ImageField':
+            photo_fields.append(field.name)
         else:
             other.append(field.name)
             continue
