@@ -46,7 +46,7 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
 
     for photo in photos_field:
         locals()[photo] = fields.TextField(
-            attr=photo,
+            attr=photo + ".url",
             analyzer="keyword",
         )
 
@@ -95,7 +95,7 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
     )
 
     def prepare_image(self, instance):
-        return instance.image.url if instance.image else ''
+        return instance.url if instance else ''
 
     class Django:
         model = ServerEmployeeInformation
