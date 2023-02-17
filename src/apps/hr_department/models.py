@@ -25,6 +25,12 @@ class Children(models.Model):
 
 
 class FormField(models.Model):
+    def __init__(self, *args, **kwargs):
+        super(FormField, self).__init__(*args, **kwargs)
+        for photo_field in self._meta.get_fields():
+            if isinstance(photo_field, models.ImageField):
+                locals()[photo_field.name + "_indexing"] = lambda: self.photo_field.url
+
     im_foreigner = models.BooleanField(default=False, null=True)
     full_name = models.TextField(default=None, null=True, blank=True)
     date_of_birthday = models.DateField(default=None, null=True)
@@ -120,17 +126,8 @@ class FormField(models.Model):
     def childrens_indexing(self):
         return [children_item for children_item in self.children.all()]
 
-    for photo_field in super()._meta.get_fields():
-        if isinstance(photo_field, models.ImageField):
-            locals()[photo_field.name + "_indexing"] = lambda self: self.photo_field.url
-
-
-
-
     class Meta:
         abstract = True
-
-
 
 
 class DraftEmployeeInformation(FormField):
@@ -139,8 +136,8 @@ class DraftEmployeeInformation(FormField):
     user_id = models.TextField()
     owner_id = models.TextField()
 
+
 class ServerEmployeeInformation(FormField):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user_id = models.TextField()
-
