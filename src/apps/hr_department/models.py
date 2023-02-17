@@ -31,7 +31,6 @@ class FormField(models.Model):
             if isinstance(photo_field, models.ImageField):
                 locals()[photo_field.name + "_indexing"] = lambda field=photo_field: self._meta.get_field(photo_field).url
 
-
     im_foreigner = models.BooleanField(default=False, null=True)
     full_name = models.TextField(default=None, null=True, blank=True)
     date_of_birthday = models.DateField(default=None, null=True)

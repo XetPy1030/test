@@ -46,12 +46,11 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
 
     for photo in photos_field:
         locals()[photo] = fields.TextField(
-            attr=photo + "_indexing",
+            attr=photo,
             analyzer="keyword",
         )
 
     for field in date_fields:
-        print(photos_field)
         locals()[field] = fields.TextField(
             attr=field,
             analyzer="keyword",
@@ -94,6 +93,9 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
             'raw': fields.TextField(analyzer='keyword')
         }
     )
+
+    def prepare_image(self, instance):
+        return instance.image.url if instance.image else ''
 
     class Django:
         model = ServerEmployeeInformation
