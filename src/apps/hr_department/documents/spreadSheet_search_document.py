@@ -44,11 +44,6 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
 
     date_fields, fields_without_format, photos_field, nested, other_fields = get_date_fields_for_document(ServerEmployeeInformation)
 
-    for photo in photos_field:
-        locals()[photo] = fields.TextField(
-            attr=photo + "_indexing",
-            analyzer="keyword",
-        )
 
     for field in date_fields:
         locals()[field] = fields.TextField(
@@ -99,6 +94,9 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
 
     class Django:
         model = ServerEmployeeInformation
+        date_fields, fields_without_format, photos_field, nested, other_fields = get_date_fields_for_document(
+            ServerEmployeeInformation)
         fields = [
             'user_id',
+            *[str(field) for field in photos_field]
         ]

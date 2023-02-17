@@ -25,15 +25,7 @@ class Children(models.Model):
 
 
 class FormField(models.Model):
-    def __init__(self, *args, **kwargs):
-        super(FormField, self).__init__(*args, **kwargs)
 
-        def serialize(field):
-            print(self._meta.get_field(field).url)
-            return self._meta.get_field(field).url
-        for photo_field in self._meta.get_fields():
-            if isinstance(photo_field, models.ImageField):
-                locals()[photo_field.name + "_indexing"] = lambda field=photo_field: serialize(field)
 
     im_foreigner = models.BooleanField(default=False, null=True)
     full_name = models.TextField(default=None, null=True, blank=True)
