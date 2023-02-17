@@ -32,7 +32,7 @@ def get_date_fields_for_document(model):
     # get ManyToMany fields
     for field in model._meta.fields:
         # if type of django field == ImageField or FileField, then skip
-        if type(field).__name__ == 'FileField':
+        if type(field).__name__ == 'FileField' or type(field).__name__ == 'ImageField':
             continue
         if field.name == 'id':
             continue
