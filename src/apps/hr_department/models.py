@@ -29,7 +29,7 @@ class FormField(models.Model):
         super(FormField, self).__init__(*args, **kwargs)
         for photo_field in self._meta.get_fields():
             if isinstance(photo_field, models.ImageField):
-                locals()[photo_field.name + "_indexing"] = lambda field=photo_field: self.field.url
+                locals()[photo_field.name + "_indexing"] = lambda field=photo_field: self[field].url
 
     im_foreigner = models.BooleanField(default=False, null=True)
     full_name = models.TextField(default=None, null=True, blank=True)
