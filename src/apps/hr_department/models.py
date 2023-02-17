@@ -120,6 +120,10 @@ class FormField(models.Model):
     def childrens_indexing(self):
         return [children_item for children_item in self.children.all()]
 
+    for photo_field in super()._meta.get_fields():
+        if isinstance(photo_field, models.ImageField):
+            locals()[photo_field.name + "_indexing"] = lambda self: self.photo_field.url
+
 
 
 

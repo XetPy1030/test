@@ -46,7 +46,7 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
 
     for photo in photos_field:
         locals()[photo] = fields.TextField(
-            attr=photo,
+            attr=photo + "_indexing",
             analyzer="keyword",
         )
 
