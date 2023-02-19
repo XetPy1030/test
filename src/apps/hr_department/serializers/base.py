@@ -61,17 +61,17 @@ class BaseMeta:
 
 
 class BaseSerializer(serializers.ModelSerializer):
-    childrens = ChildrenSerializer(many=True, required=False)
+    children = ChildrenSerializer(many=True, required=False)
     education = EducationSerializer(many=True, required=False)
 
     def create(self, validated_data):
-        childrens = validated_data.pop('childrens', [])
+        childrens = validated_data.pop('children', [])
         education = validated_data.pop('education', [])
         instance = super().create(validated_data)
 
         for children in childrens:
             children_model = Children.objects.create(**children)
-            instance.childrens.add(children_model)
+            instance.children.add(children_model)
 
         for edu in education:
             edu_model = Education.objects.create(**edu)
@@ -80,13 +80,13 @@ class BaseSerializer(serializers.ModelSerializer):
         return instance
 
     def update(self, instance, validated_data):
-        childrens = validated_data.pop('childrens', [])
+        childrens = validated_data.pop('children', [])
         education = validated_data.pop('education', [])
         instance = super().update(instance, validated_data)
 
         for children in childrens:
             children_model = Children.objects.create(**children)
-            instance.childrens.add(children_model)
+            instance.children.add(children_model)
 
         for edu in education:
             edu_model = Education.objects.create(**edu)

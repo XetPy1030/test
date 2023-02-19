@@ -32,7 +32,8 @@ class AdminDraftHandler(APIView):
     @add_user_id
     @add_owner_id
     def post(request, user_id, owner_id):
-        serializer = get_serializer(AdminDraftSerializer, DraftEmployeeInformation, request.clone_data, user_id=user_id, owner_id=owner_id)
+        serializer = get_serializer(AdminDraftSerializer, DraftEmployeeInformation, request.clone_data, user_id=user_id,
+                                    owner_id=owner_id)
 
         if not serializer.is_valid():
             return not_valid_data(request, serializer.errors)
@@ -66,8 +67,6 @@ class AdminSaveHandler(APIView):
 
         if not serializer.is_valid():
             return not_valid_data(request, serializer.errors)
-
-        delete_server_saves(user_id)
 
         is_editable = serializer.validated_data.get('is_editable', False)
         is_checked = serializer.validated_data.get('is_checked', False)

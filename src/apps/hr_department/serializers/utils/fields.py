@@ -188,19 +188,19 @@ iter_fields = [
         ]
     },
     {
-        'backend_name': 'childrens',
+        'backend_name': 'children',
         'frontend_fields': [
             {
                 'backend_name': 'full_name',
-                'frontend_name': 'childrens_full_name',
+                'frontend_name': 'children_full_name',
             },
             {
                 'backend_name': 'date_of_birthday',
-                'frontend_name': 'childrens_date_of_birthday',
+                'frontend_name': 'children_date_of_birthday',
             },
             {
                 'backend_name': 'relation_degree',
-                'frontend_name': 'childrens_relation_degree',
+                'frontend_name': 'children_relation_degree',
             }
         ]
     }

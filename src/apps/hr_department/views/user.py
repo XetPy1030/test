@@ -57,7 +57,6 @@ class UserSaveHandler(APIView):
             return not_permission_save(request)
 
         delete_drafts(user_id, user_id)
-        delete_server_saves(user_id)
 
         serializer.validated_data['is_editable'] = False
         serializer.validated_data['is_checked'] = False

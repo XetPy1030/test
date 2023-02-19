@@ -55,9 +55,9 @@
   "wage_quasi_option": "10000",
   "first_vaccination_date": "2010-01-01",
   "second_vaccination_date": "2010-01-01",
-  "0__childrens_date_of_birthday": "1990-01-01",
-  "0__childrens_full_name": "Ковин Аскар Александрович",
-  "0__childrens_relation_degree": "Ребенок",
+  "0__children_date_of_birthday": "1990-01-01",
+  "0__children_full_name": "Ковин Аскар Александрович",
+  "0__children_relation_degree": "Ребенок",
   "education": [
     {
       "education_type": "Высшее",

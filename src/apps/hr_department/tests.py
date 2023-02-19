@@ -16,42 +16,10 @@ def get_base64_from_image(image_path: str):
 
 
 data_for_serializer = {
-    'full_name__full_name': 'Богомолова Надежда Семёновна',
-    'date_of_birthday__date': '1990-01-01T00:00:00',
-    'gender__gender': 'male',
-    'inn__number': '822199435930',
-    'snils__number': '123-456-789 01',
-    'passport__series_and_number': '1234 567890',
-    'passport__issued_by': 'ОВД г. Москвы',
-    'passport__date_of_issue': '2010-01-01T00:00:00',
-    'passport__division_code': '123-456',
-    'passport__registered_address': 'г. Москва, ул. Ленина, д. 1',
-    'place_of_birthday__place': 'г. Москва',
-    'citizenship__citizenship': 'Россия',
-    'address_of_residence__address': 'г. Москва, ул. Ленина, д. 1',
-    'is_civil_servant__is_civil_servant': True,
-    'date_of_vaccination__date': '2010-01-01T00:00:00',
-    'education__education': 'Высшее',
-    'grade__grade': '1',
-    'salary__salary': '100000',
-    'premium__premium': '10000',
-    'job_descriptions__descriptions': 'Разработчик',
-    'mvo__mvo': '1',
-    'options__quarterly_option': '1',
-    'options__annual_option': '1',
-    'options__three_year_option': '1',
-    'сash_content__cash_year__content': '100000',
-    'сash_content__cash_month__content': '10000',
-    'сash_content__cashyear_without_option__content': '100000',
-    'сash_content__cash_month_without_option__content': '10000',
-    'department__department': 'Отдел разработки',
-    'module__module': 'Модуль разработки',
-    'position__position': 'Разработчик',
-    'housing__housing': '1',
-    # 'inn__photo': get_base64_from_image('./apps/hr_department/tests/inn.jpg'),
-    # 'snils__photo': get_base64_from_image('./apps/hr_department/tests/snils.jpg'),
-    # 'passport__photo_reversal': get_base64_from_image('./apps/hr_department/tests/passport_reversal.jpg'),
-    # 'passport__photo_registration': get_base64_from_image('./apps/hr_department/tests/passport_registration.jpg'),
+    'full_name': 'Богомолова Надежда Семёновна',
+    'date_of_birthday': '1990-01-01T00:00:00',
+    '0__children_full_name': 'Богомолова Надежда Семёновна',
+    '1__children_full_name': 'Богомолова Надежда Семёновна',
 }
 
 
@@ -69,4 +37,20 @@ class DraftEmployeeInformationTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
         response = self.client.post(self.admin_save_url.format(1), data_for_serializer)
         self.assertEqual(response.status_code, 201)
-        # dsl drf get all fields from elastic search document SpreadSheetSearchEmployeeInformationDocument
+
+    def testChildrenUpdate(self):
+        response = self.client.post(self.admin_save_url.format(1), data_for_serializer)
+        self.assertEqual(response.status_code, 201)
+
+
+        # response = self.client.get(self.admin_save_url.format(1))
+        # print(response.content)
+
+        response = self.client.post(self.admin_save_url.format(1), {
+            'full_name': 'awdwad'
+        })
+        self.assertEqual(response.status_code, 201)
+
+        response = self.client.get(self.admin_save_url.format(1))
+        self.assertEqual(json.loads(response.content)['children'].__len__(), 2)
+
