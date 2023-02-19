@@ -98,6 +98,5 @@ class SpreadSheetSearchEmployeeInformationDocument(Document):
             ServerEmployeeInformation)
         fields = [
             'user_id',
-            *[str(field) for field in photos_field],
-            *[str(field) for field in nested],
+            *[str(field) for field in photos_field]
         ]
